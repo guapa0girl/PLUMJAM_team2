@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 134657913}
   m_Layer: 0
   m_Name: FarmTile-Rain 4
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -738,7 +738,7 @@ GameObject:
   - component: {fileID: 141083817}
   m_Layer: 0
   m_Name: FarmTile-Snow 4
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1312,7 +1312,7 @@ GameObject:
   - component: {fileID: 169786078}
   m_Layer: 0
   m_Name: FarmTile-Heat 2
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1951,7 +1951,7 @@ GameObject:
   - component: {fileID: 589816804}
   m_Layer: 0
   m_Name: FarmTile-Cloud 2
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2497,6 +2497,7 @@ GameObject:
   - component: {fileID: 624900456}
   - component: {fileID: 624900458}
   - component: {fileID: 624900457}
+  - component: {fileID: 624900459}
   m_Layer: 5
   m_Name: CoinCount
   m_TagString: Untagged
@@ -2622,6 +2623,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 624900455}
   m_CullTransparentMesh: 1
+--- !u!114 &624900459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624900455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d4be03763ad414ab532967ccfbca2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoinCountUI
 --- !u!1 &629039141
 GameObject:
   m_ObjectHideFlags: 0
@@ -3142,12 +3155,12 @@ GameObject:
   - component: {fileID: 650777790}
   - component: {fileID: 650777789}
   m_Layer: 0
-  m_Name: Economy
+  m_Name: Economy_dummy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &650777789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3161,6 +3174,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Core.Economy
   money: 0
+  heatPayout: 10
+  rainPayout: 30
+  snowPayout: 40
+  cloudPayout: 20
+  moneyTMP: {fileID: 0}
 --- !u!4 &650777790
 Transform:
   m_ObjectHideFlags: 0
@@ -4573,6 +4591,8 @@ MonoBehaviour:
     worst: 1
   - forPreferred: 3
     worst: 0
+  showPlotsOnStart: 1
+  economy: {fileID: 0}
 --- !u!4 &750491548
 Transform:
   m_ObjectHideFlags: 0
@@ -4945,7 +4965,7 @@ GameObject:
   - component: {fileID: 839821069}
   m_Layer: 0
   m_Name: FarmTile-Rain 2
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5441,6 +5461,7 @@ MonoBehaviour:
   maxBattles: 2
   farming: {fileID: 750491547}
   inventory: {fileID: 226567034}
+  economy: {fileID: 650777789}
   seedSun: {fileID: 0}
   seedCloud: {fileID: 0}
   seedRain: {fileID: 0}
@@ -6938,7 +6959,7 @@ GameObject:
   - component: {fileID: 1135587004}
   m_Layer: 0
   m_Name: FarmTile-Heat 1
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7985,7 +8006,7 @@ GameObject:
   - component: {fileID: 1183125246}
   m_Layer: 0
   m_Name: FarmTile-Snow 1
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8592,7 +8613,7 @@ GameObject:
   - component: {fileID: 1212978088}
   m_Layer: 0
   m_Name: FarmTile-Rain 3
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9336,7 +9357,7 @@ GameObject:
   - component: {fileID: 1299147399}
   m_Layer: 0
   m_Name: FarmTile-Heat 3
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9806,7 +9827,7 @@ GameObject:
   - component: {fileID: 1324470128}
   m_Layer: 0
   m_Name: FarmTile-Snow 3
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10931,7 +10952,7 @@ GameObject:
   - component: {fileID: 1381305763}
   m_Layer: 0
   m_Name: FarmTile-Snow 2
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11612,7 +11633,7 @@ GameObject:
   - component: {fileID: 1546866051}
   m_Layer: 0
   m_Name: FarmTile-Cloud 3
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12082,7 +12103,7 @@ GameObject:
   - component: {fileID: 1553120602}
   m_Layer: 0
   m_Name: FarmTile-Rain 1
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12552,7 +12573,7 @@ GameObject:
   - component: {fileID: 1578518424}
   m_Layer: 0
   m_Name: FarmTile-Cloud 4
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13022,7 +13043,7 @@ GameObject:
   - component: {fileID: 1636959412}
   m_Layer: 0
   m_Name: FarmTile-Heat 4
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13595,7 +13616,7 @@ GameObject:
   - component: {fileID: 1680739660}
   m_Layer: 0
   m_Name: FarmTile-Cloud 1
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -20,5 +20,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Upgrade.unity
     guid: 96c47680db5532746a28305547f91a9e
+  - enabled: 1
+    path: Assets/Scenes/dungeon_cloud.unity
+    guid: 5e622a9f1aae1f84c9128ade84fa0b66
+  - enabled: 1
+    path: Assets/Scenes/dungeon_heat.unity
+    guid: 361b0fca719056f4cb64f539f97cad92
+  - enabled: 1
+    path: Assets/Scenes/dungeon_snow.unity
+    guid: b71bd5acecc8ec8459dd1291ad7fc51c
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
