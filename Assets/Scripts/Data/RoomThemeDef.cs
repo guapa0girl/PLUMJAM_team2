@@ -1,27 +1,13 @@
-// ─────────────────────────────────────────────────────────────
-// File    : RoomThemeDef.cs
-// Namespace : Game.Data
-// Purpose : 전투 방(던전 룸)의 테마 데이터를 정의하는 ScriptableObject.
-//           - 방이 어떤 날씨 테마(WeatherType)에 속하는지 지정
-//           - 해당 방에서 사용할 드랍 테이블(LootTable) 지정
-// Defines : class RoomThemeDef : ScriptableObject
-// Fields  : roomId      → 내부/저장용 방 ID (string)
-//           weatherTag  → 이 방의 날씨 테마 (Heat, Rain, Snow, Cloud 중 하나)
-//           loot        → 몬스터/보상 드랍 테이블 참조
-// Used By : CombatSystem, MonsterSpawner, RunManager 등 전투 관련 로직
-// Notes   : 에셋 생성 → Project 창에서 Create → Game → RoomTheme
-//           룸마다 다른 날씨/드랍 구성을 쉽게 확장 가능
-// ─────────────────────────────────────────────────────────────
-
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Game.Data
 {
-    /// <summary>
-    /// 전투 방(던전 룸)의 테마 정의.
-    /// - 어떤 날씨 조건(WeatherType)에 해당하는 방인지 지정합니다.
-    /// - 방 클리어 시 적용할 드랍 테이블을 연결합니다.
-    /// </summary>
+    // ─────────────────────────────────────────────────────────────
+    // File    : RoomThemeDef.cs
+    // Purpose : 방 테마 + 날씨별 몬스터 세트/드랍 테이블 정의.
+    // Notes   : 날씨별로 완전히 다른 MonsterDef[]를 연결할 수 있음.
+    // ─────────────────────────────────────────────────────────────
     [CreateAssetMenu(menuName = "Game/RoomTheme")]
     public class RoomThemeDef : ScriptableObject
     {
@@ -30,11 +16,37 @@ namespace Game.Data
         public string roomId;
 
         [Header("Theme")]
-        [Tooltip("이 방의 날씨 테마 (Heat, Rain, Snow, Cloud 중 하나)")]
+        [Tooltip("이 방의 기본 날씨 테마 (표시/분류용)")]
         public WeatherType weatherTag;
 
-        [Header("Loot Table")]
-        [Tooltip("방에서 드랍될 아이템/씨앗 테이블")]
-        public LootTable loot;
+        // 날씨별 몬스터 세트 정의
+        [System.Serializable]
+        public class MonsterSet
+        {
+            [Tooltip("이 세트가 적용될 날씨")]
+            public WeatherType weather;
+
+            [Tooltip("해당 날씨에서 스폰할 몬스터 종류들")]
+            public MonsterDef[] monsters;
+        }
+
+        [Header("Monster Sets by Weather")]
+        [Tooltip("날씨별로 완전히 다른 몬스터 목록을 정의")]
+        public MonsterSet[] monsterSets;
+
+        /// <summary>
+        /// 오늘 날씨에 해당하는 MonsterDef 배열을 반환. 없으면 빈 배열.
+        /// </summary>
+        public MonsterDef[] GetMonstersForWeather(WeatherType today)
+        {
+            if (monsterSets == null) return System.Array.Empty<MonsterDef>();
+            for (int i = 0; i < monsterSets.Length; i++)
+            {
+                var set = monsterSets[i];
+                if (set != null && set.weather == today)
+                    return set.monsters ?? System.Array.Empty<MonsterDef>();
+            }
+            return System.Array.Empty<MonsterDef>();
+        }
     }
 }

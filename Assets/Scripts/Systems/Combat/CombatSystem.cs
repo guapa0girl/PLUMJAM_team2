@@ -39,9 +39,9 @@ namespace Game.Systems.Combat
             if (clearsToday >= clearsPerDayLimit) yield break;
 
             spawner.BeginRoom(room);
-            spawner.SpawnAll(mon => {
+            spawner.SpawnAll(room.weatherTag, inv, dropMultByWeather, mon => {
                 var dropper = mon.GetComponent<MonsterDropper>();
-                if (dropper) dropper.Init(inv, dropMultByWeather);
+                if (dropper) dropper.Init(inv, dropMultByWeather, null);
             });
 
             float t = 0f;
