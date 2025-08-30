@@ -140,8 +140,7 @@ public class Player : MonoBehaviour
                 switch (other.name)
                 {
                     case "Portal_East":
-                        Game.Core.SceneBridge.GoToUpgrade("dungeon_rain"); // ← 업그레이드 씬으로 먼저
-
+                        SceneManager.LoadScene("dungeon_rain");
                         break;
                 }
             }
@@ -212,7 +211,7 @@ public class Player : MonoBehaviour
             if (farming.IsCropObject(t.gameObject)) return true;
         }
         // 태그로도 허용하고 싶으면 아래 주석 해제 (Crop 태그를 작물 오브젝트에 부여)
-        if (other.CompareTag("Crop")) return true;
+        // if (other.CompareTag("Crop")) return true;
         return false;
     }
 

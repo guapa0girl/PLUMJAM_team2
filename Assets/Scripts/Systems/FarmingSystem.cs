@@ -61,6 +61,10 @@ namespace Game.Systems
         [Tooltip("게임 시작 시 네 플롯을 전부 'plot' 표시 + 심기 가능(Empty) 상태로 초기화")]
         public bool showPlotsOnStart = true;
 
+        [Header("Pickup")]
+        [Tooltip("작물 GO(heat/rain/snow/cloud)에 Trigger Collider가 없으면 자동으로 추가")]
+        public bool autoAddPickupCollider = true;
+
         Dictionary<WeatherType, WeatherType> worstLookup;
 
         void Awake()
@@ -68,7 +72,7 @@ namespace Game.Systems
             worstLookup = new Dictionary<WeatherType, WeatherType>();
             foreach (var e in worstMap) worstLookup[e.forPreferred] = e.worst;
 
-            // 일단 전부 OFF(초기 깔끔 상태) ? 이후 Start에서 plot으로 켜줄 수 있음
+            // 일단 모두 끄기
             for (int i = 0; i < 4; i++)
             {
                 Set(plotVisuals, i, false);
@@ -78,9 +82,20 @@ namespace Game.Systems
                 Set(cloudGOs, i, false);
                 Set(plotWorstGOs, i, false);
             }
+
+            // 작물 GO들에 Trigger Collider 자동 보장
+            if (autoAddPickupCollider)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    EnsureTriggerCollider(heatGOs[i]);
+                    EnsureTriggerCollider(rainGOs[i]);
+                    EnsureTriggerCollider(snowGOs[i]);
+                    EnsureTriggerCollider(cloudGOs[i]);
+                }
+            }
         }
 
-        //  시작 시 플롯 전부 보이게 + 심기 가능
         void Start()
         {
             if (!showPlotsOnStart) return;
@@ -123,7 +138,9 @@ namespace Game.Systems
 
                 if (today == preferred)
                 {
-                    p.state = PlotState.Mature; // 표시 유지(프리뷰가 맞았다면 이미 씨앗 off)
+                    // ? 성숙: 상태 전환 + 실제 작물 GO를 반드시 켜서 '충돌 가능' 상태로 만든다
+                    p.state = PlotState.Mature;
+                    ShowWeather(i, preferred);
                 }
                 else if (today == worst)
                 {
@@ -298,6 +315,33 @@ namespace Game.Systems
                 if (go == SafeGet(cloudGOs, i)) return true;
             }
             return false;
+        }
+
+        // ───────────────── Collider 보장 ─────────────────
+        void EnsureTriggerCollider(GameObject go)
+        {
+            if (!go) return;
+
+            // 이미 콜라이더 있으면 Trigger로 전환만
+            var col = go.GetComponent<Collider2D>();
+            if (col)
+            {
+                col.isTrigger = true;
+                return;
+            }
+
+            // 없으면 박스 콜라이더 추가
+            var bc = go.AddComponent<BoxCollider2D>();
+            bc.isTrigger = true;
+
+            // 대략적인 사이즈 보정(있으면)
+            var sr = go.GetComponentInChildren<SpriteRenderer>();
+            if (sr != null)
+            {
+                // BoxCollider2D.size는 로컬 단위, bounds.size는 월드 단위이지만
+                // 스케일 1 기준에선 충분히 근사치로 동작
+                bc.size = sr.bounds.size;
+            }
         }
     }
 }
