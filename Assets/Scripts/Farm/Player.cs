@@ -21,6 +21,10 @@ public class Player : MonoBehaviour
     Vector2 computedVelocity;
     Vector2 lastPos;
 
+    // =====================[BATTLE]=======================
+    public int battleCount = 0;     // 오늘 전투 횟수
+    public int maxBattles = 2;      // 하루 최대 전투 횟수
+
     // ===================== [FARMING] =====================
     [Header("Farming (씬에 없어도 런타임에 자동 생성됩니다)")]
     public FarmingSystem farming;   // null이면 Awake에서 _FarmingSystem 생성
@@ -114,11 +118,19 @@ public class Player : MonoBehaviour
         // 포탈
         if (other.CompareTag("Portal"))
         {
-            switch (other.name)
+            if (battleCount < maxBattles)
             {
-                case "Portal_East":
-                    SceneManager.LoadScene("Dungeon");
-                    break;
+                battleCount++;
+                switch (other.name)
+                {
+                    case "Portal_East":
+                        SceneManager.LoadScene("dungeon_rain");
+                        break;
+                }
+            }
+            else
+            {
+                Debug.Log("오늘 전투 횟수 초과! 포탈 작동 불가");
             }
         }
 
