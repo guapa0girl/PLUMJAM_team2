@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6929cb056c29094488547d7dac8bf2d5, type: 3}
   m_Name: tomato
   m_EditorClassIdentifier: Assembly-CSharp::Game.Data.SeedDef
-  seedId: 
-  displayName: 
-  preferred: 0
-  deadly: 0
-  sellPrice: 0
+  seedId: tomato
+  displayName: "\uB3C4\uB9C8\uB3C4"
+  preferred: 1
+  deadly: 3
+  sellPrice: 25
