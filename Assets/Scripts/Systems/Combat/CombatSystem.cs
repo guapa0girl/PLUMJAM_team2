@@ -29,11 +29,10 @@ namespace Game.Systems.Combat
     {
         [SerializeField] RoomThemeDef[] rooms;
         [SerializeField] float roomTimeLimitSec = 300f;
-        [SerializeField] int clearsPerDayLimit = 2;
+        [SerializeField] int clearsPerDayLimit = 1;
         int clearsToday = 0;
 
         [SerializeField] MonsterSpawner spawner;
-        [SerializeField] bool giveClearChest = false;
 
         public IEnumerator PlayOneClear(RoomThemeDef room, Inventory inv, float dropMultByWeather = 1f)
         {
@@ -49,12 +48,7 @@ namespace Game.Systems.Combat
             while (t < roomTimeLimitSec && spawner.HasAliveMonsters) { t += Time.unscaledDeltaTime; yield return null; }
 
             spawner.EndRoom();
-
-            if (giveClearChest && room.loot)
-            {
-                var (seed, count) = room.loot.Roll();
-                inv.AddSeed(seed, count);
-            }
+            
             clearsToday++;
         }
     }

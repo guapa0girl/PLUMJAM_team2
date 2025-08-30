@@ -35,12 +35,7 @@ namespace Game.Systems.Combat
         {
             if (!lootTable || !targetInventory) return;
             var (seed, count) = lootTable.Roll();
-            int extra = Mathf.FloorToInt(dropMultiplier - 1f);
-            for (int i = 0; i < 1 + Mathf.Max(0, extra); i++)
-            {
-                var res = (i == 0) ? (seed, count) : lootTable.Roll();
-                targetInventory.AddSeed(res.Item1, res.Item2);
-            }
+            if (seed && count > 0) targetInventory.AddSeed(seed, count);
         }
     }
 }

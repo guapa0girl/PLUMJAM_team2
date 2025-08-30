@@ -15,10 +15,27 @@ namespace Game.Data
         public Entry[] entries;
         public (SeedDef, int) Roll()
         {
-            float sum = 0; foreach (var e in entries) sum += e.weight;
-            float r = UnityEngine.Random.value * sum;  // [0..1] Æ÷ÇÔ. :contentReference[oaicite:6]{index=6}
-            foreach (var e in entries) { if ((r -= e.weight) <= 0) return (e.seed, UnityEngine.Random.Range(e.min, e.max + 1)); }
-            var last = entries[^1]; return (last.seed, UnityEngine.Random.Range(last.min, last.max + 1));
+            if (entries == null || entries.Length == 0) return (null, 0);
+
+            float sum = 0f;
+            foreach (var e in entries) if (e != null && e.weight > 0f) sum += e.weight;
+            if (sum <= 0f) return (null, 0);
+
+            float r = Random.value * sum; // [0, sum)
+            foreach (var e in entries)
+            {
+                if (e == null || e.weight <= 0f) continue;
+                r -= e.weight;
+                if (r <= 0f)
+                {
+                    int cnt = Mathf.Clamp(Random.Range(e.min, e.max + 1), 0, int.MaxValue);
+                    return (e.seed, cnt);
+                }
+            }
+            var last = entries[entries.Length - 1];
+            int lastCnt = Mathf.Clamp(Random.Range(last.min, last.max + 1), 0, int.MaxValue);
+            return (last.seed, lastCnt);
         }
+
     }
 }

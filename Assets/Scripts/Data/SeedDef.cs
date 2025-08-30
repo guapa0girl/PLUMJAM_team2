@@ -17,7 +17,7 @@ namespace Game.Data
         public string seedId;
         public string displayName;
         public WeatherType preferred;   // 맞으면 성장
-        public int growDays;            // 성장일수
+        public WeatherType deadly;   // 맞으면 성장
         public int sellPrice;           // 성숙 작물 판매가
     }
 }
