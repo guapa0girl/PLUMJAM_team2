@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -4320999569228570827}
   - component: {fileID: 7214919331812291417}
   - component: {fileID: 2002908799354816587}
+  - component: {fileID: 697422489094765208}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -230,3 +231,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 465704d8bb2a8734baadb6928a71468c, type: 2}
   - {fileID: 11400000, guid: eed1017b3d3dd1b4f96eb232c735c28e, type: 2}
   - {fileID: 11400000, guid: ec790f3889a530140aca09daab8b0ada, type: 2}
+--- !u!114 &697422489094765208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062266591731914695}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 391095e0a8d7fdf4c93ca291784395ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Core.Inventory
+  sunSeedCount: 0
+  cloudSeedCount: 0
+  rainSeedCount: 0
+  snowSeedCount: 0
+  seedSun: {fileID: 0}
+  seedCloud: {fileID: 0}
+  seedRain: {fileID: 0}
+  seedSnow: {fileID: 0}
+  seed_sun_text: {fileID: 0}
+  seed_cloud_text: {fileID: 0}
+  seed_rain_text: {fileID: 0}
+  seed_snow_text: {fileID: 0}

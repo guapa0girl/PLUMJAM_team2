@@ -2902,7 +2902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   moveSpeed: 5
   stopDamp: 0.9
-  battleCount: 2
+  battleCount: 0
   maxBattles: 2
   farming: {fileID: 750491547}
   inventory: {fileID: 226567034}
