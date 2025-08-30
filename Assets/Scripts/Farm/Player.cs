@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
@@ -69,6 +70,19 @@ public class Player : MonoBehaviour
         // ‘실제 속도’ 계산해서 저장 (애니/로직에서 사용)
         computedVelocity = (rigid.position - lastPos) / Time.fixedDeltaTime;
         lastPos = rigid.position;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Portal"))
+        {
+            switch (other.name)  // 포탈 오브젝트 이름으로 분기
+            {
+                case "Portal_East":
+                    SceneManager.LoadScene("Dungeon");
+                    break;
+            }
+        }
     }
 }
 

@@ -1,10 +1,34 @@
 fileFormatVersion: 2
-guid: baaaf054d15da474db40661d2ec70052
+guid: 28c33345e35383e428ae417d786b4229
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6818096943671736326
-    second: weather-illustration-main-1024x607_0
+      213: 605162050437240712
+    second: sun_0
+  - first:
+      213: 2478982479046213345
+    second: sun_1
+  - first:
+      213: -7018185981625310791
+    second: sun_2
+  - first:
+      213: 8847054276605350839
+    second: sun_3
+  - first:
+      213: 3952879686552239645
+    second: sun_4
+  - first:
+      213: -7744155527204253199
+    second: sun_5
+  - first:
+      213: -6373571496263104676
+    second: sun_6
+  - first:
+      213: -5940756552861533841
+    second: sun_7
+  - first:
+      213: 468680197273812724
+    second: sun_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +124,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: weather-illustration-main-1024x607_0
+      name: sun_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 607
+        width: 126
+        height: 131
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: af7054c14f04161a0800000000000000
-      internalID: -6818096943671736326
+      spriteID: 887dbd7bda7f56800800000000000000
+      internalID: 605162050437240712
       vertices: []
       indices: 
       edges: []
@@ -125,7 +149,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0fdf0a4dc519c1549a255d1efd75e4f3
     internalID: 0
     vertices: []
     indices: 
@@ -133,9 +157,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":126.0,"y":131.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      weather-illustration-main-1024x607_0: -6818096943671736326
+      sun_0: 605162050437240712
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
