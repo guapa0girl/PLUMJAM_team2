@@ -1,0 +1,226 @@
+fileFormatVersion: 2
+guid: ad422f8c70fb9ea4aaaa49265a44e722
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6986267807369209921
+    second: Rain_-Photoroom_0
+  - first:
+      213: 8786598341088665779
+    second: Rain_-Photoroom_1
+  - first:
+      213: 4417762709862550170
+    second: Rain_-Photoroom_2
+  - first:
+      213: -8030097364951138855
+    second: Rain_-Photoroom_3
+  - first:
+      213: -6137851125135591543
+    second: Rain_-Photoroom_4
+  - first:
+      213: -4337987078730825342
+    second: Rain_-Photoroom_5
+  - first:
+      213: -1512006072218816112
+    second: Rain_-Photoroom_6
+  - first:
+      213: 8345771041197498906
+    second: Rain_-Photoroom_7
+  - first:
+      213: -2285149930231166319
+    second: Rain_-Photoroom_8
+  - first:
+      213: 236923401824874551
+    second: Rain_-Photoroom_9
+  - first:
+      213: 184798523352874661
+    second: Rain_-Photoroom_10
+  - first:
+      213: 2876549865560393331
+    second: Rain_-Photoroom_11
+  - first:
+      213: 1368373552507667511
+    second: Rain_-Photoroom_12
+  - first:
+      213: -7105455103581912661
+    second: Rain_-Photoroom_13
+  - first:
+      213: 1386659151752597333
+    second: Rain_-Photoroom_14
+  - first:
+      213: -4936782002549638356
+    second: Rain_-Photoroom_15
+  - first:
+      213: -6213743355590484810
+    second: Rain_-Photoroom_16
+  - first:
+      213: 203593063595852413
+    second: Rain_-Photoroom_17
+  - first:
+      213: 8176996863353578035
+    second: Rain_-Photoroom_18
+  - first:
+      213: 6131157889876778705
+    second: Rain_-Photoroom_19
+  - first:
+      213: 1918707730217051974
+    second: Rain_-Photoroom_20
+  - first:
+      213: -5181060932103861683
+    second: Rain_-Photoroom_21
+  - first:
+      213: 2905221807783751590
+    second: Rain_-Photoroom_22
+  - first:
+      213: 2988123052401042482
+    second: Rain_-Photoroom_23
+  - first:
+      213: 4387387987758075420
+    second: Rain_-Photoroom_24
+  - first:
+      213: 4406682765765963699
+    second: Rain_-Photoroom_25
+  - first:
+      213: -5850835419483702028
+    second: Rain_-Photoroom_26
+  - first:
+      213: 1695087146912992966
+    second: Rain_-Photoroom_27
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Rain_-Photoroom_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 724
+        height: 431
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1482df35e8534f060800000000000000
+      internalID: 6986267807369209921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 817086110523c4246aefe4b8faf45233
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":724.0,"y":431.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Rain_-Photoroom_0: 6986267807369209921
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
