@@ -30,6 +30,9 @@ public class Player : MonoBehaviour
     public FarmingSystem farming;   // null이면 Awake에서 _FarmingSystem 생성
     public Inventory inventory;     // null이면 Awake에서 _Inventory 생성
 
+    [Header("Economy")] // [ADD]
+    public Economy economy;         // null이면 Awake에서 자동으로 찾음
+
     [Header("SeedDefs (없으면 런타임에 CreateInstance로 자동 생성)")]
     public SeedDef seedSun;   // preferred: Heat
     public SeedDef seedCloud; // Cloud
@@ -37,6 +40,9 @@ public class Player : MonoBehaviour
     public SeedDef seedSnow;  // Snow
 
     int currentPlot = -1;
+
+    // [ADD] 수확 중복 방지 락 (한 프레임/짧은 시간에 여러 콜라이더 겹칠 때 대비)
+    bool harvestLock = false;
 
     // ===================== [UNITY LIFECYCLE] =====================
     void Awake()
@@ -65,6 +71,9 @@ public class Player : MonoBehaviour
             var go = new GameObject("_Inventory");
             inventory = go.AddComponent<Inventory>();
         }
+
+        // [ADD] Economy 자동 연결
+        if (economy == null) economy = FindObjectOfType<Economy>();
 
         // --- SeedDef 없으면 런타임 생성 ---
         if (seedSun == null) seedSun = MakeSeed("Seed_Sun", WeatherType.Heat, 10);
@@ -115,7 +124,14 @@ public class Player : MonoBehaviour
     // ===================== [TRIGGER] =====================
     void OnTriggerEnter2D(Collider2D other)
     {
-        // 포탈
+        // [ADD] 1) 작물(날씨 타일)에 닿으면 → 전체 수확 & 코인 지급
+        if (IsCropHit(other))
+        {
+            TryHarvestAllMature();
+            return; // 다른 트리거 처리 불필요
+        }
+
+        // 2) 포탈
         if (other.CompareTag("Portal"))
         {
             if (battleCount < maxBattles)
@@ -135,7 +151,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        // 플롯
+        // 3) 플롯
         if (other.CompareTag("Plot"))
         {
             // plot 번호는 이름으로 판별 (예: Plot1 → index=0)
@@ -182,5 +198,49 @@ public class Player : MonoBehaviour
         def.sellPrice = sellPrice;
         return def;
     }
-}
 
+    // ===================== [HARVEST TOUCH LOGIC] =====================
+
+    // [ADD] other가 '작물(날씨 타일)'인지 판단 (씨앗/plotWorst 제외)
+    bool IsCropHit(Collider2D other)
+    {
+        if (farming == null) return false;
+        // 충돌체가 자식일 수도 있으니 부모까지 타고 올라가며 체크
+        Transform t = other.transform;
+        for (int hop = 0; hop < 4 && t != null; hop++, t = t.parent)
+        {
+            if (farming.IsCropObject(t.gameObject)) return true;
+        }
+        // 태그로도 허용하고 싶으면 아래 주석 해제 (Crop 태그를 작물 오브젝트에 부여)
+        if (other.CompareTag("Crop")) return true;
+        return false;
+    }
+
+    // [ADD] 전체 수확 시도 (락으로 다중 트리거 방지)
+    void TryHarvestAllMature()
+    {
+        if (harvestLock) return;
+        harvestLock = true;
+
+        if (farming == null || economy == null)
+        {
+            Debug.LogWarning("[Player] farming/economy 참조 누락");
+            StartCoroutine(ReleaseHarvestLockNextFrame());
+            return;
+        }
+
+        int earned = farming.HarvestAndSell(economy);
+        if (earned > 0)
+            Debug.Log($"[Player] Harvest ALL: +{earned} coins");
+        else
+            Debug.Log("[Player] Harvest tried, but no mature crops");
+
+        StartCoroutine(ReleaseHarvestLockNextFrame());
+    }
+
+    System.Collections.IEnumerator ReleaseHarvestLockNextFrame()
+    {
+        yield return null; // 한 프레임 후 해제
+        harvestLock = false;
+    }
+}

@@ -1,23 +1,24 @@
 using UnityEngine;
+using UnityEngine.UI;     // ★ UI Image
 using Game.Data;
 
 // ─────────────────────────────────────────────────────────────
 // File    : WeatherSystem.cs
-// Namespace : (예) Game.Systems
-// Purpose : N일치 예보 생성/보관(내일·모레 표시), 예보 신뢰도(틀릴 확률) 반영,
-//           하루가 시작될 때 실제 날씨를 확정하고 예보를 굴리는 시스템.
-// Defines : class WeatherSystem : MonoBehaviour
-// Fields  : Today(오늘 확정 날씨), forecastHorizonDays(보여줄 예보 일수),
-//           forecastReliability(예보 신뢰도 0~1), forecasts[] (예보 큐)
-// API     : RollForecastHorizon(), GetForecast(daysAhead),
-//           ResolveTodayFromForecastAndAdvance()
-// Notes   : 신뢰도 r: 1이면 예보 그대로, 0이면 균일(혹은 기후분포)로 섞여 오차↑.
+// Namespace : Game.Systems
+// Purpose : (진짜 날씨와 예보 분리)
+//   - 내일·모레 등 '진짜 날씨(truth)'를 미리 확정해 보관
+//   - 예보는 정해진 확률(거짓말 확률)로 진실/거짓 섞어 제공
+//   - 하루가 시작될 때 Today를 truth에서 확정하고 큐를 전진
+//   - ★ ResolveTodayFromForecastAndAdvance() 끝에서 UI 이미지 자동 갱신
+// API     : GetForecast(daysAhead) → UI용 예보(0=내일,1=모레)
+//           ResolveTodayFromForecastAndAdvance() → 오늘 확정+큐 전진(+UI 갱신)
+// Notes   : lieProbability=0.2 → 예보가 20% 확률로 거짓말.
 // ─────────────────────────────────────────────────────────────
 namespace Game.Systems
 {
     public class WeatherSystem : MonoBehaviour
     {
-        // 예보 1칸(Heat/Rain/Snow/Cloud 확률 합=1을 권장)
+        // 예보(확률) 한 칸
         [System.Serializable]
         public struct Forecast
         {
@@ -37,102 +38,275 @@ namespace Game.Systems
         [Header("State")]
         public WeatherType Today { get; private set; }
 
-        [Header("Forecast Settings")]
+        [Header("Truth & Forecast Settings")]
         [Tooltip("UI에 보여줄 예보 일수(예: 2면 내일/모레)")]
-        [Min(1)] public int forecastHorizonDays = 2; // 요구: 내일/모레
-        [Tooltip("예보 신뢰도(1=예보 그대로, 0=균일 분포에 가까움)")]
-        [Range(0f, 1f)] public float forecastReliability = 0.8f;
+        [Min(1)] public int forecastHorizonDays = 2;
 
-        [Tooltip("클라이메이트(기본 분포). 0 신뢰도일 때 이 분포 쪽으로 수렴. 비우면 균일 사용")]
+        [Tooltip("예보가 거짓말할 확률(예: 0.2 = 20%)")]
+        [Range(0f, 1f)] public float lieProbability = 0.2f;
+
+        [Tooltip("진짜 날씨(Truth) 생성용 기후 분포")]
         public Forecast climatology = new Forecast { heat = 0.25f, rain = 0.25f, snow = 0.25f, cloud = 0.25f };
 
-        // 예보 큐: [0]=내일, [1]=모레, ...
-        [SerializeField] private Forecast[] forecasts;
+        // [0]=내일, [1]=모레, ...
+        [SerializeField] private WeatherType[] truthQueue;    // 진짜 날씨 큐
+        [SerializeField] private Forecast[] forecastQueue; // 예보 큐(UI 표시용)
+
+        // ─────────────────────────────────────────────
+        [Header("Forecast UI (Drag & Drop)")]
+        [Tooltip("내일 예보 아이콘을 표시할 Image")]
+        public Image imgTomorrow;
+        [Tooltip("모레 예보 아이콘을 표시할 Image")]
+        public Image imgDayAfter;
+
+        [Tooltip("날씨별 아이콘 스프라이트")]
+        public Sprite heatSprite;
+        public Sprite rainSprite;
+        public Sprite snowSprite;
+        public Sprite cloudSprite;
+
+        [Tooltip("스프라이트 적용 후 SetNativeSize 호출 여부")]
+        public bool setNativeSize = false;
+        // ─────────────────────────────────────────────
 
         void Awake()
         {
-            // 최초 초기화
-            if (forecasts == null || forecasts.Length != forecastHorizonDays)
-                forecasts = new Forecast[forecastHorizonDays];
-
-            RollForecastHorizon();
+            InitQueues();
+            // 시작 시 한 번 UI 표시
+            UpdateForecastImages();
         }
 
-        /// <summary>내일~모레(=horizon)까지 새 예보를 굴린다.</summary>
-        public void RollForecastHorizon()
+        void InitQueues()
         {
-            for (int i = 0; i < forecasts.Length; i++)
-                forecasts[i] = RollOneForecast();
+            if (forecastHorizonDays < 1) forecastHorizonDays = 1;
+
+            truthQueue = new WeatherType[forecastHorizonDays];
+            forecastQueue = new Forecast[forecastHorizonDays];
+
+            RollTruthHorizon();          // 내일/모레 등 '진짜' 먼저 확정
+            RebuildForecastFromTruth();  // 그걸 기반으로 예보 생성(거짓말 확률 반영)
         }
 
-        /// <summary>예: Editor/디버그: (=내일) 0, (=모레) 1 반환</summary>
+        /// <summary>내일~모레(=horizon)까지 '진짜 날씨'를 새로 뽑는다.</summary>
+        void RollTruthHorizon()
+        {
+            for (int i = 0; i < truthQueue.Length; i++)
+                truthQueue[i] = RollTruthOneDay();
+        }
+
+        /// <summary>truthQueue를 기준으로 예보 큐를 다시 만든다.</summary>
+        void RebuildForecastFromTruth()
+        {
+            for (int i = 0; i < forecastQueue.Length; i++)
+                forecastQueue[i] = MakeForecastFromTruth(truthQueue[i]);
+        }
+
+        /// <summary>UI: (=내일) 0, (=모레) 1의 예보(확률)를 반환</summary>
         public Forecast GetForecast(int daysAhead)
         {
-            daysAhead = Mathf.Clamp(daysAhead, 0, forecasts.Length - 1);
-            return forecasts[daysAhead];
+            daysAhead = Mathf.Clamp(daysAhead, 0, forecastQueue.Length - 1);
+            return forecastQueue[daysAhead];
         }
 
         /// <summary>
-        /// 하루가 시작될 때 호출:
-        /// 1) 내일 예보(forecasts[0])를 신뢰도와 혼합해 오늘 실제 날씨 확정
-        /// 2) 예보 큐를 앞으로 당기고 맨 뒤에 새 예보 추가(모레 계속 유지)
+        /// 하루 시작 시 호출:
+        /// 1) Today ← truthQueue[0]로 확정
+        /// 2) truth/forecast 두 큐를 한 칸 전진하고 맨 뒤를 새로 채움
+        /// 3) ★ UI 이미지 갱신 (RunManager.NextDay()에서 이 함수를 호출하면 자동 반영)
         /// </summary>
-        public WeatherType ResolveTodayFromForecastAndAdvance() //and advance
+        public WeatherType ResolveTodayFromForecastAndAdvance()
         {
-            // 1) 예보 확정
-            Forecast f = forecasts[0]; f.Normalize();
+            // 1) 오늘 확정 (이미 '내일'로 확정해 둔 진짜 값)
+            Today = truthQueue[0];
 
-            // 신뢰도 r: f' = Lerp(Uniform/Climatology, f, r)
-            Forecast baseDist = climatology;
-            baseDist.Normalize();
-            Forecast mixed = Lerp(baseDist, f, forecastReliability);
-            mixed.Normalize();
+            // 2) 큐 전진
+            ShiftQueues();
 
-            Today = Sample(mixed);
-
-            // 2) 예보 큐 굴리기 (내일→오늘 소모, 새 모레를 뒤에 추가)
-            ShiftAndAppend();
+            // 3) UI 갱신
+            UpdateForecastImages();
 
             return Today;
         }
 
-        /// <summary>개별 예보 한 칸 생성(원하면 날씨별 규칙/시즌 반영)</summary>
-        private Forecast RollOneForecast()
+        void ShiftQueues()
         {
-            // TODO: 시즌/룸/이벤트에 따른 확률 생성 규칙을 넣어도 됨
-            var f = new Forecast { heat = 0.4f, rain = 0.2f, snow = 0.1f, cloud = 0.3f };
+            int n = truthQueue.Length;
+            for (int i = 0; i < n - 1; i++)
+            {
+                truthQueue[i] = truthQueue[i + 1];
+                forecastQueue[i] = forecastQueue[i + 1];
+            }
+
+            // 새 '진짜' 생성 및 해당 예보 생성
+            var newTruth = RollTruthOneDay();
+            truthQueue[n - 1] = newTruth;
+            forecastQueue[n - 1] = MakeForecastFromTruth(newTruth);
+        }
+
+        // ─────────────────────────────────────────
+        // 진짜 날씨/예보 생성 로직
+        // ─────────────────────────────────────────
+
+        /// <summary>기후 분포를 기반으로 '진짜 날씨' 1일치를 샘플</summary>
+        WeatherType RollTruthOneDay()
+        {
+            var baseDist = climatology;
+            baseDist.Normalize();
+            return Sample(baseDist);
+        }
+
+        /// <summary>거짓말 확률에 따라 truth를 맞추거나(진실) 틀리게(거짓) 예보를 만든다.</summary>
+        Forecast MakeForecastFromTruth(WeatherType truth)
+        {
+            bool lie = Random.value < lieProbability;
+            WeatherType predicted = lie ? RandomOtherType(truth) : truth;
+
+            // 심플: 1-hot 예보
+            return OneHot(predicted);
+
+            // 필요 시, 살짝 퍼진 분포로:
+            // return Peaked(predicted, 0.85f);
+        }
+
+        // ─────────────────────────────────────────
+        // UI 업데이트
+        // ─────────────────────────────────────────
+        /// <summary>내일/모레 예보를 읽어 아이콘 이미지를 갱신</summary>
+        public void UpdateForecastImages()
+        {
+            // 이미지/스프라이트 할당 안 되어 있으면 조용히 스킵
+            if (!imgTomorrow && !imgDayAfter) return;
+
+            // 내일 / 모레 예보
+            var f0 = GetForecast(0);
+            var f1 = (forecastHorizonDays >= 2) ? GetForecast(1) : f0; // 모레가 없으면 내일 복사
+
+            // 아이콘 적용
+            if (imgTomorrow) Apply(imgTomorrow, SpriteFor(ForecastMode(f0)));
+            if (imgDayAfter) Apply(imgDayAfter, SpriteFor(ForecastMode(f1)));
+        }
+
+        void Apply(Image img, Sprite spr)
+        {
+            if (!img || !spr) return;
+            img.sprite = spr;
+            if (setNativeSize) img.SetNativeSize();
+        }
+
+        // 확률 중 최대(모드)를 WeatherType으로
+        WeatherType ForecastMode(Forecast f)
+        {
+            float best = f.heat; int idx = 0;
+            if (f.rain > best) { best = f.rain; idx = 1; }
+            if (f.snow > best) { best = f.snow; idx = 2; }
+            if (f.cloud > best) { best = f.cloud; idx = 3; }
+            switch (idx)
+            {
+                case 0: return WeatherType.Heat;
+                case 1: return WeatherType.Rain;
+                case 2: return WeatherType.Snow;
+                default: return WeatherType.Cloud;
+            }
+        }
+
+        Sprite SpriteFor(WeatherType t)
+        {
+            switch (t)
+            {
+                case WeatherType.Heat: return heatSprite;
+                case WeatherType.Rain: return rainSprite;
+                case WeatherType.Snow: return snowSprite;
+                default: return cloudSprite;
+            }
+        }
+
+        // ─────────────────────────────────────────
+        // 유틸리티
+        // ─────────────────────────────────────────
+
+        Forecast OneHot(WeatherType type)
+        {
+            Forecast f = default;
+            switch (type)
+            {
+                case WeatherType.Heat: f.heat = 1f; break;
+                case WeatherType.Rain: f.rain = 1f; break;
+                case WeatherType.Snow: f.snow = 1f; break;
+                default: f.cloud = 1f; break;
+            }
+            return f;
+        }
+
+        Forecast Peaked(WeatherType type, float peak = 0.85f)
+        {
+            peak = Mathf.Clamp01(peak);
+            float rest = (1f - peak) / 3f;
+            Forecast f = new Forecast { heat = rest, rain = rest, snow = rest, cloud = rest };
+            switch (type)
+            {
+                case WeatherType.Heat: f.heat = peak; break;
+                case WeatherType.Rain: f.rain = peak; break;
+                case WeatherType.Snow: f.snow = peak; break;
+                default: f.cloud = peak; break;
+            }
             f.Normalize();
             return f;
         }
 
-        private void ShiftAndAppend()
+        WeatherType RandomOtherType(WeatherType truth)
         {
-            for (int i = 0; i < forecasts.Length - 1; i++)
-                forecasts[i] = forecasts[i + 1];
-            forecasts[forecasts.Length - 1] = RollOneForecast();
+            int t = TypeToIndex(truth);
+            int[] pool = new int[3];
+            int k = 0;
+            for (int i = 0; i < 4; i++)
+                if (i != t) pool[k++] = i;
+
+            int pick = pool[Random.Range(0, 3)];
+            return IndexToType(pick);
         }
 
-        private static Forecast Lerp(Forecast a, Forecast b, float t)
+        static WeatherType Sample(Forecast f)
         {
-            return new Forecast
-            {
-                heat = Mathf.Lerp(a.heat, b.heat, t),
-                rain = Mathf.Lerp(a.rain, b.rain, t),
-                snow = Mathf.Lerp(a.snow, b.snow, t),
-                cloud = Mathf.Lerp(a.cloud, b.cloud, t)
-            };
-        }
-
-        private static WeatherType Sample(Forecast f)
-        {
-            float r = Random.value; // [0,1)
+            float r = Random.value;
             float acc = 0f;
 
             acc += f.heat; if (r <= acc) return WeatherType.Heat;
             acc += f.rain; if (r <= acc) return WeatherType.Rain;
             acc += f.snow; if (r <= acc) return WeatherType.Snow;
-            // 남은 확률은 Cloud
             return WeatherType.Cloud;
         }
+
+        static int TypeToIndex(WeatherType t)
+        {
+            switch (t)
+            {
+                case WeatherType.Heat: return 0;
+                case WeatherType.Rain: return 1;
+                case WeatherType.Snow: return 2;
+                default: return 3;
+            }
+        }
+
+        static WeatherType IndexToType(int idx)
+        {
+            switch (idx)
+            {
+                case 0: return WeatherType.Heat;
+                case 1: return WeatherType.Rain;
+                case 2: return WeatherType.Snow;
+                default: return WeatherType.Cloud;
+            }
+        }
+
+#if UNITY_EDITOR
+        [ContextMenu("DEBUG/Rebuild Horizon (Truth+Forecast)")]
+        void Debug_RebuildHorizon()
+        {
+            RollTruthHorizon();
+            RebuildForecastFromTruth();
+            UpdateForecastImages();
+            UnityEngine.Debug.Log("[WeatherSystem] Rebuilt truth & forecast horizon + UI updated.");
+        }
+#endif
     }
 }

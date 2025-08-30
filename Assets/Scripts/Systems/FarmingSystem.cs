@@ -13,39 +13,53 @@ namespace Game.Systems
         public class Plot
         {
             public PlotState state;
-            public SeedDef seed; // 현재 심은 씨앗 종류
+            public SeedDef seed; // SeedDef.preferred : WeatherType
         }
 
         [System.Serializable]
         public class PlotVisual
         {
-            [Tooltip("이 플롯이 Planted/Mature 되면 켜질 오브젝트")]
+            [Tooltip("기본/씨앗 표시용(플롯별 1개): FarmTile-seed #")]
             public GameObject visual;
         }
 
         [Header("Plots (고정 4칸)")]
-        [Tooltip("밭 4칸 상태")]
         public List<Plot> plots = new List<Plot>(4) { new Plot(), new Plot(), new Plot(), new Plot() };
 
-        [Header("Plots Visuals")]
+        [Header("Plots Visuals (기본/씨앗)")]
         public PlotVisual[] plotVisuals = new PlotVisual[4];
 
+        // 날씨 전용 오브젝트 16개 (4종 × 4플롯)
+        [Header("Per-Plot Weather GOs (총 16개)")]
+        [Tooltip("각 플롯의 Heat 오브젝트 4개 (FarmTile-heat 1..4)")]
+        public GameObject[] heatGOs = new GameObject[4];
+        [Tooltip("각 플롯의 Rain 오브젝트 4개 (FarmTile-rain 1..4)")]
+        public GameObject[] rainGOs = new GameObject[4];
+        [Tooltip("각 플롯의 Snow 오브젝트 4개 (FarmTile-snow 1..4)")]
+        public GameObject[] snowGOs = new GameObject[4];
+        [Tooltip("각 플롯의 Cloud 오브젝트 4개 (FarmTile-cloud 1..4)")]
+        public GameObject[] cloudGOs = new GameObject[4];
+
+        // 최악 날씨 표기 ? FarmTile-plot 1..4
+        [Header("Worst tiles (각 플롯의 FarmTile-plot 1..4)")]
+        public GameObject[] plotWorstGOs = new GameObject[4];
+
         [Header("Planting Rule")]
-        [Min(1), Tooltip("한 블럭을 심는 데 필요한 씨앗 개수")]
-        public int seedsPerBlock = 1;
+        [Min(1)] public int seedsPerBlock = 1;
 
         [Header("Worst Weather Mapping")]
-        [Tooltip("씨앗의 preferred와 반대인 '최악' 날씨 매핑")]
         public WorstMapEntry[] worstMap = new WorstMapEntry[]
         {
-            new WorstMapEntry{ forPreferred = WeatherType.Heat,  worst = WeatherType.Snow },
-            new WorstMapEntry{ forPreferred = WeatherType.Rain,  worst = WeatherType.Heat },
-            new WorstMapEntry{ forPreferred = WeatherType.Snow,  worst = WeatherType.Heat },
-            new WorstMapEntry{ forPreferred = WeatherType.Cloud, worst = WeatherType.Rain },
+            new WorstMapEntry{ forPreferred = WeatherType.Heat,  worst = WeatherType.Cloud },
+            new WorstMapEntry{ forPreferred = WeatherType.Rain,  worst = WeatherType.Snow },
+            new WorstMapEntry{ forPreferred = WeatherType.Snow,  worst = WeatherType.Rain },
+            new WorstMapEntry{ forPreferred = WeatherType.Cloud, worst = WeatherType.Heat },
         };
+        [System.Serializable] public struct WorstMapEntry { public WeatherType forPreferred; public WeatherType worst; }
 
-        [System.Serializable]
-        public struct WorstMapEntry { public WeatherType forPreferred; public WeatherType worst; }
+        [Header("Startup")]
+        [Tooltip("게임 시작 시 네 플롯을 전부 'plot' 표시 + 심기 가능(Empty) 상태로 초기화")]
+        public bool showPlotsOnStart = true;
 
         Dictionary<WeatherType, WeatherType> worstLookup;
 
@@ -54,35 +68,49 @@ namespace Game.Systems
             worstLookup = new Dictionary<WeatherType, WeatherType>();
             foreach (var e in worstMap) worstLookup[e.forPreferred] = e.worst;
 
-            // 시작 시 모든 비주얼 꺼주기
-            for (int i = 0; i < plotVisuals.Length; i++)
+            // 일단 전부 OFF(초기 깔끔 상태) ? 이후 Start에서 plot으로 켜줄 수 있음
+            for (int i = 0; i < 4; i++)
             {
-                if (plotVisuals[i] != null && plotVisuals[i].visual != null)
-                    plotVisuals[i].visual.SetActive(false);
+                Set(plotVisuals, i, false);
+                Set(heatGOs, i, false);
+                Set(rainGOs, i, false);
+                Set(snowGOs, i, false);
+                Set(cloudGOs, i, false);
+                Set(plotWorstGOs, i, false);
             }
         }
 
-        /// <summary>인벤토리에서 씨앗 소모 후 심기</summary>
+        //  시작 시 플롯 전부 보이게 + 심기 가능
+        void Start()
+        {
+            if (!showPlotsOnStart) return;
+            for (int i = 0; i < plots.Count && i < 4; i++)
+            {
+                EnsurePlantable(i); // 상태 Empty + plotWorst ON
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        // 심기
+        // ─────────────────────────────────────────────
         public bool TryPlant(Inventory inv, SeedDef seed, int plotIndex)
         {
             if (seed == null || plotIndex < 0 || plotIndex >= plots.Count) return false;
             var p = plots[plotIndex];
-            if (p.state != PlotState.Empty) return false;
-
+            if (p.state != PlotState.Empty) return false;               // Empty만 심기 가능
             if (inv == null || !inv.TryConsume(seed, seedsPerBlock)) return false;
 
             p.seed = seed;
             p.state = PlotState.Planted;
             plots[plotIndex] = p;
 
-            // 비주얼 켜기
-            if (plotIndex < plotVisuals.Length && plotVisuals[plotIndex].visual != null)
-                plotVisuals[plotIndex].visual.SetActive(true);
-
+            ShowSeedOnly(plotIndex); // 씨앗만 표시
             return true;
         }
 
-        /// <summary>"다음 날" 판정</summary>
+        // ─────────────────────────────────────────────
+        // 하루 진행(오늘 실제 날씨)
+        // ─────────────────────────────────────────────
         public void OnNewDay(WeatherType today)
         {
             for (int i = 0; i < plots.Count; i++)
@@ -95,40 +123,151 @@ namespace Game.Systems
 
                 if (today == preferred)
                 {
-                    p.state = PlotState.Mature;
+                    p.state = PlotState.Mature; // 표시 유지(프리뷰가 맞았다면 이미 씨앗 off)
                 }
                 else if (today == worst)
                 {
-                    // 망함: 비워주고 비주얼 끄기
-                    p = new Plot();
-                    if (i < plotVisuals.Length && plotVisuals[i].visual != null)
-                        plotVisuals[i].visual.SetActive(false);
+                    // ? 최악: 무조건 다시 심기 가능 상태로 전환 + plot만 표시
+                    EnsurePlantable(i);
+                    p = plots[i]; // 동기화
                 }
 
                 plots[i] = p;
             }
         }
 
-        /// <summary>수확 → 판매 → 밭 비움</summary>
+        // ─────────────────────────────────────────────
+        // 수확 → 타입별 개수 집계 → Economy에 전담 지급 → 다시 심기 가능 보장
+        // ─────────────────────────────────────────────
         public int HarvestAndSell(Economy econ)
         {
-            int earned = 0;
+            int heat = 0, rain = 0, snow = 0, cloud = 0;
+
             for (int i = 0; i < plots.Count; i++)
             {
                 var p = plots[i];
                 if (p.state == PlotState.Mature && p.seed != null)
                 {
-                    earned += p.seed.sellPrice;
-                    p = new Plot(); // Empty
+                    switch (p.seed.preferred)
+                    {
+                        case WeatherType.Heat: heat++; break;
+                        case WeatherType.Rain: rain++; break;
+                        case WeatherType.Snow: snow++; break;
+                        case WeatherType.Cloud: cloud++; break;
+                    }
 
-                    // 수확 시 비주얼 꺼주기
-                    if (i < plotVisuals.Length && plotVisuals[i].visual != null)
-                        plotVisuals[i].visual.SetActive(false);
+                    // ? 수확 후: 무조건 다시 심기 가능 상태 + plot 표시
+                    EnsurePlantable(i);
                 }
-                plots[i] = p;
             }
-            if (earned > 0 && econ != null) econ.AddMoney(earned);
-            return earned;
+
+            if (econ == null) return 0;
+            int earned = econ.PayForCounts(heat, rain, snow, cloud); // Economy가 money에 직접 누적
+            return earned; // UI/로그용
+        }
+
+        // ─────────────────────────────────────────────
+        // (큐 전진 전) 내일 예보 프리뷰
+        // ─────────────────────────────────────────────
+        /// Empty → plot 유지(씨앗 되살아남 방지)
+        public void ApplyForecastToPlots(WeatherType forecastTomorrow)
+        {
+            for (int i = 0; i < plots.Count; i++)
+            {
+                var p = plots[i];
+
+                if (p.state == PlotState.Empty) { ShowWorst(i); continue; }
+                if (p.state == PlotState.Mature) continue;
+                if (p.seed == null) { ShowWorst(i); continue; }
+
+                var preferred = p.seed.preferred;
+                var worst = GetWorst(preferred);
+
+                if (forecastTomorrow == preferred) ShowWeather(i, preferred);
+                else if (forecastTomorrow == worst) ShowWorst(i);
+                else ShowSeedOnly(i);
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        // ? 심기 가능 보장 함수 (요구사항 핵심)
+        // ─────────────────────────────────────────────
+        void EnsurePlantable(int i)
+        {
+            if (i < 0 || i >= plots.Count) return;
+            var p = plots[i];
+            p.state = PlotState.Empty;
+            p.seed = null;
+            plots[i] = p;
+
+            ShowWorst(i); // 화면엔 plot만 남김
+        }
+
+        public bool IsPlantable(int i)
+        {
+            return (i >= 0 && i < plots.Count && plots[i].state == PlotState.Empty);
+        }
+
+        // ───────────────── 표시 제어(플롯 인덱스별) ─────────────────
+        void ShowNone(int i)
+        {
+            Set(plotVisuals, i, false);
+            Set(heatGOs, i, false);
+            Set(rainGOs, i, false);
+            Set(snowGOs, i, false);
+            Set(cloudGOs, i, false);
+            Set(plotWorstGOs, i, false);
+        }
+
+        void ShowSeedOnly(int i)
+        {
+            Set(plotWorstGOs, i, false);
+            Set(heatGOs, i, false);
+            Set(rainGOs, i, false);
+            Set(snowGOs, i, false);
+            Set(cloudGOs, i, false);
+            Set(plotVisuals, i, true);   // 씨앗 on
+        }
+
+        void ShowWeather(int i, WeatherType wt)
+        {
+            Set(plotVisuals, i, false);  // 씨앗 off
+            Set(plotWorstGOs, i, false);
+            Set(heatGOs, i, wt == WeatherType.Heat);
+            Set(rainGOs, i, wt == WeatherType.Rain);
+            Set(snowGOs, i, wt == WeatherType.Snow);
+            Set(cloudGOs, i, wt == WeatherType.Cloud);
+        }
+
+        void ShowWorst(int i)
+        {
+            // 씨앗/날씨 전부 off, plotWorst on (없으면 경고)
+            Set(plotVisuals, i, false);
+            Set(heatGOs, i, false);
+            Set(rainGOs, i, false);
+            Set(snowGOs, i, false);
+            Set(cloudGOs, i, false);
+            var worstGo = SafeGet(plotWorstGOs, i);
+            if (worstGo) worstGo.SetActive(true);
+            else Debug.LogWarning($"[FarmingSystem] plotWorstGOs[{i}] 미할당 ? 'FarmTile-plot {i + 1}' 연결 권장");
+        }
+
+        // ───────────────── 유틸 ─────────────────
+        void Set(PlotVisual[] arr, int i, bool on)
+        {
+            if (arr == null || i < 0 || i >= arr.Length) return;
+            var v = arr[i]?.visual;
+            if (v && v.activeSelf != on) v.SetActive(on);
+        }
+        void Set(GameObject[] arr, int i, bool on)
+        {
+            var go = SafeGet(arr, i);
+            if (go && go.activeSelf != on) go.SetActive(on);
+        }
+        GameObject SafeGet(GameObject[] arr, int i)
+        {
+            if (arr == null || i < 0 || i >= arr.Length) return null;
+            return arr[i];
         }
 
         WeatherType GetWorst(WeatherType preferred)
@@ -136,12 +275,29 @@ namespace Game.Systems
             if (worstLookup != null && worstLookup.TryGetValue(preferred, out var w)) return w;
             switch (preferred)
             {
-                case WeatherType.Heat: return WeatherType.Snow;
-                case WeatherType.Rain: return WeatherType.Heat;
-                case WeatherType.Snow: return WeatherType.Heat;
-                case WeatherType.Cloud: return WeatherType.Rain;
+                case WeatherType.Heat: return WeatherType.Cloud;
+                case WeatherType.Rain: return WeatherType.Snow;
+                case WeatherType.Snow: return WeatherType.Rain;
+                case WeatherType.Cloud: return WeatherType.Heat;
                 default: return WeatherType.Cloud;
             }
+        }
+
+        /// <summary>
+        /// 플레이어 충돌 판정을 위해: 전달된 GO가 '작물(날씨 타일)'인지 여부.
+        /// 씨앗(FarmTile-seed)과 plotWorst는 제외.
+        /// </summary>
+        public bool IsCropObject(GameObject go)
+        {
+            if (!go) return false;
+            for (int i = 0; i < 4; i++)
+            {
+                if (go == SafeGet(heatGOs, i)) return true;
+                if (go == SafeGet(rainGOs, i)) return true;
+                if (go == SafeGet(snowGOs, i)) return true;
+                if (go == SafeGet(cloudGOs, i)) return true;
+            }
+            return false;
         }
     }
 }
