@@ -2,14 +2,16 @@ using UnityEngine;
 using System.Collections;
 using Game.Core;
 using Game.Systems;
+using Game.Systems.Combat;
 using Game.Data;
 
-
+namespace Game.Core
+{
     // RunManager.cs
     public class RunManager : MonoBehaviour
     {
         public WeatherSystem weather;
-        //public CombatSystem combat;
+        public CombatSystem combat;
         public FarmingSystem farm;
         public Economy economy;
 
@@ -54,3 +56,4 @@ using Game.Data;
         void GameOver() { /* 씬 전환/패널 띄우기 */ }
         void Ending() { /* 엔딩 처리 */ }
     }
+}

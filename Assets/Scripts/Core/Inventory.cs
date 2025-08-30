@@ -8,18 +8,19 @@ using UnityEngine;
 // ─────────────────────────────────────────────────────────────
 using System.Collections.Generic;
 using Game.Data;
-
-public class Inventory : MonoBehaviour
+namespace Game.Core
 {
-    readonly Dictionary<SeedDef, int> seeds = new();
-
-    public void AddSeed(SeedDef def, int count)
+    public class Inventory : MonoBehaviour
     {
-        if (def == null || count <= 0) return;
-        if (!seeds.ContainsKey(def)) seeds[def] = 0;
-        seeds[def] += count;
-        // TODO: UI 갱신 이벤트 쏘기
-    }
-    public int Count(SeedDef def) => def != null && seeds.TryGetValue(def, out var n) ? n : 0;
-}
+        readonly Dictionary<SeedDef, int> seeds = new();
 
+        public void AddSeed(SeedDef def, int count)
+        {
+            if (def == null || count <= 0) return;
+            if (!seeds.ContainsKey(def)) seeds[def] = 0;
+            seeds[def] += count;
+            // TODO: UI 갱신 이벤트 쏘기
+        }
+        public int Count(SeedDef def) => def != null && seeds.TryGetValue(def, out var n) ? n : 0;
+    }
+}
