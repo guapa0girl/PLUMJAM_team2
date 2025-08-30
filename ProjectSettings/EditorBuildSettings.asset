@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/dungeon_rain.unity
     guid: 9b3d376c288cf704c8f6890ca782dc0d
+  - enabled: 1
+    path: Assets/Scenes/Upgrade.unity
+    guid: 96c47680db5532746a28305547f91a9e
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

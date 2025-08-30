@@ -10,16 +10,16 @@ namespace Game.Systems
 
 
     // SkillSystem.cs
-    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     // File: SkillSystem.cs
-    // Purpose : º¸À¯ ½ºÅ³ ·¹º§°ú ³¯¾¾ ½Ã³ÊÁö¿¡ µû¸¥ ÀüÅõ ¹èÀ² °è»ê/¾÷±×·¹ÀÌµå.
+    // Purpose : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½×·ï¿½ï¿½Ìµï¿½.
     // Defines : class SkillSystem : MonoBehaviour
     // Fields  : List<OwnedSkill> (def, level)
-    // API     : GetCombatMultiplier(WeatherType) ¡æ ³¯¾¾º° ÃÑ ¹èÀ² ¹ÝÈ¯
-    //           TryUpgrade(Economy, skillId)     ¡æ ºñ¿ë Â÷°¨ ÈÄ ·¹º§ ¾÷
-    // Used By : Combat °è»ê½Ä(µ¥¹ÌÁö/°ø¼Ó/µå¶ø °¡ÁßÄ¡ µî ÇÁ·ÎÁ§Æ® ±ÔÄ¢¿¡ Àû¿ë).
-    // Notes   : ½ºÅ³ÀÇ È¿°ú ¹üÀ§(°ö/ÇÕ, cap)´Â ÆÀ ±ÔÄ¢ ¹®¼­¿Í µ¿±âÈ­ÇÒ °Í.
-    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // API     : GetCombatMultiplier(WeatherType) ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+    //           TryUpgrade(Economy, skillId)     ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+    // Used By : Combat ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½Ä¢ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½).
+    // Notes   : ï¿½ï¿½Å³ï¿½ï¿½ È¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½/ï¿½ï¿½, cap)ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¢ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½.
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     public class SkillSystem : MonoBehaviour
     {
@@ -38,12 +38,12 @@ namespace Game.Systems
         }
 
         [Header("Skills")]
-        [SerializeField] public List<OwnedSkill> skills; // º¸À¯ÇÑ ½ºÅ³ ¸ñ·Ï
+        [SerializeField] public List<OwnedSkill> skills; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½
         private WeatherSystem weatherSystem;
 
         void Start()
         {
-            weatherSystem = FindObjectOfType<WeatherSystem>();  // ³¯¾¾ ½Ã½ºÅÛÀ» Ã£À½
+            weatherSystem = FindObjectOfType<WeatherSystem>();  // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½
         }
 
         void Update()
@@ -51,29 +51,56 @@ namespace Game.Systems
             if (Input.GetKeyDown(KeyCode.Alpha1)) UseSkill(0);
             foreach (var skill in skills)
             {
-                skill.currentCooldown = Mathf.Max(0, skill.currentCooldown - Time.deltaTime); // ÄðÅ¸ÀÓ °»½Å
+                skill.currentCooldown = Mathf.Max(0, skill.currentCooldown - Time.deltaTime); // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             }
         }
 
-        // ½ºÅ³ »ç¿ë ÇÔ¼ö (ÄðÅ¸ÀÓ Ã¼Å© ¹× °ø°Ý·Â °è»ê)
+        // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ (ï¿½ï¿½Å¸ï¿½ï¿½ Ã¼Å© ï¿½ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½ ï¿½ï¿½ï¿½)
         public void UseSkill(int skillIndex)
         {
             var skill = skills[skillIndex];
 
-            if (skill.isOnCooldown) return; // ÄðÅ¸ÀÓ ÁßÀÌ¶ó¸é »ç¿ë ºÒ°¡
+            if (skill.isOnCooldown) return; // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½
 
-            float attackPower = skill.def.GetAttackPower(weatherSystem.Today); // ³¯¾¾¿¡ µû¸¥ °­È­µÈ °ø°Ý·Â °è»ê
-            ExecuteSkill(skillIndex, attackPower); // ½ºÅ³ ½ÇÇà
+            float attackPower = skill.def.GetAttackPower(weatherSystem.Today); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½ ï¿½ï¿½ï¿½
+            ExecuteSkill(skillIndex, attackPower); // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½
 
-            skill.currentCooldown = skill.def.cooldownTime; // ÄðÅ¸ÀÓ ¸®¼Â
+            skill.currentCooldown = skill.def.cooldownTime; // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            
+        }
+        public bool TryUpgrade(Economy econ, string skillId)
+        {
+            weatherSystem = FindObjectOfType<WeatherSystem>();  // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½
         }
 
-        // ½ºÅ³ ½ÇÇà (°ø°Ý ¹æ½Ä¿¡ µû¸¥ ½ÇÇà)
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1)) UseSkill(0);
+            foreach (var skill in skills)
+            {
+                skill.currentCooldown = Mathf.Max(0, skill.currentCooldown - Time.deltaTime); // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            }
+        }
+
+        // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ (ï¿½ï¿½Å¸ï¿½ï¿½ Ã¼Å© ï¿½ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½ ï¿½ï¿½ï¿½)
+        public void UseSkill(int skillIndex)
+        {
+            var skill = skills[skillIndex];
+
+            if (skill.isOnCooldown) return; // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½
+
+            float attackPower = skill.def.GetAttackPower(weatherSystem.Today); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½ ï¿½ï¿½ï¿½
+            ExecuteSkill(skillIndex, attackPower); // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½
+
+            skill.currentCooldown = skill.def.cooldownTime; // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        }
+
+        // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         void ExecuteSkill(int skillIndex, float attackPower)
         {
             var skill = skills[skillIndex];
 
-            // °ø°Ý ¹æ½Ä¿¡ µû¶ó ½ÇÇà
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             switch (skill.def.attackType)
             {
                 case SkillDef.AttackType.Melee:
@@ -90,37 +117,94 @@ namespace Game.Systems
                     break;
             }
 
-            // ÀÌÆåÆ® ½ÇÇà
+            // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
             InstantiateSkillEffect(skill.def.effectPrefab);
         }
 
-        // ±ÙÁ¢ °ø°Ý Ã³¸®
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
         void ExecuteMeleeAttack(float attackPower)
         {
             Debug.Log($"Executing Melee Attack with {attackPower} attack power.");
-            // ±ÙÁ¢ °ø°Ý ½ÇÇà ÄÚµå
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
         }
 
-        // ¿ø°Å¸® °ø°Ý Ã³¸®
+        // ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
         void ExecuteRangedAttack(float attackPower)
         {
             Debug.Log($"Executing Ranged Attack with {attackPower} attack power.");
-            // ¿ø°Å¸® °ø°Ý ½ÇÇà ÄÚµå
+            // ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
         }
 
-        // ¹üÀ§ °ø°Ý Ã³¸®
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
         void ExecuteAOEAttack(float attackPower)
         {
             Debug.Log($"Executing AOE Attack with {attackPower} attack power.");
-            // ¹üÀ§ ³» Àûµé¿¡°Ô ÇÇÇØ¸¦ ÀÔÈ÷´Â ÄÚµå
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
         }
 
-        // ÀÌÆåÆ® ÀÎ½ºÅÏ½ºÈ­ (ÀÌÆåÆ® ÇÁ¸®ÆÕÀ» °ÔÀÓ ¿ÀºêÁ§Æ®·Î »ý¼º)
+        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Î½ï¿½ï¿½Ï½ï¿½È­ (ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         void InstantiateSkillEffect(GameObject effectPrefab)
         {
             if (effectPrefab != null)
             {
-                // ¿¹½Ã·Î ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¿¡ ÀÌÆåÆ®¸¦ »ý¼º (ÇÊ¿äÇÑ °æ¿ì À§Ä¡³ª ¹æÇâ Á¶Á¤ °¡´É)
+                // ï¿½ï¿½ï¿½Ã·ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+                Instantiate(effectPrefab, transform.position, Quaternion.identity);
+            }
+        }
+
+        // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+        void ExecuteSkill(int skillIndex, float attackPower)
+        {
+            var skill = skills[skillIndex];
+
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            switch (skill.def.attackType)
+            {
+                case SkillDef.AttackType.Melee:
+                    ExecuteMeleeAttack(attackPower);
+                    break;
+                case SkillDef.AttackType.Ranged:
+                    ExecuteRangedAttack(attackPower);
+                    break;
+                case SkillDef.AttackType.AreaOfEffect:
+                    ExecuteAOEAttack(attackPower);
+                    break;
+                default:
+                    Debug.LogWarning("Unknown attack type!");
+                    break;
+            }
+
+            // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+            InstantiateSkillEffect(skill.def.effectPrefab);
+        }
+
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
+        void ExecuteMeleeAttack(float attackPower)
+        {
+            Debug.Log($"Executing Melee Attack with {attackPower} attack power.");
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
+        }
+
+        // ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
+        void ExecuteRangedAttack(float attackPower)
+        {
+            Debug.Log($"Executing Ranged Attack with {attackPower} attack power.");
+            // ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
+        }
+
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
+        void ExecuteAOEAttack(float attackPower)
+        {
+            Debug.Log($"Executing AOE Attack with {attackPower} attack power.");
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
+        }
+
+        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Î½ï¿½ï¿½Ï½ï¿½È­ (ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+        void InstantiateSkillEffect(GameObject effectPrefab)
+        {
+            if (effectPrefab != null)
+            {
+                // ï¿½ï¿½ï¿½Ã·ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
                 Instantiate(effectPrefab, transform.position, Quaternion.identity);
             }
         }

@@ -1,27 +1,28 @@
 using UnityEngine;
 using Game.Data;
+using Game.Systems;
 
 public class SkillandSynergy : MonoBehaviour
 {
     [System.Serializable]
     public class Skill
     {
-        public string skillName;               // ½ºÅ³ ÀÌ¸§
-        public float baseAttackPower;          // ±âº» °ø°İ·Â
-        public float cooldownTime;             // ÄğÅ¸ÀÓ
-        public float currentCooldown;          // ÇöÀç ÄğÅ¸ÀÓ
-        public SkillType skillType;            // ½ºÅ³ Å¸ÀÔ (¿¹: ±âº» °ø°İ, Fire, Ice µî)
-        public bool isOnCooldown => currentCooldown > 0; // ÄğÅ¸ÀÓ Ã¼Å©
+        public string skillName;               // ìŠ¤í‚¬ ì´ë¦„
+        public float baseAttackPower;          // ê¸°ë³¸ ê³µê²©ë ¥
+        public float cooldownTime;             // ì¿¨íƒ€ì„
+        public float currentCooldown;          // í˜„ì¬ ì¿¨íƒ€ì„
+        public SkillType skillType;            // ìŠ¤í‚¬ íƒ€ì… (ì˜ˆ: ê¸°ë³¸ ê³µê²©, Fire, Ice ë“±)
+        public bool isOnCooldown => currentCooldown > 0; // ì¿¨íƒ€ì„ ì²´í¬
 
-        // ½Ã³ÊÁö Àû¿ë (¹èÀ²Àº 1.1·Î °íÁ¤)
+        // ì‹œë„ˆì§€ ì ìš© (ë°°ìœ¨ì€ 1.1ë¡œ ê³ ì •)
         public float GetAttackPower(WeatherType today)
         {
             float attackPower = baseAttackPower;
 
-            // ¸ğµç ³¯¾¾¿¡ ´ëÇØ 1.2 ¹èÀ²À» Àû¿ë
+            // ëª¨ë“  ë‚ ì”¨ì— ëŒ€í•´ 1.2 ë°°ìœ¨ì„ ì ìš©
             float synergyMultiplier = 1.2f;
 
-            // ³¯¾¾¿¡ µû¸¥ ½Ã³ÊÁö 
+            // ë‚ ì”¨ì— ë”°ë¥¸ ì‹œë„ˆì§€
             if (today == WeatherType.Heat && skillType == SkillType.Fire)
             {
                 attackPower *= synergyMultiplier;
@@ -30,11 +31,11 @@ public class SkillandSynergy : MonoBehaviour
             {
                 attackPower *= synergyMultiplier;
             }
-            else if (today == WeatherType.Snow && skillType == SkillType.Ice) 
+            else if (today == WeatherType.Snow && skillType == SkillType.Ice)
             {
                 attackPower *= synergyMultiplier;
             }
-            else if (today == WeatherType.Cloud && skillType == SkillType.Wind) 
+            else if (today == WeatherType.Cloud && skillType == SkillType.Wind)
             {
                 attackPower *= synergyMultiplier;
             }
@@ -48,44 +49,44 @@ public class SkillandSynergy : MonoBehaviour
 
     public enum SkillType
     {
-        BasicAttack,    // ±âº» °ø°İ
-        Fire,           // Fire ½ºÅ³
-        Water,          // Water ½ºÅ³
-        Ice,            // Ice ½ºÅ³ 
-        Wind            // Wind ½ºÅ³
+        BasicAttack,    // ê¸°ë³¸ ê³µê²©
+        Fire,           // Fire ìŠ¤í‚¬
+        Water,          // Water ìŠ¤í‚¬
+        Ice,            // Ice ìŠ¤í‚¬
+        Wind            // Wind ìŠ¤í‚¬
     }
 
-    public Skill[] skills; // ¿©·¯ ½ºÅ³µé
+    public Skill[] skills; // ì—¬ëŸ¬ ìŠ¤í‚¬ë“¤
     private WeatherSystem weatherSystem;
 
     void Start()
     {
-        weatherSystem = FindObjectOfType<WeatherSystem>();  // ³¯¾¾ ½Ã½ºÅÛÀ» Ã£À½
+        weatherSystem = FindObjectOfType<WeatherSystem>();  // ë‚ ì”¨ ì‹œìŠ¤í…œì„ ì°¾ìŒ
     }
 
     void Update()
     {
         foreach (var skill in skills)
         {
-            skill.UpdateCooldown(); // ÄğÅ¸ÀÓ ¾÷µ¥ÀÌÆ®
+            skill.UpdateCooldown(); // ì¿¨íƒ€ì„ ì—…ë°ì´íŠ¸
         }
     }
 
-    // ½ºÅ³ »ç¿ë ÇÔ¼ö
+    // ìŠ¤í‚¬ ì‚¬ìš© í•¨ìˆ˜
     public void UseSkill(int skillIndex)
     {
-        if (skills[skillIndex].isOnCooldown) return;  // ÄğÅ¸ÀÓ ÁßÀÌ¶ó¸é »ç¿ë ¸ø ÇÔ
+        if (skills[skillIndex].isOnCooldown) return;  // ì¿¨íƒ€ì„ ì¤‘ì´ë¼ë©´ ì‚¬ìš© ëª» í•¨
 
-        float attackPower = skills[skillIndex].GetAttackPower(weatherSystem.Today); // ³¯¾¾ ¹İ¿µµÈ °ø°İ·Â °è»ê
-        ExecuteSkill(skillIndex, attackPower);  // ½ºÅ³ ½ÇÇà
+        float attackPower = skills[skillIndex].GetAttackPower(weatherSystem.Today); // ë‚ ì”¨ ë°˜ì˜ëœ ê³µê²©ë ¥ ê³„ì‚°
+        ExecuteSkill(skillIndex, attackPower);  // ìŠ¤í‚¬ ì‹¤í–‰
 
-        skills[skillIndex].ResetCooldown(); // ÄğÅ¸ÀÓ ¸®¼Â
+        skills[skillIndex].ResetCooldown(); // ì¿¨íƒ€ì„ ë¦¬ì…‹
     }
 
     void ExecuteSkill(int skillIndex, float attackPower)
     {
-        // ½ºÅ³À» ½ÇÇàÇÏ°í °ø°İ·ÂÀ» ±â¹İÀ¸·Î ÇÇÇØ¸¦ ÀÔÈ÷´Â ·ÎÁ÷
+        // ìŠ¤í‚¬ì„ ì‹¤í–‰í•˜ê³  ê³µê²©ë ¥ì„ ê¸°ë°˜ìœ¼ë¡œ í”¼í•´ë¥¼ ì…íˆëŠ” ë¡œì§
         Debug.Log($"Executing {skills[skillIndex].skillName} with {attackPower} attack power.");
-        // ¿¹: Àû¿¡ ÇÇÇØ¸¦ ÀÔÈ÷´Â ÄÚµå
+        // ì˜ˆ: ì ì— í”¼í•´ë¥¼ ì…íˆëŠ” ì½”ë“œ
     }
 }

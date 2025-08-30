@@ -124,7 +124,8 @@ public class Player : MonoBehaviour
                 switch (other.name)
                 {
                     case "Portal_East":
-                        SceneManager.LoadScene("dungeon_rain");
+                        Game.Core.SceneBridge.GoToUpgrade("dungeon_rain"); // ← 업그레이드 씬으로 먼저
+
                         break;
                 }
             }
