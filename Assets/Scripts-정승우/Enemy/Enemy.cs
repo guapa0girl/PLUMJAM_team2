@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
             Attack();
         }
     }
-
+        
     void Attack()
     {
         if (nextAtk <= Time.time)
@@ -42,6 +42,7 @@ public class Enemy : MonoBehaviour
             // 공격이 가능한 타이밍일 경우 실행
             if (player != null)
             {
+                Debug.Log("공격 실행됨");
                 player.health -= attack;                 // 플레이어에게 데미지
                 if (player.health < 0f) player.health = 0f; // (간단 클램프)
             }

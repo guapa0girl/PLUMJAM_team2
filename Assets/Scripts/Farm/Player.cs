@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
             switch (other.name)  // 포탈 오브젝트 이름으로 분기
             {
                 case "Portal_East":
-                    SceneManager.LoadScene("Dungeon");
+                    SceneManager.LoadScene("dungeon_rain");
                     break;
             }
         }
