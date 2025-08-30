@@ -1,20 +1,16 @@
 using UnityEngine;
+using TMPro;
 // ─────────────────────────────────────────────────────────────
 // File: RunManager.cs
 // Purpose : 4주 러닝 전체 루프(일 진행, 예보→확정, 전투 2회, 상납/엔딩/게임오버).
-// Defines : class RunManager : MonoBehaviour
-// Fields  : day(1~28), weekTribute(주 단위 상납), Weather/Combat/Farm/Economy 참조
-// API     : StartRun()  → 예보(내일/모레 등 horizon) 초기 롤링
-//           NextDay()   → 오늘 확정(예보 기반)→농사 업데이트→전투/상점→상납→예보 큐 자동 전진
-// Used By : UI/메인 게임 루프(버튼/자동 진행 트리거).
 // Notes   : day%7==0 상납 실패 시 GameOver, day>28 시 Ending 처리.
 //           UI는 weather.GetForecast(0/1)로 내일/모레 예보를 표시.
 // ─────────────────────────────────────────────────────────────
 using System.Collections;
-using Game.Core;
-using Game.Systems;           // WeatherSystem
-using Game.Systems.Combat;    // CombatSystem
+using Game.Systems;           // WeatherSystem, FarmingSystem
 using Game.Data;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Game.Core
 {
@@ -22,7 +18,6 @@ namespace Game.Core
     {
         [Header("Systems")]
         public WeatherSystem weather;
-        public CombatSystem combat;
         public FarmingSystem farm;
         public Economy economy;
         public Inventory inventory;
@@ -31,61 +26,151 @@ namespace Game.Core
         public int day = 1;            // 1 ~ 28
         public int weekTribute = 500;  // 주 단위 상납금
 
+        [Header("UI")]
+        public Button nextDayButton;
+        public Text dayText;                 // (선택)
+        public TextMeshProUGUI dayTMP;       // (선택)
+
+        // 중복 실행 방지
+        bool isRunningNextDay = false;
+
+        void Start()
+        {
+            // 인스펙터에서 안 걸어도 자동 연결되도록 처리
+            if (nextDayButton != null)
+            {
+                nextDayButton.onClick.RemoveListener(OnClickNextDay);
+                nextDayButton.onClick.AddListener(OnClickNextDay);
+                Debug.Log("[RunManager] NextDayBtn 리스너 연결 완료");
+            }
+            else
+            {
+                Debug.LogWarning("[RunManager] nextDayButton 미할당 (인스펙터에서 버튼을 드래그하거나, 코드로 할당하세요)");
+            }
+
+            UpdateDayUI();
+        }
+
+        void OnDestroy()
+        {
+            // 중복 리스너 방지
+            if (nextDayButton != null)
+                nextDayButton.onClick.RemoveListener(OnClickNextDay);
+        }
+
+        public void OnClickNextDay()
+        {
+            if (isRunningNextDay) return;
+            StartCoroutine(NextDay());
+        }
+
+        void UpdateDayUI()
+        {
+            string label = $"Day {day}";
+            if (dayTMP != null) dayTMP.text = label;
+            if (dayText != null) dayText.text = label;
+        }
+
+        // (필요할 때만 호출해서 EventSystem 보정)
+        void EnsureUIInputModule()
+        {
+            var es = EventSystem.current;
+            if (es == null)
+            {
+                var go = new GameObject("EventSystem");
+                es = go.AddComponent<EventSystem>();
+                go.AddComponent<StandaloneInputModule>();
+                Debug.Log("[UI-FIX] EventSystem + StandaloneInputModule 생성");
+                return;
+            }
+            if (es.currentInputModule == null)
+            {
+                es.gameObject.AddComponent<StandaloneInputModule>();
+                Debug.Log("[UI-FIX] StandaloneInputModule 추가");
+            }
+        }
+
         public void StartRun()
         {
-            // 예보(내일/모레 … horizon) 초기화
-            // WeatherSystem.Awake에서 이미 채웠다면 생략 가능하지만, 명시적으로 호출해 둔다.
-            weather.RollForecastHorizon();
-
-            // UI: 내일/모레 예보를 화면에 갱신하고 싶으면 여기서 읽어 반영
-            // var fTomorrow = weather.GetForecast(0);
-            // var fDayAfter = weather.GetForecast(1);
-            // TODO: UI 업데이트
+            UpdateDayUI();
         }
 
         public IEnumerator NextDay()
         {
-            // 1) "내일 예보"를 기반으로 오늘 날씨 확정 + 예보 큐 전진(모레 유지)
-            var today = weather.ResolveTodayFromForecastAndAdvance();
+            isRunningNextDay = true;
+            if (nextDayButton) nextDayButton.interactable = false;
+            Debug.Log($"[RunManager] NextDay 시작 (현재 day={day})");
 
-            // 2) 농사 업데이트(선호 날씨면 성장, 아니면 즉사)
-            farm.OnNewDay(today);
-
-            // 3) 전투는 하루 2번만 허용
-            //    UI에서 방 선택 → yield return combat.PlayOneClear(room, inventory, dropMult);
-            //    두 번까지 실행 가능(CombatSystem 내부 제한)
-
-            // 4) 장터에서 판매/업그레이드
-            // farm.HarvestAndSell(economy);
-            // skillSystem.TryUpgrade(...);
-
-            // 5) 주말 상납
-            if (day % 7 == 0)
+            try
             {
-                if (!economy.TrySpend(weekTribute))
+                // 널가드
+                if (weather == null) { Debug.LogError("[RunManager] WeatherSystem 참조 필요"); yield break; }
+                if (farm == null) { Debug.LogError("[RunManager] FarmingSystem 참조 필요"); yield break; }
+                if (economy == null) { Debug.LogError("[RunManager] Economy 참조 필요"); yield break; }
+
+                // A) 큐 전진 '전'의 내일 예보로 밭 프리뷰 갱신
+                var fTomorrowPre = weather.GetForecast(0); // 전진 전 내일
+                var tomorrowType = ForecastMode(fTomorrowPre);
+                farm.ApplyForecastToPlots(tomorrowType);
+                Debug.Log($"[RunManager] Forecast Preview (Tomorrow={tomorrowType})");
+
+                // B) 오늘 확정 + (truth/forecast) 큐 전진
+                var today = weather.ResolveTodayFromForecastAndAdvance();
+                Debug.Log($"[RunManager] Today Resolved = {today}");
+
+                // C) 오늘 날씨 농사 판정
+                farm.OnNewDay(today);
+
+                // D) 주말 상납
+                if (day % 7 == 0)
                 {
-                    GameOver();
+                    if (!economy.TrySpend(weekTribute))
+                    {
+                        GameOver();
+                        yield break;
+                    }
+                }
+
+                // E) 날짜 진행/엔딩
+                day++;
+                if (day > 28)
+                {
+                    Ending();
                     yield break;
                 }
-            }
 
-            // 6) 날짜 진행/엔딩
-            day++;
-            if (day > 28)
+                // F) UI 갱신
+                UpdateDayUI();
+                Debug.Log($"[RunManager] NextDay 종료 (현재 day={day})");
+
+                yield return null;
+            }
+            finally
             {
-                Ending();
-                yield break;
+                if (nextDayButton) nextDayButton.interactable = true;
+                isRunningNextDay = false;
             }
+        }
 
-            // 7) UI: 전진된 예보(새로운 내일/모레)를 다시 갱신
-            // var fTomorrow = weather.GetForecast(0);
-            // var fDayAfter = weather.GetForecast(1);
-            // TODO: UI 업데이트
+        // 예보 확률에서 최대값(모드) 날씨 타입 얻기
+        WeatherType ForecastMode(WeatherSystem.Forecast f)
+        {
+            float best = f.heat; int idx = 0;
+            if (f.rain > best) { best = f.rain; idx = 1; }
+            if (f.snow > best) { best = f.snow; idx = 2; }
+            if (f.cloud > best) { best = f.cloud; idx = 3; }
 
-            yield return null;
+            switch (idx)
+            {
+                case 0: return WeatherType.Heat;
+                case 1: return WeatherType.Rain;
+                case 2: return WeatherType.Snow;
+                default: return WeatherType.Cloud;
+            }
         }
 
         void GameOver() { /* 씬 전환/패널 띄우기 */ }
         void Ending() { /* 엔딩 처리 */ }
     }
 }
+
