@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6122091769178550566
+--- !u!1 &5768397950471136960
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,12 +8,13 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2398444699067199456}
-  - component: {fileID: 7607488515359065514}
-  - component: {fileID: 8691102632425714071}
-  - component: {fileID: 613312173742752387}
-  - component: {fileID: 3720468505568781134}
-  - component: {fileID: 5154607130783554952}
+  - component: {fileID: 7055443663867894162}
+  - component: {fileID: 4480081032669682325}
+  - component: {fileID: 6611012000847017551}
+  - component: {fileID: 84125773976851504}
+  - component: {fileID: 4145487628283188409}
+  - component: {fileID: 1700696100810995968}
+  - component: {fileID: 5467515103829687453}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -21,28 +22,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2398444699067199456
+--- !u!4 &7055443663867894162
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6122091769178550566}
+  m_GameObject: {fileID: 5768397950471136960}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.02, y: 0.01, z: 0}
+  m_LocalPosition: {x: 3.878, y: -0.188, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &7607488515359065514
+--- !u!212 &4480081032669682325
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6122091769178550566}
+  m_GameObject: {fileID: 5768397950471136960}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -94,13 +95,40 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &8691102632425714071
+--- !u!50 &6611012000847017551
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5768397950471136960}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!58 &84125773976851504
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6122091769178550566}
+  m_GameObject: {fileID: 5768397950471136960}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -124,46 +152,19 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!50 &613312173742752387
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6122091769178550566}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 1
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
---- !u!114 &3720468505568781134
+--- !u!114 &4145487628283188409
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6122091769178550566}
+  m_GameObject: {fileID: 5768397950471136960}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02c097c8883837f43ac5a11009cf97f7, type: 3}
@@ -172,23 +173,46 @@ MonoBehaviour:
   MaxHealth: 50
   health: 50
   speed: 2
-  attack: 2
+  attack: 5
   attackDelay: 2
-  player: {fileID: 0}
---- !u!114 &5154607130783554952
+  player: {fileID: 7777973760766114872, guid: 0d669bff13ca85544bc7f7408a71acf0, type: 3}
+--- !u!114 &1700696100810995968
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6122091769178550566}
+  m_GameObject: {fileID: 5768397950471136960}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88bf80ea7d4a23742afa478c887ab599, type: 3}
+  m_Script: {fileID: 11500000, guid: 29404d8fde56ed148a08b0b46172cfbc, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  player: {fileID: 6852128743835101264, guid: 0d669bff13ca85544bc7f7408a71acf0, type: 3}
-  enemyPrefab: {fileID: 6122091769178550566}
-  spawnRadius: 8
-  spawnInterval: 1
-  spawnPerTick: 2
+  m_EditorClassIdentifier: Assembly-CSharp::SeedDropperTable
+  pickupPrefab: {fileID: 0}
+  heatseed: {fileID: 11400000, guid: 670a9397f9ded7e418318ab3c4ca165c, type: 2}
+  rainseed: {fileID: 11400000, guid: 465704d8bb2a8734baadb6928a71468c, type: 2}
+  windseed: {fileID: 11400000, guid: eed1017b3d3dd1b4f96eb232c735c28e, type: 2}
+  snowseed: {fileID: 11400000, guid: ec790f3889a530140aca09daab8b0ada, type: 2}
+  heatWeight: 1
+  rainWeight: 1
+  windWeight: 1
+  snowWeight: 1
+  p1: 0.15
+  p2: 0.4
+  p3: 0.35
+  p4: 0.1
+  alsoDropOnDisable: 0
+  scatterRadius: 0.25
+--- !u!114 &5467515103829687453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5768397950471136960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe15e33bfafb924f9f5b38147c60bf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnedToken
+  owner: {fileID: 0}

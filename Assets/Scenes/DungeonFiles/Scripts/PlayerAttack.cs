@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PlayerAttack : MonoBehaviour
     public float length = 2.0f;      // 전방 길이
     public float width = 1.2f;      // 좌우 폭
     public float forwardOffset = 0f; // 0이면 length * 0.5 자동
-    public string enemyTag = "Enemy";
+    public string enemyTag = "Enemy"; // (선택) 루트 오브젝트 태그로 검사
 
     [Header("Attack Sprite (옵션)")]
     public GameObject attackSpritePrefab; // 직사각형 범위를 보여줄 스프라이트 프리팹
@@ -32,7 +33,7 @@ public class PlayerAttack : MonoBehaviour
 
     void AttackRect()
     {
-        // 전방 = transform.right 기준
+        // 전방 = transform.right 기준(고정)
         Vector2 fwd = transform.right;
         if (fwd.sqrMagnitude < 1e-4f) fwd = Vector2.right;
 
@@ -40,41 +41,54 @@ public class PlayerAttack : MonoBehaviour
         Vector2 size = new Vector2(length, width);
         float angleDeg = transform.eulerAngles.z;
 
-        // 1) 데미지 판정
+        // 1) 데미지 판정 (중복 Enemy 처리 방지용 집합)
         Collider2D[] hits = Physics2D.OverlapBoxAll(center, size, angleDeg);
         float dmg = attack * (PlayerStat.instance ? PlayerStat.instance.power : 1f);
+
+        var processed = new HashSet<Enemy>();
 
         for (int i = 0; i < hits.Length; i++)
         {
             var col = hits[i];
-            if (!col || !col.CompareTag(enemyTag)) continue;
+            if (!col) continue;
 
-            var e = col.GetComponent<Enemy>();
-            if (e != null)
+            // ★ 자식/부모 어디에 Enemy가 있어도 찾음
+            var e = col.GetComponent<Enemy>()
+                 ?? col.GetComponentInParent<Enemy>()
+                 ?? col.GetComponentInChildren<Enemy>();
+            if (e == null) continue;
+
+            // (선택) 태그 검사: Enemy 스크립트가 붙은 오브젝트(루트)에 대해 검사
+            if (!string.IsNullOrEmpty(enemyTag) && !e.gameObject.CompareTag(enemyTag))
+                continue;
+
+            if (processed.Contains(e)) continue; // 같은 Enemy 여러 콜라이더 중복 타격 방지
+            processed.Add(e);
+
+            e.health -= dmg;
+            if (e.health <= 0f)
             {
-                e.health -= dmg;
-                if (e.health <= 0f)
-                {
-                    e.health = 0f;
-                    Destroy(e.gameObject);
-                }
+                e.health = 0f;
+
+                // ★ 씨앗 드랍 보장: 파괴 전에 드랍 시도
+                var table = e.GetComponent<SeedDropperTable>()
+                          ?? e.GetComponentInChildren<SeedDropperTable>()
+                          ?? e.GetComponentInParent<SeedDropperTable>();
+                if (table) table.TryDrop();
+
+                Destroy(e.gameObject);
             }
         }
 
         // 2) 스프라이트 표시(옵션)
         if (attackSpritePrefab)
         {
-            // 스프라이트 위치/회전 = 히트박스와 동일
             Vector3 pos = (Vector3)center + spriteExtraOffset;
             Quaternion rot = Quaternion.Euler(0f, 0f, angleDeg);
             var go = Object.Instantiate(attackSpritePrefab, pos, rot);
 
             if (scaleSpriteToHitbox)
-            {
-                // 스프라이트 Import에서 Pivot을 "Center"로 해두면 정확히 맞음
-                // 1유닛 = 1월드 단위 가정(PPU에 따라 다르면 배율로 보정)
                 go.transform.localScale = new Vector3(length * spriteLengthScale, width * spriteWidthScale, 1f);
-            }
 
             if (spriteLifetime > 0f) Object.Destroy(go, spriteLifetime);
         }
