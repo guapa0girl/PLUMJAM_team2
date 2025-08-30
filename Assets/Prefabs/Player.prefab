@@ -182,11 +182,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillandSynergy
   skills:
   - skillName: default
-    baseAttackPower: 4
+    baseAttackPower: 8
     cooldownTime: 2.5
     currentCooldown: 0
     level: 1
-    perLevelBonus: 3
+    perLevelBonus: 5
     skillType: 0
     attackMode: 0
     effectPrefab: {fileID: 7246963997762462130, guid: df2e7f2fbcc8cab4ba707008a623794c, type: 3}
@@ -198,11 +198,11 @@ MonoBehaviour:
     rangedDistance: 0
     autoCast: 1
   - skillName: default
-    baseAttackPower: 5
+    baseAttackPower: 10
     cooldownTime: 5
     currentCooldown: 0
     level: 0
-    perLevelBonus: 5
+    perLevelBonus: 10
     skillType: 2
     attackMode: 0
     effectPrefab: {fileID: 8199192087678275540, guid: a30cc0c3783743942850686caad89802, type: 3}
@@ -214,11 +214,11 @@ MonoBehaviour:
     rangedDistance: 0
     autoCast: 1
   - skillName: default
-    baseAttackPower: 4
+    baseAttackPower: 6
     cooldownTime: 4
     currentCooldown: 0
     level: 0
-    perLevelBonus: 2
+    perLevelBonus: 4
     skillType: 3
     attackMode: 2
     effectPrefab: {fileID: 1085510849465257805, guid: a53d3ca44076c954bb3d6bb249eb22b9, type: 3}
@@ -230,11 +230,11 @@ MonoBehaviour:
     rangedDistance: 5
     autoCast: 1
   - skillName: default
-    baseAttackPower: 0.5
+    baseAttackPower: 1
     cooldownTime: 0.33
     currentCooldown: 0
     level: 0
-    perLevelBonus: 0.1
+    perLevelBonus: 0.5
     skillType: 1
     attackMode: 2
     effectPrefab: {fileID: 6932247604948776893, guid: 7b6ba5cd818b013499fb79b2fc9c6905, type: 3}

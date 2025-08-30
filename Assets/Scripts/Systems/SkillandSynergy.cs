@@ -100,7 +100,7 @@ public class SkillandSynergy : MonoBehaviour
 
 
             // 쿨타임이 끝났고 자동시전이면 즉시 발동
-            if(s.level <= 0) continue
+            if (s.level <= 0) continue;
             if (s.autoCast && !s.isOnCooldown)
                 UseSkill(i);
         }
@@ -119,7 +119,7 @@ public class SkillandSynergy : MonoBehaviour
     public void UseSkill(int skillIndex)
     {
 
-        if (skills == null || skillIndex < 0 || skillIndex >= skills.Length) { Debug.LogWarning("�߸��� ��ų �ε���"); return; }
+        if (skills == null || skillIndex < 0 || skillIndex >= skills.Length) { return; }
         var s = skills[skillIndex];
 
        
