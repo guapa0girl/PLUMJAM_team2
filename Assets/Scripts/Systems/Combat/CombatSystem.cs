@@ -28,7 +28,7 @@ namespace Game.Systems.Combat
     public class CombatSystem : MonoBehaviour
     {
         [SerializeField] RoomThemeDef[] rooms;
-        [SerializeField] float roomTimeLimitSec = 300f;
+        [SerializeField] float roomTimeLimitSec = 60f;
         [SerializeField] int clearsPerDayLimit = 1;
         int clearsToday = 0;
 
