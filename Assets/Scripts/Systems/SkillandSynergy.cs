@@ -1,6 +1,7 @@
 using UnityEngine;
 using Game.Data;
 using Game.Systems;
+using Game.Core;
 
 public class SkillandSynergy : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class SkillandSynergy : MonoBehaviour
             // 모든 날씨에 대해 1.2 배율을 적용
             float synergyMultiplier = 1.2f;
 
-            // 날씨에 따른 시너지
+            // 날씨에 따른 시너지 
             if (today == WeatherType.Heat && skillType == SkillType.Fire)
             {
                 attackPower *= synergyMultiplier;
@@ -31,11 +32,11 @@ public class SkillandSynergy : MonoBehaviour
             {
                 attackPower *= synergyMultiplier;
             }
-            else if (today == WeatherType.Snow && skillType == SkillType.Ice)
+            else if (today == WeatherType.Snow && skillType == SkillType.Ice) 
             {
                 attackPower *= synergyMultiplier;
             }
-            else if (today == WeatherType.Cloud && skillType == SkillType.Wind)
+            else if (today == WeatherType.Cloud && skillType == SkillType.Wind) 
             {
                 attackPower *= synergyMultiplier;
             }
@@ -52,7 +53,7 @@ public class SkillandSynergy : MonoBehaviour
         BasicAttack,    // 기본 공격
         Fire,           // Fire 스킬
         Water,          // Water 스킬
-        Ice,            // Ice 스킬
+        Ice,            // Ice 스킬 
         Wind            // Wind 스킬
     }
 

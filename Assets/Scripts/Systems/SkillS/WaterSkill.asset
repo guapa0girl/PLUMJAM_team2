@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WaterSkill
   m_EditorClassIdentifier: Assembly-CSharp::Game.Data.SkillDef
   skillId: 
-  displayName: 
+  displayName: "\uBB3C"
   synergy: 1
   baseMultiplier: 1
   perLevelBonus: 0.1

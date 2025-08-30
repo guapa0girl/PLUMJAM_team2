@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: IceSkill
   m_EditorClassIdentifier: Assembly-CSharp::Game.Data.SkillDef
   skillId: 
-  displayName: 
+  displayName: "\uC5BC\u3139\uC74C"
   synergy: 2
   baseMultiplier: 1
   perLevelBonus: 0.1

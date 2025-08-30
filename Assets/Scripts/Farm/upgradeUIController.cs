@@ -6,6 +6,18 @@ using Game.Systems;   // UpgradeOfferManager, SkillSystem
 using Game.Core;      // Economy, SceneBridge (or SceneFlow)
 using Game.Data;      // SkillDef
 
+
+// ─────────────────────────────────────────────────────────────
+// File    : UpgradeUIController.cs
+// Purpose : 업그레이드 씬의 UI 컨트롤러.
+//           - UpgradeOfferManager가 뽑아준 3개 스킬 선택지를 버튼에 표시
+//           - 플레이어가 1개 선택하면 ApplyChoice 호출 → 성공 시 던전으로 이동
+//           - 월요일 토큰이 0이면 선택지 없음(건너뛰기 버튼으로 던전 이동만 가능)
+// Depends : UpgradeOfferManager(오퍼/적용), SkillSystem(레벨/쿨다운), Economy(돈표시)
+// Notes   : offer/skills/economy가 비어 있으면 Awake에서 자동 배선 시도.
+//           offer가 null이면 선택지가 생성되지 않으므로 업그레이드 자체가 불가.
+// ─────────────────────────────────────────────────────────────
+
 public class UpgradeUIController : MonoBehaviour
 {
     [Header("Refs (비워두면 자동으로 찾음)")]
@@ -21,14 +33,30 @@ public class UpgradeUIController : MonoBehaviour
     [SerializeField] Button skipOrContinueButton;
 
     IReadOnlyList<SkillDef> current;
-
     void Awake()
     {
-        // 자동 배선: GameRoot 우선, 없으면 FindObjectOfType로 찾기
-        if (!offer) offer = GameRoot.Instance ? GameRoot.Instance.upgrade : FindObjectOfType<UpgradeOfferManager>(true);
-        if (!skills) skills = GameRoot.Instance ? GameRoot.Instance.skills : FindObjectOfType<SkillSystem>(true);
-        if (!economy) economy = GameRoot.Instance ? GameRoot.Instance.economy : FindObjectOfType<Economy>(true);
+        // --- offer ---
+        if (!offer)
+        {
+            if (GameRoot.Instance && GameRoot.Instance.upgrade)
+                offer = GameRoot.Instance.upgrade;
+            if (!offer) // ★ GameRoot에 못 꽂혔으면 씬에서라도 찾기
+                offer = FindObjectOfType<UpgradeOfferManager>(includeInactive: true);
+        }
+
+        // --- skills / economy 도 동일 패턴 권장 ---
+        if (!skills)
+        {
+            if (GameRoot.Instance && GameRoot.Instance.skills) skills = GameRoot.Instance.skills;
+            if (!skills) skills = FindObjectOfType<SkillSystem>(true);
+        }
+        if (!economy)
+        {
+            if (GameRoot.Instance && GameRoot.Instance.economy) economy = GameRoot.Instance.economy;
+            if (!economy) economy = FindObjectOfType<Economy>(true);
+        }
     }
+
 
     void OnEnable()
     {
@@ -126,18 +154,25 @@ public class UpgradeUIController : MonoBehaviour
     {
         if (moneyText && economy) moneyText.text = $"₩ {economy.money}";
     }
-
     string BuildLabel(SkillDef def)
     {
-        // 현재 레벨 찾기
         int level = 0;
-        if (skills?.skills != null)
+
+        if (skills?.skills != null && def != null)
         {
             foreach (var s in skills.skills)
-                if (s != null && s.def == def) { level = s.level; break; }
+            {
+                if (s?.def != null && s.def.skillId == def.skillId) // ★ id로 비교
+                {
+                    level = s.level;
+                    break;
+                }
+            }
         }
+
         int next = Mathf.Min(level + 1, def.levelCap);
         int cost = def.upgradeCostBase * (level + 1);
         return $"{def.displayName}\nLv.{level} → Lv.{next}\nCost: ₩{cost}";
     }
 }
+

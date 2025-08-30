@@ -1,18 +1,4 @@
 ﻿using UnityEngine;
-
-// ─────────────────────────────────────────────────────────────
-// File    : UpgradeOfferManager.cs
-// Namespace : Game.Systems
-// Purpose : 던전 입장 시 "3선택 1업그레이드" 제공 + 매주 월요일 업그레이드 토큰 2개 지급
-//           시작 자금 100 지급(최초 1회). 비용은 SkillSystem 규칙(선형) 사용.
-// Defines : class UpgradeOfferManager : MonoBehaviour
-// Public  : PrepareOfferIfAvailable(), ApplyChoice(int), GetCurrentChoices()
-//           EnterDungeonWrapper(RoomThemeDef, float) — CombatSystem 코루틴 래퍼(선택 사용)
-// Notes   : UI는 OnOfferGenerated 이벤트를 구독해 3개 선택지를 노출하고,
-//           플레이어 선택 시 ApplyChoice(index)를 호출하면 된다.
-//           초기 비용(50)은 SkillDef.upgradeCostBase로 제어. (에셋에서 50 권장)
-// Dependencies : Economy(돈), RunManager(요일/날짜), SkillSystem(업그레이드), CombatSystem(전투)
-// ─────────────────────────────────────────────────────────────
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,52 +8,56 @@ using Game.Systems.Combat;    // CombatSystem
 
 namespace Game.Systems
 {
+    // ─────────────────────────────────────────────────────────────
+    // File    : UpgradeOfferManager.cs
+    // Purpose : 업그레이드 3선택 제공. 기본은 "돈 기반"으로 입장당 1회 구매.
+    //           (옵션) 토큰/월요일 지급을 켜면 기존 토큰 방식도 지원.
+    // Events  : OnOfferGenerated(choices, remainingPurchasesOrTokens),
+    //           OnUpgradeResult(def, ok)
+    // ─────────────────────────────────────────────────────────────
     public class UpgradeOfferManager : MonoBehaviour
     {
         [Header("Refs")]
-        [SerializeField] RunManager run;        // day(1~28) 참조용  :contentReference[oaicite:4]{index=4}
-        [SerializeField] SkillSystem skills;    // 업그레이드 수행  :contentReference[oaicite:5]{index=5}
-        [SerializeField] Economy economy;       // 돈 관리          :contentReference[oaicite:6]{index=6}
-        [SerializeField] CombatSystem combat;   // (선택) 전투 래퍼에서 사용
-        [SerializeField] Inventory inventory;   // (선택) 전투 래퍼에서 사용
+        [SerializeField] RunManager run;        // day(1~28) 참조 (토큰 모드일 때만 의미)
+        [SerializeField] SkillSystem skills;    // 업그레이드 대상
+        [SerializeField] Economy economy;       // 돈 관리
+        [SerializeField] CombatSystem combat;   // (선택) 전투 래퍼
+        [SerializeField] Inventory inventory;   // (선택) 전투 래퍼
 
-        [Header("Config")]
-        [Min(1)] public int choicesPerOffer = 3;   // 제시할 스킬 개수
-        [Min(0)] public int weeklyTokens = 2;      // 월요일에 지급할 업그레이드 기회 수
-        public int startingMoney = 100;            // 최초 1회 지급
-        public bool autoPickIfNoUI = false;        // UI가 없으면 자동 선택할지
+        [Header("Offer Config")]
+        [Min(1)] public int choicesPerOffer = 3;    // 제시할 스킬 수 (보통 3)
+        public bool autoPickIfNoUI = false;         // UI가 없을 때 자동 선택
         public enum AutoPick { Random, Cheapest }
         public AutoPick autoPickMode = AutoPick.Random;
 
-        [Header("State (debug)")]
-        public int upgradeTokens = 0;              // 보유 업그레이드 기회
-        public int lastSeenDay = -1;               // 월요일 지급 감지
-        List<SkillDef> currentChoices;             // 현재 제시 중인 선택지
+        [Header("Gating Mode")]
+        public bool moneyOnly = true;               // ★ 기본값: 돈 기반 (토큰/월요일 무시)
+        public bool onePurchasePerEntry = true;     // 돈 기반일 때 입장당 1회만 구매
+        bool consumedThisEntry = false;             // 이번 입장에서 이미 구매했는지
 
-        // 던전 입장 시 외부 UI가 구독할 이벤트: (선택지, 남은 토큰)
+        [Header("Token Mode (옵션)")]
+        [Min(0)] public int weeklyTokens = 2;       // 월요일 지급(토큰 모드일 때만)
+        public int upgradeTokens = 0;               // 현재 토큰 개수
+        public int lastSeenDay = -1;                // 요일 감지
+
+        // UI용 이벤트
         public event Action<IReadOnlyList<SkillDef>, int> OnOfferGenerated;
-        public event Action<SkillDef, bool> OnUpgradeResult; // (선택한 스킬, 성공여부)
+        public event Action<SkillDef, bool> OnUpgradeResult;
 
-        bool startingGranted = false;
+        List<SkillDef> currentChoices;
 
         void Start()
         {
-            // 시작 자금 1회 지급
-            if (!startingGranted && economy != null)
+            if (!moneyOnly) // 토큰 모드에서만 요일/토큰 관리
             {
-                economy.AddMoney(startingMoney);   // 돈 +100  :contentReference[oaicite:7]{index=7}
-                startingGranted = true;
+                if (run != null) lastSeenDay = run.day;
+                GiveMondayTokensIfNeeded();
             }
-            // 시작일 기록
-            if (run != null) lastSeenDay = run.day;
-            // 첫날이 월요일(day=1)이면 즉시 토큰 지급
-            GiveMondayTokensIfNeeded();
         }
 
         void Update()
         {
-            // RunManager.day 변화 감지로 "요일" 판정  :contentReference[oaicite:8]{index=8}
-            if (run == null) return;
+            if (moneyOnly || run == null) return;
             if (run.day != lastSeenDay)
             {
                 lastSeenDay = run.day;
@@ -77,17 +67,31 @@ namespace Game.Systems
 
         void GiveMondayTokensIfNeeded()
         {
-            if (run == null) return;
+            if (moneyOnly || run == null) return;
             // day: 1,8,15,22 → 월요일
             if (((run.day - 1) % 7) == 0)
-            {
-                upgradeTokens += weeklyTokens; // 매주 월요일 토큰 2개
-            }
+                upgradeTokens += weeklyTokens;
         }
 
-        // 던전 입장 직전 호출: 선택지 생성(보유 토큰>0일 때만)
+        // --- 오퍼 생성 (돈 모드: 항상 생성 / 토큰 모드: 토큰>0일 때만) ---
         public void PrepareOfferIfAvailable()
         {
+            if (moneyOnly)
+            {
+                consumedThisEntry = false; // 입장마다 1회 구매 제한 초기화
+                currentChoices = GenerateChoices(choicesPerOffer);
+                int remaining = onePurchasePerEntry && consumedThisEntry ? 0 : 1; // 돈 모드 표기용
+                OnOfferGenerated?.Invoke(currentChoices, remaining);
+
+                if (autoPickIfNoUI && currentChoices.Count > 0)
+                {
+                    int idx = AutoPickIndex(currentChoices);
+                    ApplyChoice(idx);
+                }
+                return;
+            }
+
+            // --- 토큰 모드 ---
             if (upgradeTokens <= 0) { currentChoices = null; return; }
 
             currentChoices = GenerateChoices(choicesPerOffer);
@@ -100,37 +104,55 @@ namespace Game.Systems
             }
         }
 
-        // 외부(UI)에서 현재 선택지 조회
         public IReadOnlyList<SkillDef> GetCurrentChoices() => currentChoices;
 
-        // UI에서 플레이어가 index를 고르면 호출
+        // --- 선택 적용(결제 + 레벨업) ---
         public bool ApplyChoice(int index)
         {
-            if (upgradeTokens <= 0 || currentChoices == null || index < 0 || index >= currentChoices.Count)
+            if (currentChoices == null || index < 0 || index >= currentChoices.Count)
             { OnUpgradeResult?.Invoke(null, false); return false; }
 
             var def = currentChoices[index];
-            if (def == null) { OnUpgradeResult?.Invoke(null, false); return false; }
+            if (!def || skills?.skills == null) { OnUpgradeResult?.Invoke(def, false); return false; }
 
-            // SkillSystem 선형 비용 규칙 사용: upgradeCostBase * (level+1)  :contentReference[oaicite:9]{index=9} :contentReference[oaicite:10]{index=10}
-            bool ok = skills != null && economy != null && skills.TryUpgrade(economy, def.skillId);
-            OnUpgradeResult?.Invoke(def, ok);
+            var owned = skills.skills.Find(s => s != null && s.def != null && s.def.skillId == def.skillId);
+            if (owned == null || owned.level >= def.levelCap) { OnUpgradeResult?.Invoke(def, false); return false; }
 
-            if (ok)
+            // --- 돈 모드 ---
+            if (moneyOnly)
             {
-                upgradeTokens--;
-                currentChoices = null; // 소비 후 선택지 폐기
+                if (onePurchasePerEntry && consumedThisEntry)
+                { OnUpgradeResult?.Invoke(def, false); return false; }
+
+                int cost = def.upgradeCostBase * (owned.level + 1);
+                if (economy == null || !economy.TrySpend(cost))
+                { OnUpgradeResult?.Invoke(def, false); return false; }
+
+                owned.level++;
+                consumedThisEntry = true;      // 입장당 1회 소비
+                currentChoices = null;
+                OnUpgradeResult?.Invoke(def, true);
                 return true;
             }
-            return false;
+
+            // --- 토큰 모드 ---
+            if (upgradeTokens <= 0) { OnUpgradeResult?.Invoke(def, false); return false; }
+
+            int tokenCost = def.upgradeCostBase * (owned.level + 1);
+            bool paid = (economy != null && economy.TrySpend(tokenCost)); // 토큰+돈 병행(기존 규칙 유지)
+            if (!paid) { OnUpgradeResult?.Invoke(def, false); return false; }
+
+            owned.level++;
+            upgradeTokens--;
+            currentChoices = null;
+            OnUpgradeResult?.Invoke(def, true);
+            return true;
         }
 
-        // (선택) CombatSystem 코루틴을 감싸서 "입장 시 오퍼 → 전투"까지 한 번에
+        // (선택) 전투 래퍼
         public IEnumerator EnterDungeonWrapper(RoomThemeDef room, float dropMultByWeather = 1f)
         {
-            // 1) 오퍼 제공(보유 토큰 있을 때만)
             PrepareOfferIfAvailable();
-            // 2) 전투 시작(기존 CombatSystem 그대로 사용)
             if (combat != null && inventory != null)
                 yield return combat.PlayOneClear(room, inventory, dropMultByWeather);
         }
@@ -141,7 +163,6 @@ namespace Game.Systems
             var list = new List<SkillDef>();
             if (skills == null || skills.skills == null) return list;
 
-            // 업그레이드 가능 스킬만 필터 (level < cap)
             var pool = new List<SkillDef>();
             foreach (var s in skills.skills)
             {
@@ -151,7 +172,6 @@ namespace Game.Systems
             }
             if (pool.Count == 0) return list;
 
-            // 중복 없이 랜덤 뽑기
             for (int i = 0; i < count && pool.Count > 0; i++)
             {
                 int k = UnityEngine.Random.Range(0, pool.Count);
@@ -165,14 +185,13 @@ namespace Game.Systems
         {
             if (autoPickMode == AutoPick.Random) return UnityEngine.Random.Range(0, list.Count);
 
-            // Cheapest: 현재 레벨을 찾아 비용이 가장 낮은 스킬(=baseCost*(level+1)이 최소)
             int best = 0;
             int bestCost = int.MaxValue;
             foreach (var s in skills.skills)
             {
                 int idx = list.IndexOf(s.def);
                 if (idx < 0) continue;
-                int cost = s.def.upgradeCostBase * (s.level + 1);  // 선형 비용  :contentReference[oaicite:11]{index=11}
+                int cost = s.def.upgradeCostBase * (s.level + 1);
                 if (cost < bestCost) { bestCost = cost; best = idx; }
             }
             return best;
@@ -184,7 +203,8 @@ namespace Game.Systems
     {
         public static int IndexOf<T>(this IReadOnlyList<T> self, T item)
         {
-            for (int i = 0; i < self.Count; i++) if (EqualityComparer<T>.Default.Equals(self[i], item)) return i;
+            for (int i = 0; i < self.Count; i++)
+                if (EqualityComparer<T>.Default.Equals(self[i], item)) return i;
             return -1;
         }
     }

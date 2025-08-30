@@ -1129,7 +1129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed959058e56139e42a2e6cf6d1379639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Core.Economy
-  money: 0
+  money: 100
 --- !u!4 &1314954815
 Transform:
   m_ObjectHideFlags: 0
