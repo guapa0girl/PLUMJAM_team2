@@ -50,7 +50,7 @@ namespace Game.Systems
             for (int i = 0; i < plots.Count; i++)
             {
                 var p = plots[i];
-                if (p.occupied && !p.dead && p.daysGrown >= p.seed.growDays)
+                if (p.occupied && !p.dead && p.daysGrown >= 1)
                 {
                     earned += p.seed.sellPrice;
                     p = new Plot(); // ºó È­´Ü

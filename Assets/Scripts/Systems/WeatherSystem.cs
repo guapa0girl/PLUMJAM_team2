@@ -16,7 +16,7 @@ using Game.Data;
 // WeatherSystem.cs
 public class WeatherSystem : MonoBehaviour
 {
-    public struct Forecast { public float heat; public float rain; public float snow; public float wind; }
+    public struct Forecast { public float heat; public float rain; public float snow; public float cloud; }
     public WeatherType Today { get; private set; }
     public Forecast TomorrowForecast { get; private set; }
 
@@ -24,7 +24,7 @@ public class WeatherSystem : MonoBehaviour
     {
         // 예: 비 70%, 맑음 20%, 바람 10%, 눈 0% 식으로 설정 가능
         // 에디터에서 채워주거나 간단 로직으로 산출
-        TomorrowForecast = new Forecast { heat = 0.2f, rain = 0.7f, snow = 0f, wind = 0.1f };
+        TomorrowForecast = new Forecast { heat = 0.4f, rain = 0.2f, snow = 0.1f, cloud = 0.3f };
     }
     public WeatherType ResolveTodayFromForecast()
     {
@@ -34,7 +34,7 @@ public class WeatherSystem : MonoBehaviour
             (WeatherType.Heat, TomorrowForecast.heat),
             (WeatherType.Rain,  TomorrowForecast.rain),
             (WeatherType.Snow,  TomorrowForecast.snow),
-            (WeatherType.Wind,  TomorrowForecast.wind),
+            (WeatherType.Cloud,  TomorrowForecast.cloud),
         };
         foreach (var (t, p) in list) { acc += p; if (r <= acc) { Today = t; return Today; } }
         //?
