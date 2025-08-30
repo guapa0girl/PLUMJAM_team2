@@ -1,26 +1,12 @@
 using UnityEngine;
 using Game.Data;
 using Game.Systems;
-<<<<<<< Updated upstream
-using Game.Core;
-=======
->>>>>>> Stashed changes
 
 public class SkillandSynergy : MonoBehaviour
 {
     [System.Serializable]
     public class Skill
     {
-<<<<<<< Updated upstream
-        public string skillName;               // ìŠ¤í‚¬ ì´ë¦„
-        public float baseAttackPower;          // ê¸°ë³¸ ê³µê²©ë ¥
-        public float cooldownTime;             // ì¿¨íƒ€ì„
-        public float currentCooldown;          // í˜„ì¬ ì¿¨íƒ€ì„
-        public SkillType skillType;            // ìŠ¤í‚¬ íƒ€ì… (ì˜ˆ: ê¸°ë³¸ ê³µê²©, Fire, Ice ë“±)
-        public bool isOnCooldown => currentCooldown > 0; // ì¿¨íƒ€ì„ ì²´í¬
-
-        // ì‹œë„ˆì§€ ì ìš© (ë°°ìœ¨ì€ 1.1ë¡œ ê³ ì •)
-=======
         [Header("Identity & Numbers")]
         public string skillName;
         public float baseAttackPower = 1f;
@@ -53,41 +39,16 @@ public class SkillandSynergy : MonoBehaviour
         public bool autoCast = true;           // ÄğÅ¸ÀÓ ³¡³ª¸é ÀÚµ¿ ¹ßµ¿
 
         // ½Ã³ÊÁö+·¹º§ ¹èÀ² Àû¿ë
->>>>>>> Stashed changes
         public float GetAttackPower(WeatherType today)
         {
-            // ·¹º§ ¹èÀ²: 0·¹º§ÀÌ¸é 0
             float levelMul = (level <= 0) ? 0f : 1f + perLevelBonus * (level - 1);
             float attackPower = baseAttackPower * levelMul;
 
-<<<<<<< Updated upstream
-            // ëª¨ë“  ë‚ ì”¨ì— ëŒ€í•´ 1.2 ë°°ìœ¨ì„ ì ìš©
-            float synergyMultiplier = 1.2f;
-
-            // ë‚ ì”¨ì— ë”°ë¥¸ ì‹œë„ˆì§€ 
-            if (today == WeatherType.Heat && skillType == SkillType.Fire)
-            {
-                attackPower *= synergyMultiplier;
-            }
-            else if (today == WeatherType.Rain && skillType == SkillType.Water)
-            {
-                attackPower *= synergyMultiplier;
-            }
-            else if (today == WeatherType.Snow && skillType == SkillType.Ice) 
-            {
-                attackPower *= synergyMultiplier;
-            }
-            else if (today == WeatherType.Cloud && skillType == SkillType.Wind) 
-            {
-                attackPower *= synergyMultiplier;
-            }
-=======
             const float synergyMultiplier = 1.2f;
             if (today == WeatherType.Heat && skillType == SkillType.Fire) attackPower *= synergyMultiplier;
             else if (today == WeatherType.Rain && skillType == SkillType.Water) attackPower *= synergyMultiplier;
             else if (today == WeatherType.Snow && skillType == SkillType.Ice) attackPower *= synergyMultiplier;
             else if (today == WeatherType.Cloud && skillType == SkillType.Wind) attackPower *= synergyMultiplier;
->>>>>>> Stashed changes
 
             return attackPower;
         }
@@ -96,18 +57,6 @@ public class SkillandSynergy : MonoBehaviour
         public void UpdateCooldown() => currentCooldown = Mathf.Max(0f, currentCooldown - Time.deltaTime);
     }
 
-<<<<<<< Updated upstream
-    public enum SkillType
-    {
-        BasicAttack,    // ê¸°ë³¸ ê³µê²©
-        Fire,           // Fire ìŠ¤í‚¬
-        Water,          // Water ìŠ¤í‚¬
-        Ice,            // Ice ìŠ¤í‚¬ 
-        Wind            // Wind ìŠ¤í‚¬
-    }
-
-    public Skill[] skills; // ì—¬ëŸ¬ ìŠ¤í‚¬ë“¤
-=======
     public enum SkillType { BasicAttack, Fire, Water, Ice, Wind }
     public enum AttackMode { Melee, Ranged, AreaOfEffect }
 
@@ -119,7 +68,6 @@ public class SkillandSynergy : MonoBehaviour
     public LayerMask enemyMask = ~0;
     public float knockbackForce = 6f;
 
->>>>>>> Stashed changes
     private WeatherSystem weatherSystem;
 
     void Awake()
@@ -129,34 +77,15 @@ public class SkillandSynergy : MonoBehaviour
 
     void Start()
     {
-<<<<<<< Updated upstream
-        weatherSystem = FindObjectOfType<WeatherSystem>();  // ë‚ ì”¨ ì‹œìŠ¤í…œì„ ì°¾ìŒ
-=======
         weatherSystem = FindObjectOfType<WeatherSystem>(); // ¾ø¾îµµ null-safe Ã³¸®µÊ
         // ½ÃÀÛ À§»ó ·£´ıÈ­ ¿¹½Ã:
         // foreach (var s in skills) s.currentCooldown = Random.Range(0f, s.cooldownTime);
->>>>>>> Stashed changes
     }
 
     void Update()
     {
         for (int i = 0; i < skills.Length; i++)
         {
-<<<<<<< Updated upstream
-            skill.UpdateCooldown(); // ì¿¨íƒ€ì„ ì—…ë°ì´íŠ¸
-        }
-    }
-
-    // ìŠ¤í‚¬ ì‚¬ìš© í•¨ìˆ˜
-    public void UseSkill(int skillIndex)
-    {
-        if (skills[skillIndex].isOnCooldown) return;  // ì¿¨íƒ€ì„ ì¤‘ì´ë¼ë©´ ì‚¬ìš© ëª» í•¨
-
-        float attackPower = skills[skillIndex].GetAttackPower(weatherSystem.Today); // ë‚ ì”¨ ë°˜ì˜ëœ ê³µê²©ë ¥ ê³„ì‚°
-        ExecuteSkill(skillIndex, attackPower);  // ìŠ¤í‚¬ ì‹¤í–‰
-
-        skills[skillIndex].ResetCooldown(); // ì¿¨íƒ€ì„ ë¦¬ì…‹
-=======
             var s = skills[i];
             s.UpdateCooldown();
 
@@ -194,16 +123,10 @@ public class SkillandSynergy : MonoBehaviour
         ExecuteSkill(s, attackPower);
         s.ResetCooldown();
         s.lastCastFrame = Time.frameCount;
->>>>>>> Stashed changes
     }
 
     void ExecuteSkill(Skill s, float power)
     {
-<<<<<<< Updated upstream
-        // ìŠ¤í‚¬ì„ ì‹¤í–‰í•˜ê³  ê³µê²©ë ¥ì„ ê¸°ë°˜ìœ¼ë¡œ í”¼í•´ë¥¼ ì…íˆëŠ” ë¡œì§
-        Debug.Log($"Executing {skills[skillIndex].skillName} with {attackPower} attack power.");
-        // ì˜ˆ: ì ì— í”¼í•´ë¥¼ ì…íˆëŠ” ì½”ë“œ
-=======
         switch (s.attackMode)
         {
             case AttackMode.Melee: ExecuteMelee(s, power); break;
@@ -357,7 +280,7 @@ public class SkillandSynergy : MonoBehaviour
         }
     }
 
-    // ¡Ú ¿©±â! ÀÚ±â ÀÚ½Å È÷Æ® ¹æÁö ÇÔ¼ö´Â ¹Ù±ù(ÀÌ Å¬·¡½º ¸â¹ö)ÀÌ¾î¾ß ÇÔ
+    // ÀÚ±â ÀÚ½Å È÷Æ® ¹æÁö
     bool IsSelf(GameObject go)
     {
         if (!go) return false;
@@ -370,6 +293,5 @@ public class SkillandSynergy : MonoBehaviour
         Gizmos.color = Color.red; Gizmos.DrawWireSphere(attackOrigin.position, 1.6f);
         Gizmos.color = Color.cyan; Gizmos.DrawWireSphere(attackOrigin.position, 2.8f);
         Gizmos.color = Color.white; Gizmos.DrawLine(attackOrigin.position, attackOrigin.position + attackOrigin.right * 10f);
->>>>>>> Stashed changes
     }
 }
