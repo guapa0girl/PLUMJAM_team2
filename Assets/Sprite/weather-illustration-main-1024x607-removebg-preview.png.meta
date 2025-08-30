@@ -1,0 +1,1105 @@
+fileFormatVersion: 2
+guid: 60dc814a21c987548a3ab8bcfa80d19c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8576478292422665472
+    second: weather-illustration-main-1024x607-removebg-preview_0
+  - first:
+      213: -1962291804007475081
+    second: weather-illustration-main-1024x607-removebg-preview_1
+  - first:
+      213: -8866390861900823804
+    second: weather-illustration-main-1024x607-removebg-preview_2
+  - first:
+      213: -3420067613251780806
+    second: weather-illustration-main-1024x607-removebg-preview_3
+  - first:
+      213: -1265977629724312163
+    second: weather-illustration-main-1024x607-removebg-preview_4
+  - first:
+      213: -6054746780704163551
+    second: weather-illustration-main-1024x607-removebg-preview_5
+  - first:
+      213: 5886159594698580059
+    second: weather-illustration-main-1024x607-removebg-preview_6
+  - first:
+      213: 8623472449134337378
+    second: weather-illustration-main-1024x607-removebg-preview_7
+  - first:
+      213: -2110488555794677879
+    second: weather-illustration-main-1024x607-removebg-preview_8
+  - first:
+      213: 8964044852704293868
+    second: weather-illustration-main-1024x607-removebg-preview_9
+  - first:
+      213: 419270588891544743
+    second: weather-illustration-main-1024x607-removebg-preview_10
+  - first:
+      213: 6830339463662598457
+    second: weather-illustration-main-1024x607-removebg-preview_11
+  - first:
+      213: -3564091871820526235
+    second: weather-illustration-main-1024x607-removebg-preview_12
+  - first:
+      213: 942554509897460373
+    second: weather-illustration-main-1024x607-removebg-preview_13
+  - first:
+      213: 9143083629202889881
+    second: weather-illustration-main-1024x607-removebg-preview_14
+  - first:
+      213: 3990466086584657044
+    second: weather-illustration-main-1024x607-removebg-preview_15
+  - first:
+      213: 1314352761092417826
+    second: weather-illustration-main-1024x607-removebg-preview_16
+  - first:
+      213: 5694652429012087744
+    second: weather-illustration-main-1024x607-removebg-preview_17
+  - first:
+      213: 2283835642974056197
+    second: weather-illustration-main-1024x607-removebg-preview_18
+  - first:
+      213: -6256704955304490827
+    second: weather-illustration-main-1024x607-removebg-preview_19
+  - first:
+      213: 6682797999359394598
+    second: weather-illustration-main-1024x607-removebg-preview_20
+  - first:
+      213: -1807824045602861931
+    second: weather-illustration-main-1024x607-removebg-preview_21
+  - first:
+      213: -7564251183640354359
+    second: weather-illustration-main-1024x607-removebg-preview_22
+  - first:
+      213: 1184045734235445344
+    second: weather-illustration-main-1024x607-removebg-preview_23
+  - first:
+      213: 4543840010044890231
+    second: weather-illustration-main-1024x607-removebg-preview_24
+  - first:
+      213: 7016503184426146233
+    second: weather-illustration-main-1024x607-removebg-preview_25
+  - first:
+      213: 3966214091036583204
+    second: weather-illustration-main-1024x607-removebg-preview_26
+  - first:
+      213: -2466891059453090766
+    second: weather-illustration-main-1024x607-removebg-preview_27
+  - first:
+      213: 3897043678934050246
+    second: weather-illustration-main-1024x607-removebg-preview_28
+  - first:
+      213: -6758641410345010033
+    second: weather-illustration-main-1024x607-removebg-preview_29
+  - first:
+      213: -8889467150447799928
+    second: weather-illustration-main-1024x607-removebg-preview_30
+  - first:
+      213: -7125000384137127005
+    second: weather-illustration-main-1024x607-removebg-preview_31
+  - first:
+      213: 1757495041700832828
+    second: weather-illustration-main-1024x607-removebg-preview_32
+  - first:
+      213: -1704772914247386152
+    second: weather-illustration-main-1024x607-removebg-preview_33
+  - first:
+      213: -3233315732255940748
+    second: weather-illustration-main-1024x607-removebg-preview_34
+  - first:
+      213: -6544285701702404697
+    second: weather-illustration-main-1024x607-removebg-preview_35
+  - first:
+      213: -1666630073555383164
+    second: weather-illustration-main-1024x607-removebg-preview_36
+  - first:
+      213: 2759366036790866884
+    second: weather-illustration-main-1024x607-removebg-preview_37
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_0
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 299
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 005a3bb1195c50770800000000000000
+      internalID: 8576478292422665472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_1
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 299
+        width: 12
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 778597c300a84c4e0800000000000000
+      internalID: -1962291804007475081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_2
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 292
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 403c1acbc7044f480800000000000000
+      internalID: -8866390861900823804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_3
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 303
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3f3f4440aa7980d0800000000000000
+      internalID: -3420067613251780806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_4
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 292
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9df0be9d085e6ee0800000000000000
+      internalID: -1265977629724312163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_5
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 299
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1293033e1e739fba0800000000000000
+      internalID: -6054746780704163551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_6
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 286
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b50244517f6dfa150800000000000000
+      internalID: 5886159594698580059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_7
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 221
+        width: 76
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26d150dd08abca770800000000000000
+      internalID: 8623472449134337378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_8
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 286
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98fb45127d906b2e0800000000000000
+      internalID: -2110488555794677879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_9
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 286
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce3bb1ccc4fa66c70800000000000000
+      internalID: 8964044852704293868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_10
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 221
+        width: 77
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ac36a3116c81d500800000000000000
+      internalID: 419270588891544743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_11
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 286
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 939f0f2bd8d3ace50800000000000000
+      internalID: 6830339463662598457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_12
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 206
+        width: 123
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56dc741735dc98ec0800000000000000
+      internalID: -3564091871820526235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_13
+      rect:
+        serializedVersion: 2
+        x: 466
+        y: 210
+        width: 138
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59a61e73550a41d00800000000000000
+      internalID: 942554509897460373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_14
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 288
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99cd35e5e12c2ee70800000000000000
+      internalID: 9143083629202889881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_15
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 288
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4942f1b63cbf06730800000000000000
+      internalID: 3990466086584657044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_16
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 254
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 229a77a5fd48d3210800000000000000
+      internalID: 1314352761092417826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_17
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 254
+        width: 17
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c3b49e6638770f40800000000000000
+      internalID: 5694652429012087744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_18
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 254
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50f28d0ca60d1bf10800000000000000
+      internalID: 2283835642974056197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_19
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 254
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b846aa1ef7bb29a0800000000000000
+      internalID: -6256704955304490827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_20
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 264
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62302899f511ebc50800000000000000
+      internalID: 6682797999359394598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_21
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 260
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59c8e69db9159e6e0800000000000000
+      internalID: -1807824045602861931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_22
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 234
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c1e94720a1660790800000000000000
+      internalID: -7564251183640354359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_23
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 219
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0689bea62539e6010800000000000000
+      internalID: 1184045734235445344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_24
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 204
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77cdee23a66fe0f30800000000000000
+      internalID: 4543840010044890231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_25
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 219
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b91e11a870af5160800000000000000
+      internalID: 7016503184426146233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_26
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 219
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 425626fa3b2da0730800000000000000
+      internalID: 3966214091036583204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_27
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 204
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23426bdc6a7d3cdd0800000000000000
+      internalID: -2466891059453090766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_28
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 219
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c5ab0d1494151630800000000000000
+      internalID: 3897043678934050246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_29
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 87
+        width: 118
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8cf324327b7432a0800000000000000
+      internalID: -6758641410345010033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_30
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 72
+        width: 118
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8811e0f99b442a480800000000000000
+      internalID: -8889467150447799928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_31
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 104
+        width: 118
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ab1cf686e9ee1d90800000000000000
+      internalID: -7125000384137127005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_32
+      rect:
+        serializedVersion: 2
+        x: 471
+        y: 67
+        width: 118
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c36a617cd60e36810800000000000000
+      internalID: 1757495041700832828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_33
+      rect:
+        serializedVersion: 2
+        x: 357
+        y: 88
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8dbb397111e6758e0800000000000000
+      internalID: -1704772914247386152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_34
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 88
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47fd33ce874f023d0800000000000000
+      internalID: -3233315732255940748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_35
+      rect:
+        serializedVersion: 2
+        x: 413
+        y: 88
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a53c51d3d60e25a0800000000000000
+      internalID: -6544285701702404697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_36
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 73
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48c8fbd37c0fed8e0800000000000000
+      internalID: -1666630073555383164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weather-illustration-main-1024x607-removebg-preview_37
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 73
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c3723c6acc3b4620800000000000000
+      internalID: 2759366036790866884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      weather-illustration-main-1024x607-removebg-preview_0: 8576478292422665472
+      weather-illustration-main-1024x607-removebg-preview_1: -1962291804007475081
+      weather-illustration-main-1024x607-removebg-preview_10: 419270588891544743
+      weather-illustration-main-1024x607-removebg-preview_11: 6830339463662598457
+      weather-illustration-main-1024x607-removebg-preview_12: -3564091871820526235
+      weather-illustration-main-1024x607-removebg-preview_13: 942554509897460373
+      weather-illustration-main-1024x607-removebg-preview_14: 9143083629202889881
+      weather-illustration-main-1024x607-removebg-preview_15: 3990466086584657044
+      weather-illustration-main-1024x607-removebg-preview_16: 1314352761092417826
+      weather-illustration-main-1024x607-removebg-preview_17: 5694652429012087744
+      weather-illustration-main-1024x607-removebg-preview_18: 2283835642974056197
+      weather-illustration-main-1024x607-removebg-preview_19: -6256704955304490827
+      weather-illustration-main-1024x607-removebg-preview_2: -8866390861900823804
+      weather-illustration-main-1024x607-removebg-preview_20: 6682797999359394598
+      weather-illustration-main-1024x607-removebg-preview_21: -1807824045602861931
+      weather-illustration-main-1024x607-removebg-preview_22: -7564251183640354359
+      weather-illustration-main-1024x607-removebg-preview_23: 1184045734235445344
+      weather-illustration-main-1024x607-removebg-preview_24: 4543840010044890231
+      weather-illustration-main-1024x607-removebg-preview_25: 7016503184426146233
+      weather-illustration-main-1024x607-removebg-preview_26: 3966214091036583204
+      weather-illustration-main-1024x607-removebg-preview_27: -2466891059453090766
+      weather-illustration-main-1024x607-removebg-preview_28: 3897043678934050246
+      weather-illustration-main-1024x607-removebg-preview_29: -6758641410345010033
+      weather-illustration-main-1024x607-removebg-preview_3: -3420067613251780806
+      weather-illustration-main-1024x607-removebg-preview_30: -8889467150447799928
+      weather-illustration-main-1024x607-removebg-preview_31: -7125000384137127005
+      weather-illustration-main-1024x607-removebg-preview_32: 1757495041700832828
+      weather-illustration-main-1024x607-removebg-preview_33: -1704772914247386152
+      weather-illustration-main-1024x607-removebg-preview_34: -3233315732255940748
+      weather-illustration-main-1024x607-removebg-preview_35: -6544285701702404697
+      weather-illustration-main-1024x607-removebg-preview_36: -1666630073555383164
+      weather-illustration-main-1024x607-removebg-preview_37: 2759366036790866884
+      weather-illustration-main-1024x607-removebg-preview_4: -1265977629724312163
+      weather-illustration-main-1024x607-removebg-preview_5: -6054746780704163551
+      weather-illustration-main-1024x607-removebg-preview_6: 5886159594698580059
+      weather-illustration-main-1024x607-removebg-preview_7: 8623472449134337378
+      weather-illustration-main-1024x607-removebg-preview_8: -2110488555794677879
+      weather-illustration-main-1024x607-removebg-preview_9: 8964044852704293868
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
