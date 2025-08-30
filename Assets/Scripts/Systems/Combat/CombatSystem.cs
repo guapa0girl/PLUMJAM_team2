@@ -37,12 +37,11 @@ namespace Game.Systems.Combat
         public IEnumerator PlayOneClear(RoomThemeDef room, Inventory inv, float dropMultByWeather = 1f)
         {
             if (clearsToday >= clearsPerDayLimit) yield break;
-            var room_weather = room.weatherTag; // or RunManager.weather.Today
 
             spawner.BeginRoom(room);
-            spawner.SpawnAll(room_weather, mon => {
+            spawner.SpawnAll(room.weatherTag, inv, dropMultByWeather, mon => {
                 var dropper = mon.GetComponent<MonsterDropper>();
-                if (dropper) dropper.Init(inv, dropMultByWeather);
+                if (dropper) dropper.Init(inv, dropMultByWeather, null);
             });
 
             float t = 0f;

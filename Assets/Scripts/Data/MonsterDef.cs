@@ -11,5 +11,8 @@ namespace Game.Data
         public int baseHp = 10;
         public int attack = 2;
         // 필요하면 이동속도, AI 타입 등도 여기에
+
+        [Header("Drops")]
+        public LootTable loot;   // 이 몬스터의 드랍 테이블
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Game.Data;
+using Game.Core;
 
 namespace Game.Systems.Combat
 {
@@ -18,16 +19,19 @@ namespace Game.Systems.Combat
             currentRoom = room;
         }
 
-        public void SpawnAll(WeatherType today, Action<GameObject> onSpawned = null)
+        public void SpawnAll(WeatherType today, Inventory inv, float dropMult, System.Action<GameObject> onSpawned = null)
         {
             if (currentRoom == null) return;
 
-            // 오늘 날씨에 맞는 몬스터 세트 가져오기
-            var prefabs = currentRoom.GetMonstersForWeather(today);
-            foreach (var p in prefabs)
+            var monsterDefs = currentRoom.GetMonstersForWeather(today);
+            foreach (MonsterDef def in monsterDefs)
             {
-                var go = Instantiate(p, GetRandomPos(), Quaternion.identity);
+                var go = Instantiate(def.prefab, GetRandomPos(), Quaternion.identity);
                 alive.Add(go);
+
+                // Dropper 초기화
+                var dropper = go.GetComponent<MonsterDropper>();
+                if (dropper) dropper.Init(inv, dropMult, def.loot);
 
                 var h = go.GetComponent<Health>();
                 if (h != null) h.Died += OnMonsterDied;
@@ -38,8 +42,7 @@ namespace Game.Systems.Combat
 
         public void EndRoom()
         {
-            foreach (var go in alive)
-                if (go) Destroy(go);
+            foreach (var go in alive) if (go) Destroy(go);
             alive.Clear();
             currentRoom = null;
         }
@@ -51,8 +54,9 @@ namespace Game.Systems.Combat
         }
 
         Vector3 GetRandomPos()
-            => new(UnityEngine.Random.Range(-4f, 4f),
-                   UnityEngine.Random.Range(-2f, 2f),
-                   0f);
+            => new(UnityEngine.Random.Range(-4f, 4f), 
+                UnityEngine.Random.Range(-2f, 2f), 
+                0f);
     }
+
 }
