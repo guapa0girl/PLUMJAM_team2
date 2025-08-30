@@ -5,15 +5,6 @@ using Game.Core;
 
 namespace Game.Systems
 {
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    // File    : FarmingSystem.cs
-    // Purpose : ë°­ 4ì¹¸ ìš´ì˜ + ì‹œê° í‘œì‹œ + ìˆ˜í™•/íŒë§¤.
-    // Changes :
-    //   - Economy ì°¸ì¡° ìë™ ë°°ì„ (GameRoot â†’ Inspector â†’ Find).
-    //   - HarvestAndSell() ë¬´ì¸ì ë²„ì „ ì¶”ê°€(ë‚´ë¶€ Economy ì‚¬ìš©).
-    //   - ìˆ˜í™• ì‹œ ì‹œê° ìš”ì†Œ ì „ë¶€ OFF í›„ 'plot'ë§Œ ì¼œì„œ ì”ìƒ ì•ˆ ë‚¨ê²Œ ì²˜ë¦¬.
-    //   - (ì˜µì…˜) í”½ì—…ìš©ìœ¼ë¡œ ë‚ ì”¨ íƒ€ì¼ì— Trigger Collider ìë™ ë¶€ì°©.
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     public class FarmingSystem : MonoBehaviour
     {
         public enum PlotState { Empty, Planted, Mature }
@@ -22,35 +13,35 @@ namespace Game.Systems
         public class Plot
         {
             public PlotState state;
-            public SeedDef   seed;   // SeedDef.preferred : WeatherType
+            public SeedDef seed; // SeedDef.preferred : WeatherType
         }
 
         [System.Serializable]
         public class PlotVisual
         {
-            [Tooltip("ê¸°ë³¸/ì”¨ì•— í‘œì‹œìš©(í”Œë¡¯ë³„ 1ê°œ): FarmTile-seed #")]
+            [Tooltip("±âº»/¾¾¾Ñ Ç¥½Ã¿ë(ÇÃ·Ôº° 1°³): FarmTile-seed #")]
             public GameObject visual;
         }
 
-        [Header("Plots (ê³ ì • 4ì¹¸)")]
+        [Header("Plots (°íÁ¤ 4Ä­)")]
         public List<Plot> plots = new List<Plot>(4) { new Plot(), new Plot(), new Plot(), new Plot() };
 
-        [Header("Plots Visuals (ê¸°ë³¸/ì”¨ì•—)")]
+        [Header("Plots Visuals (±âº»/¾¾¾Ñ)")]
         public PlotVisual[] plotVisuals = new PlotVisual[4];
 
-        // ë‚ ì”¨ ì „ìš© ì˜¤ë¸Œì íŠ¸ 16ê°œ (4ì¢… Ã— 4í”Œë¡¯)
-        [Header("Per-Plot Weather GOs (ì´ 16ê°œ)")]
-        [Tooltip("ê° í”Œë¡¯ì˜ Heat ì˜¤ë¸Œì íŠ¸ 4ê°œ (FarmTile-heat 1..4)")]
+        // ³¯¾¾ Àü¿ë ¿ÀºêÁ§Æ® 16°³ (4Á¾ ¡¿ 4ÇÃ·Ô)
+        [Header("Per-Plot Weather GOs (ÃÑ 16°³)")]
+        [Tooltip("°¢ ÇÃ·ÔÀÇ Heat ¿ÀºêÁ§Æ® 4°³ (FarmTile-heat 1..4)")]
         public GameObject[] heatGOs = new GameObject[4];
-        [Tooltip("ê° í”Œë¡¯ì˜ Rain ì˜¤ë¸Œì íŠ¸ 4ê°œ (FarmTile-rain 1..4)")]
+        [Tooltip("°¢ ÇÃ·ÔÀÇ Rain ¿ÀºêÁ§Æ® 4°³ (FarmTile-rain 1..4)")]
         public GameObject[] rainGOs = new GameObject[4];
-        [Tooltip("ê° í”Œë¡¯ì˜ Snow ì˜¤ë¸Œì íŠ¸ 4ê°œ (FarmTile-snow 1..4)")]
+        [Tooltip("°¢ ÇÃ·ÔÀÇ Snow ¿ÀºêÁ§Æ® 4°³ (FarmTile-snow 1..4)")]
         public GameObject[] snowGOs = new GameObject[4];
-        [Tooltip("ê° í”Œë¡¯ì˜ Cloud ì˜¤ë¸Œì íŠ¸ 4ê°œ (FarmTile-cloud 1..4)")]
+        [Tooltip("°¢ ÇÃ·ÔÀÇ Cloud ¿ÀºêÁ§Æ® 4°³ (FarmTile-cloud 1..4)")]
         public GameObject[] cloudGOs = new GameObject[4];
 
-        // ìµœì•… ë‚ ì”¨ í‘œê¸° : FarmTile-plot 1..4
-        [Header("Worst tiles (ê° í”Œë¡¯ì˜ FarmTile-plot 1..4)")]
+        // ÃÖ¾Ç ³¯¾¾ Ç¥±â ? FarmTile-plot 1..4
+        [Header("Worst tiles (°¢ ÇÃ·ÔÀÇ FarmTile-plot 1..4)")]
         public GameObject[] plotWorstGOs = new GameObject[4];
 
         [Header("Planting Rule")]
@@ -60,41 +51,28 @@ namespace Game.Systems
         public WorstMapEntry[] worstMap = new WorstMapEntry[]
         {
             new WorstMapEntry{ forPreferred = WeatherType.Heat,  worst = WeatherType.Cloud },
-            new WorstMapEntry{ forPreferred = WeatherType.Rain,  worst = WeatherType.Snow  },
-            new WorstMapEntry{ forPreferred = WeatherType.Snow,  worst = WeatherType.Rain  },
-            new WorstMapEntry{ forPreferred = WeatherType.Cloud, worst = WeatherType.Heat  },
+            new WorstMapEntry{ forPreferred = WeatherType.Rain,  worst = WeatherType.Snow },
+            new WorstMapEntry{ forPreferred = WeatherType.Snow,  worst = WeatherType.Rain },
+            new WorstMapEntry{ forPreferred = WeatherType.Cloud, worst = WeatherType.Heat },
         };
         [System.Serializable] public struct WorstMapEntry { public WeatherType forPreferred; public WeatherType worst; }
 
         [Header("Startup")]
-        [Tooltip("ê²Œì„ ì‹œì‘ ì‹œ ë„¤ í”Œë¡¯ì„ ì „ë¶€ 'plot' í‘œì‹œ + ì‹¬ê¸° ê°€ëŠ¥(Empty) ìƒíƒœë¡œ ì´ˆê¸°í™”")]
+        [Tooltip("°ÔÀÓ ½ÃÀÛ ½Ã ³× ÇÃ·ÔÀ» ÀüºÎ 'plot' Ç¥½Ã + ½É±â °¡´É(Empty) »óÅÂ·Î ÃÊ±âÈ­")]
         public bool showPlotsOnStart = true;
 
-        [Header("Money")]
-        [SerializeField] Economy economy; // ë¹„ìš°ë©´ Awakeì—ì„œ ìë™ ë°°ì„ 
-
         [Header("Pickup")]
-        [Tooltip("ë‚ ì”¨ GO(heat/rain/snow/cloud)ì— Trigger Colliderê°€ ì—†ìœ¼ë©´ ìë™ìœ¼ë¡œ ì¶”ê°€")]
+        [Tooltip("ÀÛ¹° GO(heat/rain/snow/cloud)¿¡ Trigger Collider°¡ ¾øÀ¸¸é ÀÚµ¿À¸·Î Ãß°¡")]
         public bool autoAddPickupCollider = true;
 
         Dictionary<WeatherType, WeatherType> worstLookup;
 
         void Awake()
         {
-            // Economy ìë™ ë°°ì„ 
-            if (!economy)
-            {
-                if (GameRoot.Instance && GameRoot.Instance.economy)
-                    economy = GameRoot.Instance.economy;
-                else
-                    economy = FindObjectOfType<Economy>(includeInactive: true);
-            }
-
-            // ìµœì•… ë‚ ì”¨ ë£©ì—… í…Œì´ë¸” êµ¬ì„±
             worstLookup = new Dictionary<WeatherType, WeatherType>();
             foreach (var e in worstMap) worstLookup[e.forPreferred] = e.worst;
 
-            // ì´ˆê¸°ì—” ëª¨ë“  ì‹œê° ì˜¤ë¸Œì íŠ¸ OFF
+            // ÀÏ´Ü ¸ğµÎ ²ô±â
             for (int i = 0; i < 4; i++)
             {
                 Set(plotVisuals, i, false);
@@ -105,16 +83,15 @@ namespace Game.Systems
                 Set(plotWorstGOs, i, false);
             }
 
-            // í”½ì—…ìš© Trigger Collider ìë™ ì¶”ê°€(ì˜µì…˜)
+            // ÀÛ¹° GOµé¿¡ Trigger Collider ÀÚµ¿ º¸Àå
             if (autoAddPickupCollider)
             {
-                int n = 4;
-                for (int i = 0; i < n; i++)
+                for (int i = 0; i < 4; i++)
                 {
-                    EnsureTriggerCollider(SafeGet(heatGOs,  i));
-                    EnsureTriggerCollider(SafeGet(rainGOs,  i));
-                    EnsureTriggerCollider(SafeGet(snowGOs,  i));
-                    EnsureTriggerCollider(SafeGet(cloudGOs, i));
+                    EnsureTriggerCollider(heatGOs[i]);
+                    EnsureTriggerCollider(rainGOs[i]);
+                    EnsureTriggerCollider(snowGOs[i]);
+                    EnsureTriggerCollider(cloudGOs[i]);
                 }
             }
         }
@@ -123,30 +100,32 @@ namespace Game.Systems
         {
             if (!showPlotsOnStart) return;
             for (int i = 0; i < plots.Count && i < 4; i++)
-                EnsurePlantable(i); // ìƒíƒœ Empty + plot í‘œì‹œ
+            {
+                EnsurePlantable(i); // »óÅÂ Empty + plotWorst ON
+            }
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-        // ì‹¬ê¸°
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // ½É±â
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
         public bool TryPlant(Inventory inv, SeedDef seed, int plotIndex)
         {
             if (seed == null || plotIndex < 0 || plotIndex >= plots.Count) return false;
             var p = plots[plotIndex];
-            if (p.state != PlotState.Empty) return false;               // Emptyë§Œ ì‹¬ê¸° ê°€ëŠ¥
+            if (p.state != PlotState.Empty) return false;               // Empty¸¸ ½É±â °¡´É
             if (inv == null || !inv.TryConsume(seed, seedsPerBlock)) return false;
 
-            p.seed  = seed;
+            p.seed = seed;
             p.state = PlotState.Planted;
             plots[plotIndex] = p;
 
-            ShowSeedOnly(plotIndex); // ì”¨ì•—ë§Œ í‘œì‹œ
+            ShowSeedOnly(plotIndex); // ¾¾¾Ñ¸¸ Ç¥½Ã
             return true;
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-        // í•˜ë£¨ ì§„í–‰(ì˜¤ëŠ˜ ì‹¤ì œ ë‚ ì”¨)
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // ÇÏ·ç ÁøÇà(¿À´Ã ½ÇÁ¦ ³¯¾¾)
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
         public void OnNewDay(WeatherType today)
         {
             for (int i = 0; i < plots.Count; i++)
@@ -155,146 +134,153 @@ namespace Game.Systems
                 if (p.state != PlotState.Planted || p.seed == null) { plots[i] = p; continue; }
 
                 var preferred = p.seed.preferred;
-                var worst     = GetWorst(preferred);
+                var worst = GetWorst(preferred);
 
                 if (today == preferred)
                 {
-                    // ì¦‰ì‹œ ì„±ìˆ™: ì„±ìˆ™ ë¹„ì£¼ì–¼(í•´ë‹¹ ë‚ ì”¨ íƒ€ì¼)ë¡œ ì „í™˜
+                    // ? ¼º¼÷: »óÅÂ ÀüÈ¯ + ½ÇÁ¦ ÀÛ¹° GO¸¦ ¹İµå½Ã ÄÑ¼­ 'Ãæµ¹ °¡´É' »óÅÂ·Î ¸¸µç´Ù
                     p.state = PlotState.Mature;
                     ShowWeather(i, preferred);
                 }
                 else if (today == worst)
                 {
-                    // ìµœì•…: ì¦‰ì‹œ ì‹¤íŒ¨, ë¹ˆ í”Œë¡¯ìœ¼ë¡œ ì´ˆê¸°í™” + plot í‘œì‹œ
+                    // ? ÃÖ¾Ç: ¹«Á¶°Ç ´Ù½Ã ½É±â °¡´É »óÅÂ·Î ÀüÈ¯ + plot¸¸ Ç¥½Ã
                     EnsurePlantable(i);
-                    p = plots[i]; // êµ¬ì¡°ì²´ ì¬í• ë‹¹ ë°˜ì˜
+                    p = plots[i]; // µ¿±âÈ­
                 }
-                // ë³´í†µ: ê·¸ëŒ€ë¡œ ìœ ì§€(ì”¨ì•—ë§Œ í‘œì‹œ)
 
                 plots[i] = p;
             }
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-        // ìˆ˜í™•/íŒë§¤ (ê¶Œì¥) : ë‚´ë¶€ Economy ì‚¬ìš©
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-        public int HarvestAndSell() => HarvestAndSellInternal(economy);
-
-        // í•˜ìœ„í˜¸í™˜: ì™¸ë¶€ Economyë¥¼ ë„˜ê¸°ê³  ì‹¶ì„ ë•Œ
-        public int HarvestAndSell(Economy econ) => HarvestAndSellInternal(econ);
-
-        // í•µì‹¬ ì²˜ë¦¬: ì„±ìˆ™ ì‘ë¬¼ì˜ sellPrice í•©ì‚° â†’ AddMoney, ê·¸ë¦¬ê³  í™•ì‹¤íˆ ë¹„ì£¼ì–¼ OFF
-        int HarvestAndSellInternal(Economy econ)
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // ¼öÈ® ¡æ Å¸ÀÔº° °³¼ö Áı°è ¡æ Economy¿¡ Àü´ã Áö±Ş ¡æ ´Ù½Ã ½É±â °¡´É º¸Àå
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        public int HarvestAndSell(Economy econ)
         {
-            int earned = 0;
+            int heat = 0, rain = 0, snow = 0, cloud = 0;
 
             for (int i = 0; i < plots.Count; i++)
             {
                 var p = plots[i];
                 if (p.state == PlotState.Mature && p.seed != null)
                 {
-                    earned += Mathf.Max(0, p.seed.sellPrice);
+                    switch (p.seed.preferred)
+                    {
+                        case WeatherType.Heat: heat++; break;
+                        case WeatherType.Rain: rain++; break;
+                        case WeatherType.Snow: snow++; break;
+                        case WeatherType.Cloud: cloud++; break;
+                    }
 
-                    // â˜… ìˆ˜í™• í›„: ë¬´ì¡°ê±´ ë‹¤ì‹œ ì‹¬ê¸° ê°€ëŠ¥ ìƒíƒœ + plot í‘œì‹œ
-                    //   ë‚´ë¶€ì ìœ¼ë¡œ ShowWorstê°€ ì”¨ì•—/ë‚ ì”¨ íƒ€ì¼ì„ ì „ë¶€ êº¼ì£¼ê¸° ë•Œë¬¸ì—
-                    //   "ìˆ˜í™•í–ˆëŠ”ë° íƒ€ì¼ì´ ë‚¨ì•„ìˆëŠ”" ë¬¸ì œê°€ ë°œìƒí•˜ì§€ ì•ŠìŒ.
+                    // ? ¼öÈ® ÈÄ: ¹«Á¶°Ç ´Ù½Ã ½É±â °¡´É »óÅÂ + plot Ç¥½Ã
                     EnsurePlantable(i);
                 }
             }
 
-            if (econ != null) econ.AddMoney(earned);
-            else Debug.LogWarning("[FarmingSystem] Economy ì°¸ì¡° ì—†ìŒ: GameRoot/Inspector ì—°ê²° í•„ìš”");
-
-            return earned;
+            if (econ == null) return 0;
+            int earned = econ.PayForCounts(heat, rain, snow, cloud); // Economy°¡ money¿¡ Á÷Á¢ ´©Àû
+            return earned; // UI/·Î±×¿ë
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-        // (í ì „ì§„ ì „) ë‚´ì¼ ì˜ˆë³´ í”„ë¦¬ë·°
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // (Å¥ ÀüÁø Àü) ³»ÀÏ ¿¹º¸ ÇÁ¸®ºä
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        /// Empty ¡æ plot À¯Áö(¾¾¾Ñ µÇ»ì¾Æ³² ¹æÁö)
         public void ApplyForecastToPlots(WeatherType forecastTomorrow)
         {
             for (int i = 0; i < plots.Count; i++)
             {
                 var p = plots[i];
 
-                if (p.state == PlotState.Empty)   { ShowWorst(i);     continue; }
-                if (p.state == PlotState.Mature)  { /* ê·¸ëŒ€ë¡œ */      continue; }
-                if (p.seed == null)               { ShowWorst(i);     continue; }
+                if (p.state == PlotState.Empty) { ShowWorst(i); continue; }
+                if (p.state == PlotState.Mature) continue;
+                if (p.seed == null) { ShowWorst(i); continue; }
 
                 var preferred = p.seed.preferred;
-                var worst     = GetWorst(preferred);
+                var worst = GetWorst(preferred);
 
-                if      (forecastTomorrow == preferred) ShowWeather(i, preferred);
-                else if (forecastTomorrow == worst)     ShowWorst(i);
-                else                                     ShowSeedOnly(i);
+                if (forecastTomorrow == preferred) ShowWeather(i, preferred);
+                else if (forecastTomorrow == worst) ShowWorst(i);
+                else ShowSeedOnly(i);
             }
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-        // ì‹¬ê¸° ê°€ëŠ¥ ë³´ì¥(Emptyë¡œ ì´ˆê¸°í™” + plot í‘œì‹œ)
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        // ? ½É±â °¡´É º¸Àå ÇÔ¼ö (¿ä±¸»çÇ× ÇÙ½É)
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
         void EnsurePlantable(int i)
         {
             if (i < 0 || i >= plots.Count) return;
             var p = plots[i];
             p.state = PlotState.Empty;
-            p.seed  = null;
+            p.seed = null;
             plots[i] = p;
 
-            ShowWorst(i); // ì”¨ì•—/ë‚ ì”¨ ì „ë¶€ OFF + plot on
+            ShowWorst(i); // È­¸é¿£ plot¸¸ ³²±è
         }
 
         public bool IsPlantable(int i)
-            => (i >= 0 && i < plots.Count && plots[i].state == PlotState.Empty);
+        {
+            return (i >= 0 && i < plots.Count && plots[i].state == PlotState.Empty);
+        }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ í‘œì‹œ ì œì–´(í”Œë¡¯ë³„) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ Ç¥½Ã Á¦¾î(ÇÃ·Ô ÀÎµ¦½ºº°) ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+        void ShowNone(int i)
+        {
+            Set(plotVisuals, i, false);
+            Set(heatGOs, i, false);
+            Set(rainGOs, i, false);
+            Set(snowGOs, i, false);
+            Set(cloudGOs, i, false);
+            Set(plotWorstGOs, i, false);
+        }
+
         void ShowSeedOnly(int i)
         {
             Set(plotWorstGOs, i, false);
-            Set(heatGOs,  i, false);
-            Set(rainGOs,  i, false);
-            Set(snowGOs,  i, false);
+            Set(heatGOs, i, false);
+            Set(rainGOs, i, false);
+            Set(snowGOs, i, false);
             Set(cloudGOs, i, false);
-            Set(plotVisuals, i, true);   // ì”¨ì•— on
+            Set(plotVisuals, i, true);   // ¾¾¾Ñ on
         }
 
         void ShowWeather(int i, WeatherType wt)
         {
-            Set(plotVisuals,  i, false);  // ì”¨ì•— off
+            Set(plotVisuals, i, false);  // ¾¾¾Ñ off
             Set(plotWorstGOs, i, false);
-            Set(heatGOs,  i, wt == WeatherType.Heat);
-            Set(rainGOs,  i, wt == WeatherType.Rain);
-            Set(snowGOs,  i, wt == WeatherType.Snow);
+            Set(heatGOs, i, wt == WeatherType.Heat);
+            Set(rainGOs, i, wt == WeatherType.Rain);
+            Set(snowGOs, i, wt == WeatherType.Snow);
             Set(cloudGOs, i, wt == WeatherType.Cloud);
         }
 
         void ShowWorst(int i)
         {
-            // ì”¨ì•—/ë‚ ì”¨ ì „ë¶€ off, plotWorst on (ì—†ìœ¼ë©´ ê²½ê³ )
-            Set(plotVisuals,  i, false);
-            Set(heatGOs,  i, false);
-            Set(rainGOs,  i, false);
-            Set(snowGOs,  i, false);
+            // ¾¾¾Ñ/³¯¾¾ ÀüºÎ off, plotWorst on (¾øÀ¸¸é °æ°í)
+            Set(plotVisuals, i, false);
+            Set(heatGOs, i, false);
+            Set(rainGOs, i, false);
+            Set(snowGOs, i, false);
             Set(cloudGOs, i, false);
             var worstGo = SafeGet(plotWorstGOs, i);
             if (worstGo) worstGo.SetActive(true);
-            else Debug.LogWarning($"[FarmingSystem] plotWorstGOs[{i}] ë¯¸í• ë‹¹ â€” 'FarmTile-plot {i + 1}'ë¥¼ ì—°ê²°í•˜ì„¸ìš”.");
+            else Debug.LogWarning($"[FarmingSystem] plotWorstGOs[{i}] ¹ÌÇÒ´ç ? 'FarmTile-plot {i + 1}' ¿¬°á ±ÇÀå");
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ìœ í‹¸ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ À¯Æ¿ ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
         void Set(PlotVisual[] arr, int i, bool on)
         {
             if (arr == null || i < 0 || i >= arr.Length) return;
             var v = arr[i]?.visual;
             if (v && v.activeSelf != on) v.SetActive(on);
         }
-
         void Set(GameObject[] arr, int i, bool on)
         {
             var go = SafeGet(arr, i);
             if (go && go.activeSelf != on) go.SetActive(on);
         }
-
         GameObject SafeGet(GameObject[] arr, int i)
         {
             if (arr == null || i < 0 || i >= arr.Length) return null;
@@ -306,44 +292,56 @@ namespace Game.Systems
             if (worstLookup != null && worstLookup.TryGetValue(preferred, out var w)) return w;
             switch (preferred)
             {
-                case WeatherType.Heat:  return WeatherType.Cloud;
-                case WeatherType.Rain:  return WeatherType.Snow;
-                case WeatherType.Snow:  return WeatherType.Rain;
+                case WeatherType.Heat: return WeatherType.Cloud;
+                case WeatherType.Rain: return WeatherType.Snow;
+                case WeatherType.Snow: return WeatherType.Rain;
                 case WeatherType.Cloud: return WeatherType.Heat;
-                default:                return WeatherType.Cloud;
+                default: return WeatherType.Cloud;
             }
         }
 
-        /// <summary>ì „ë‹¬ëœ GOê°€ 'ì‘ë¬¼(ë‚ ì”¨ íƒ€ì¼)'ì¸ì§€ ì—¬ë¶€. ì”¨ì•—/plotì€ ì œì™¸.</summary>
+        /// <summary>
+        /// ÇÃ·¹ÀÌ¾î Ãæµ¹ ÆÇÁ¤À» À§ÇØ: Àü´ŞµÈ GO°¡ 'ÀÛ¹°(³¯¾¾ Å¸ÀÏ)'ÀÎÁö ¿©ºÎ.
+        /// ¾¾¾Ñ(FarmTile-seed)°ú plotWorst´Â Á¦¿Ü.
+        /// </summary>
         public bool IsCropObject(GameObject go)
         {
             if (!go) return false;
             for (int i = 0; i < 4; i++)
             {
-                if (go == SafeGet(heatGOs,  i)) return true;
-                if (go == SafeGet(rainGOs,  i)) return true;
-                if (go == SafeGet(snowGOs,  i)) return true;
+                if (go == SafeGet(heatGOs, i)) return true;
+                if (go == SafeGet(rainGOs, i)) return true;
+                if (go == SafeGet(snowGOs, i)) return true;
                 if (go == SafeGet(cloudGOs, i)) return true;
             }
             return false;
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Collider ë³´ê°•(ì˜µì…˜) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ Collider º¸Àå ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
         void EnsureTriggerCollider(GameObject go)
         {
             if (!go) return;
 
-            // ì´ë¯¸ ìˆëŠ” Collider2Dë©´ Triggerë¡œ ì„¤ì •
+            // ÀÌ¹Ì Äİ¶óÀÌ´õ ÀÖÀ¸¸é Trigger·Î ÀüÈ¯¸¸
             var col = go.GetComponent<Collider2D>();
-            if (col) { col.isTrigger = true; return; }
+            if (col)
+            {
+                col.isTrigger = true;
+                return;
+            }
 
-            // ì—†ìœ¼ë©´ BoxCollider2D ì¶”ê°€
+            // ¾øÀ¸¸é ¹Ú½º Äİ¶óÀÌ´õ Ãß°¡
             var bc = go.AddComponent<BoxCollider2D>();
             bc.isTrigger = true;
 
-            // ëŒ€ëµì ì¸ ì‚¬ì´ì¦ˆ ë§ì¶”ê¸°(ìŠ¤í”„ë¼ì´íŠ¸ê°€ ìˆìœ¼ë©´ bounds ê¸°ì¤€)
+            // ´ë·«ÀûÀÎ »çÀÌÁî º¸Á¤(ÀÖÀ¸¸é)
             var sr = go.GetComponentInChildren<SpriteRenderer>();
-            if (sr != null) bc.size = sr.bounds.size;
+            if (sr != null)
+            {
+                // BoxCollider2D.size´Â ·ÎÄÃ ´ÜÀ§, bounds.size´Â ¿ùµå ´ÜÀ§ÀÌÁö¸¸
+                // ½ºÄÉÀÏ 1 ±âÁØ¿¡¼± ÃæºĞÈ÷ ±Ù»çÄ¡·Î µ¿ÀÛ
+                bc.size = sr.bounds.size;
+            }
         }
     }
 }
