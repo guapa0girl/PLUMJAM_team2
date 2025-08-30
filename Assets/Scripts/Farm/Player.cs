@@ -142,6 +142,15 @@ public class Player : MonoBehaviour
                     case "Portal_East":
                         SceneManager.LoadScene("dungeon_rain");
                         break;
+                    case "Portal_West":
+                        SceneManager.LoadScene("dungeon_snow");
+                        break;
+                    case "Portal_South":
+                        SceneManager.LoadScene("dungeon_heat");
+                        break;
+                    case "Portal_North":
+                        SceneManager.LoadScene("dungeon_cloud");
+                            break;
                 }
             }
             else
