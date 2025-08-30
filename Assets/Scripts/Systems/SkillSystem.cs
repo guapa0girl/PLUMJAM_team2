@@ -5,44 +5,132 @@ using Game.Core;
 
 namespace Game.Systems
 {
-    // SkillSystem.cs
-    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     // File: SkillSystem.cs
-    // Purpose : º¸À¯ ½ºÅ³ ·¹º§°ú ³¯¾¾ ½Ã³ÊÁö¿¡ µû¸¥ ÀüÅõ ¹èÀ² °è»ê/¾÷±×·¹ÀÌµå.
-    // Defines : class SkillSystem : MonoBehaviour
-    // Fields  : List<OwnedSkill> (def, level)
-    // API     : GetCombatMultiplier(WeatherType) ¡æ ³¯¾¾º° ÃÑ ¹èÀ² ¹İÈ¯
-    //           TryUpgrade(Economy, skillId)     ¡æ ºñ¿ë Â÷°¨ ÈÄ ·¹º§ ¾÷
-    // Used By : Combat °è»ê½Ä(µ¥¹ÌÁö/°ø¼Ó/µå¶ø °¡ÁßÄ¡ µî ÇÁ·ÎÁ§Æ® ±ÔÄ¢¿¡ Àû¿ë).
-    // Notes   : ½ºÅ³ÀÇ È¿°ú ¹üÀ§(°ö/ÇÕ, cap)´Â ÆÀ ±ÔÄ¢ ¹®¼­¿Í µ¿±âÈ­ÇÒ °Í.
-    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
-
+    // Purpose : ë³´ìœ  ìŠ¤í‚¬/ì¿¨íƒ€ì„, ë‚ ì”¨ ì‹œë„ˆì§€ ê¸°ë°˜ ê³µê²© ì‹¤í–‰ + ì—…ê·¸ë ˆì´ë“œ.
+    // API     : UseSkill(int), TryUpgrade(Economy, skillId)
+    // Notes   : SkillDefì— GetAttackPower(WeatherType), cooldownTime,
+    //           attackType, effectPrefabê°€ ì •ì˜ë¼ ìˆì–´ì•¼ í•¨.
+    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     public class SkillSystem : MonoBehaviour
     {
-        [System.Serializable] public class OwnedSkill { public SkillDef def; public int level; }
-        public List<OwnedSkill> skills;
+        // ë‹¨ì¶• í˜¸ì¶œìš©(ì˜µì…˜)
+        public void UseSkill0() { UseSkill(0); }
+        public void UseSkill1() { UseSkill(1); }
+        public void UseSkill2() { UseSkill(2); }
+        public void UseSkill3() { UseSkill(3); }
+        public void UseSkill4() { UseSkill(4); }
 
-        public float GetCombatMultiplier(WeatherType today)
+        [System.Serializable]
+        public class OwnedSkill
         {
-            float m = 1f;
-            foreach (var s in skills)
-            {
-                if (s.def.synergy == today)
-                {
-                    m *= s.def.baseMultiplier + s.level * s.def.perLevelBonus;
-                }
-            }
-            return m;
+            public SkillDef def;
+            public int level;
+            public float currentCooldown;
+            public bool isOnCooldown => currentCooldown > 0f;
         }
 
+        [Header("Skills")]
+        [SerializeField] public List<OwnedSkill> skills = new();
+
+        // ì˜¤ëŠ˜ ë‚ ì”¨ ì°¸ì¡°(ì”¬ì— WeatherSystem ì¡´ì¬ ê°€ì •)
+        private WeatherSystem weatherSystem;
+
+        void Start()
+        {
+            weatherSystem = FindObjectOfType<WeatherSystem>();
+        }
+
+        void Update()
+        {
+            // ìˆ«ìí‚¤ 1 â†’ ì²« ìŠ¤í‚¬ ì‹¤í–‰(ì›í•˜ë©´ 2~5 ì¶”ê°€)
+            if (Input.GetKeyDown(KeyCode.Alpha1)) UseSkill(0);
+
+            // ì¿¨íƒ€ì„ ê°±ì‹ 
+            foreach (var s in skills)
+                s.currentCooldown = Mathf.Max(0f, s.currentCooldown - Time.deltaTime);
+        }
+
+        // ===== gayeonlee-sceneflow ë²„ì „ ìœ ì§€ =====
+        public void UseSkill(int skillIndex)
+        {
+            if (skills == null || skillIndex < 0 || skillIndex >= skills.Count) return;
+            var skill = skills[skillIndex];
+            if (skill == null || skill.def == null) return;
+
+            if (skill.isOnCooldown) return; // ì¿¨íƒ€ì„ì´ë©´ ì‚¬ìš© ë¶ˆê°€
+
+            // ë‚ ì”¨ ê¸°ë°˜ ê³µê²©ë ¥ ê³„ì‚° (SkillDefê°€ ì œê³µ)
+            var today = weatherSystem ? weatherSystem.Today : default; // WeatherSystem ì—†ìœ¼ë©´ default
+            float attackPower = skill.def.GetAttackPower(today);
+
+            ExecuteSkill(skillIndex, attackPower); // ì‹¤ì œ ì‹¤í–‰
+            skill.currentCooldown = skill.def.cooldownTime; // ì¿¨íƒ€ì„ ì‹œì‘
+        }
+
+        // ===== ê¸°ì¡´ TryUpgrade ìœ ì§€(ê²½ì œ/ë ˆë²¨ì—…) =====
         public bool TryUpgrade(Economy econ, string skillId)
         {
-            var s = skills.Find(x => x.def.skillId == skillId);
-            if (s == null || s.level >= s.def.levelCap) return false;
+            if (econ == null || string.IsNullOrEmpty(skillId) || skills == null) return false;
+
+            var s = skills.Find(x => x != null && x.def != null && x.def.skillId == skillId);
+            if (s == null || s.def == null) return false;
+            if (s.level >= s.def.levelCap) return false;
+
             int cost = s.def.upgradeCostBase * (s.level + 1);
             if (!econ.TrySpend(cost)) return false;
+
             s.level++;
             return true;
+        }
+
+        // ê³µê²© íƒ€ì… ë¶„ê¸°
+        void ExecuteSkill(int skillIndex, float attackPower)
+        {
+            var skill = skills[skillIndex];
+            if (skill == null || skill.def == null) return;
+
+            switch (skill.def.attackType)
+            {
+                case SkillDef.AttackType.Melee:
+                    ExecuteMeleeAttack(attackPower);
+                    break;
+                case SkillDef.AttackType.Ranged:
+                    ExecuteRangedAttack(attackPower);
+                    break;
+                case SkillDef.AttackType.AreaOfEffect:
+                    ExecuteAOEAttack(attackPower);
+                    break;
+                default:
+                    Debug.LogWarning("Unknown attack type!");
+                    break;
+            }
+
+            // ì´í™íŠ¸
+            InstantiateSkillEffect(skill.def.effectPrefab);
+        }
+
+        // ê·¼ì ‘ ê³µê²©(êµ¬ì²´ ë¡œì§ì€ í”„ë¡œì íŠ¸ì— ë§ê²Œ êµì²´)
+        void ExecuteMeleeAttack(float attackPower)
+        {
+            Debug.Log($"Melee Attack, power={attackPower}");
+        }
+        // ì›ê±°ë¦¬
+        void ExecuteRangedAttack(float attackPower)
+        {
+            Debug.Log($"Ranged Attack, power={attackPower}");
+        }
+        // ê´‘ì—­
+        void ExecuteAOEAttack(float attackPower)
+        {
+            Debug.Log($"AOE Attack, power={attackPower}");
+        }
+
+        // ì´í™íŠ¸ ìƒì„±
+        void InstantiateSkillEffect(GameObject effectPrefab)
+        {
+            if (effectPrefab)
+                Instantiate(effectPrefab, transform.position, Quaternion.identity);
         }
     }
 }

@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a936727ffeeeae84db0e1d89946d2cb3, type: 3}
   m_Name: New Loot Table
   m_EditorClassIdentifier: Assembly-CSharp::Game.Data.LootTable
-  entries: []
+  entries:
+  - seed: {fileID: 11400000, guid: 3e0633ffdd2eb904ba2a73b8b7efb572, type: 2}
+    weight: 6
+    min: 0
+    max: 2

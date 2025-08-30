@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65c3378765b03949afce9da7f40db33, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: Assembly-CSharp::Game.Data.MonsterDef
-  monsterId: 
-  displayName: 
+  monsterId: slime
+  displayName: "\uC2AC\uB77C\uC784"
   prefab: {fileID: 0}
-  baseHp: 10
-  attack: 2
+  baseHp: 50
+  attack: 10
+  loot: {fileID: 0}
