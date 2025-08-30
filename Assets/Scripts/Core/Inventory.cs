@@ -21,7 +21,6 @@ namespace Game.Core
             seeds[def] += count;
             // TODO: UI 갱신 이벤트 쏘기
         }
-        // Inventory.cs (Game.Core)
         public bool TryConsume(SeedDef def, int count)
         {
             if (def == null || count <= 0) return false;
