@@ -9,10 +9,10 @@ namespace Game.Core
         public int money;  // 여기에만 누적
 
         [Header("Type Payouts (개당 지급액)")]
-        public int heatPayout = 1;
-        public int rainPayout = 3;
-        public int snowPayout = 4;
-        public int cloudPayout = 2;
+        public int heatPayout = 10;
+        public int rainPayout = 30;
+        public int snowPayout = 40;
+        public int cloudPayout = 20;
 
         [Header("UI")]
         [Tooltip("숫자만 표시할 TextMeshProUGUI를 드래그하세요")]
