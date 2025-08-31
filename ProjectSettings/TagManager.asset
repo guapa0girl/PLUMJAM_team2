@@ -7,7 +7,6 @@ TagManager:
   - Enemy
   - Portal
   - Plot
-  - Crop
   layers:
   - Default
   - TransparentFX
