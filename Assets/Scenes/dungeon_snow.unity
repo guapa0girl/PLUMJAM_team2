@@ -3617,6 +3617,7 @@ GameObject:
   - component: {fileID: 1821100398}
   - component: {fileID: 1821100397}
   - component: {fileID: 1821100396}
+  - component: {fileID: 1821100404}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -3859,6 +3860,104 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1821100404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821100395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2feb4c418352a5428c3769f224c7de3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillandSynergy
+  skills:
+  - skillName: default
+    baseAttackPower: 8
+    cooldownTime: 2.5
+    currentCooldown: 0
+    level: 1
+    perLevelBonus: 5
+    skillType: 0
+    attackMode: 0
+    effectPrefab: {fileID: 7246963997762462130, guid: df2e7f2fbcc8cab4ba707008a623794c, type: 3}
+    spawnOnCast: 0
+    spawnOnHit: 1
+    lastCastFrame: -1
+    meleeRange: 3
+    aoeRadius: 0
+    rangedDistance: 0
+    autoCast: 1
+  - skillName: default
+    baseAttackPower: 10
+    cooldownTime: 5
+    currentCooldown: 0
+    level: 0
+    perLevelBonus: 10
+    skillType: 2
+    attackMode: 0
+    effectPrefab: {fileID: 8199192087678275540, guid: a30cc0c3783743942850686caad89802, type: 3}
+    spawnOnCast: 0
+    spawnOnHit: 1
+    lastCastFrame: -1
+    meleeRange: 5
+    aoeRadius: 5
+    rangedDistance: 0
+    autoCast: 1
+  - skillName: default
+    baseAttackPower: 6
+    cooldownTime: 4
+    currentCooldown: 0
+    level: 0
+    perLevelBonus: 4
+    skillType: 3
+    attackMode: 2
+    effectPrefab: {fileID: 1085510849465257805, guid: a53d3ca44076c954bb3d6bb249eb22b9, type: 3}
+    spawnOnCast: 1
+    spawnOnHit: 0
+    lastCastFrame: -1
+    meleeRange: 5
+    aoeRadius: 5
+    rangedDistance: 5
+    autoCast: 1
+  - skillName: default
+    baseAttackPower: 1
+    cooldownTime: 0.33
+    currentCooldown: 0
+    level: 0
+    perLevelBonus: 0.5
+    skillType: 1
+    attackMode: 2
+    effectPrefab: {fileID: 6932247604948776893, guid: 7b6ba5cd818b013499fb79b2fc9c6905, type: 3}
+    spawnOnCast: 0
+    spawnOnHit: 1
+    lastCastFrame: -1
+    meleeRange: 5
+    aoeRadius: 5
+    rangedDistance: 0
+    autoCast: 1
+  - skillName: default
+    baseAttackPower: 0.5
+    cooldownTime: 0.33
+    currentCooldown: 0
+    level: 0
+    perLevelBonus: 0.5
+    skillType: 4
+    attackMode: 2
+    effectPrefab: {fileID: 8093291819731314592, guid: 2dbe3bcca9238fa4f83814461de6865e, type: 3}
+    spawnOnCast: 0
+    spawnOnHit: 1
+    lastCastFrame: -1
+    meleeRange: 5
+    aoeRadius: 5
+    rangedDistance: 0
+    autoCast: 1
+  attackOrigin: {fileID: 0}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 3583
+  knockbackForce: 1
 --- !u!1 &1994315302
 GameObject:
   m_ObjectHideFlags: 0
