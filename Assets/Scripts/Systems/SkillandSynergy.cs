@@ -14,6 +14,13 @@ public class SkillandSynergy : MonoBehaviour
         [HideInInspector] public float currentCooldown;
         public bool isOnCooldown => currentCooldown > 0f;
 
+
+        [Header("Level (0=Off, 1~5)")]
+        [Range(0, 5)] public int level = 1;                 
+       
+        public float perLevelBonus = 0.15f;                 // (1 + perLevelBonus*(level-1))
+
+
         [Header("Type")]
         public SkillType skillType;            // BasicAttack, Fire, Water, Ice, Wind
         public AttackMode attackMode;          // Melee, Ranged, AreaOfEffect
@@ -21,18 +28,27 @@ public class SkillandSynergy : MonoBehaviour
         [Header("Effect")]
         public GameObject effectPrefab;
 
+        public bool spawnOnCast = false;      
+        public bool spawnOnHit = true;         
+
+        [HideInInspector] public int lastCastFrame = -1;    
+
+
         [Header("Ranges")]
         public float meleeRange = 1.6f;
         public float aoeRadius = 2.8f;
         public float rangedDistance = 10f;
 
         [Header("Auto Cast")]
+
         public bool autoCast = true;           // 쿨타임 끝나면 자동 발동
 
         // 시너지 적용(매칭 날씨에서 x1.2)
         public float GetAttackPower(WeatherType today)
         {
-            float attackPower = baseAttackPower;
+            float levelMul = (level <= 0) ? 0f : 1f + perLevelBonus * (level - 1);
+            float attackPower = baseAttackPower * levelMul;
+            
             const float synergyMultiplier = 1.2f;
 
             if (today == WeatherType.Heat && skillType == SkillType.Fire) attackPower *= synergyMultiplier;
@@ -67,6 +83,7 @@ public class SkillandSynergy : MonoBehaviour
 
     void Start()
     {
+
         weatherSystem = FindObjectOfType<WeatherSystem>(); // 없어도 null-safe 처리됨
         // 원하면 시작 시 바로 발동하려면 아래 주석 해제
         // foreach (var s in skills) s.currentCooldown = 0f;
@@ -81,7 +98,9 @@ public class SkillandSynergy : MonoBehaviour
             var s = skills[i];
             s.UpdateCooldown();
 
+
             // 쿨타임이 끝났고 자동시전이면 즉시 발동
+            if (s.level <= 0) continue;
             if (s.autoCast && !s.isOnCooldown)
                 UseSkill(i);
         }
@@ -99,15 +118,23 @@ public class SkillandSynergy : MonoBehaviour
 
     public void UseSkill(int skillIndex)
     {
-        if (skills == null || skillIndex < 0 || skillIndex >= skills.Length) { Debug.LogWarning("잘못된 스킬 인덱스"); return; }
+
+        if (skills == null || skillIndex < 0 || skillIndex >= skills.Length) { return; }
         var s = skills[skillIndex];
-        if (s.isOnCooldown) return;
+
+       
+        if (s.level <= 0 || s.isOnCooldown) return;
+
+        
+        if (s.lastCastFrame == Time.frameCount) return;
 
         var today = weatherSystem ? weatherSystem.Today : default;
         float attackPower = s.GetAttackPower(today);
+        if (attackPower <= 0f) return; 
 
         ExecuteSkill(s, attackPower);
-        s.ResetCooldown(); // 다시 쿨타임 시작
+        s.ResetCooldown();
+        s.lastCastFrame = Time.frameCount;
     }
 
     void ExecuteSkill(Skill s, float power)
@@ -118,11 +145,14 @@ public class SkillandSynergy : MonoBehaviour
             case AttackMode.Ranged: ExecuteRanged(s, power); break;
             case AttackMode.AreaOfEffect: ExecuteAOE(s, power); break;
         }
-        SpawnEffectAt(attackOrigin.position, s.effectPrefab);
-        Debug.Log($"Auto-cast {s.skillName} ({s.skillType}/{s.attackMode}) power={power}");
+
+        if (s.spawnOnCast)
+            SpawnEffectAt(attackOrigin.position, s.effectPrefab);
+
+        Debug.Log($"Auto-cast {s.skillName} L{s.level} ({s.skillType}/{s.attackMode}) power={power}");
     }
 
-    // ───────────── 타격 페이로드 ─────────────
+   
     [System.Serializable]
     public class HitPayload
     {
@@ -150,6 +180,7 @@ public class SkillandSynergy : MonoBehaviour
             knockback = (s.skillType == SkillType.Wind) ? knockbackForce * 1.5f : knockbackForce
         };
 
+
         switch (s.skillType)
         {
             case SkillType.Fire:
@@ -165,8 +196,6 @@ public class SkillandSynergy : MonoBehaviour
             case SkillType.Ice:
                 payload.freezeDuration = 1f;
                 break;
-            case SkillType.Wind:
-                break;
         }
 
         var rb2 = enemy.GetComponent<Rigidbody2D>();
@@ -175,57 +204,83 @@ public class SkillandSynergy : MonoBehaviour
         if (rb3) rb3.AddForce(dir * payload.knockback, ForceMode.Impulse);
 
         enemy.SendMessage("OnHit", payload, SendMessageOptions.DontRequireReceiver);
-        SpawnEffectAt(enemy.transform.position, s.effectPrefab);
+
+        if (s.spawnOnHit)
+            SpawnEffectAt(enemy.transform.position, s.effectPrefab);
     }
 
-    // ───────────── 공격 구현 ─────────────
     void ExecuteMelee(Skill s, float power)
     {
         Vector3 o = attackOrigin.position;
+        var seen = new System.Collections.Generic.HashSet<GameObject>();
+
         var hits2D = Physics2D.OverlapCircleAll(o, s.meleeRange, enemyMask);
         foreach (var h in hits2D)
         {
             var go = h.attachedRigidbody ? h.attachedRigidbody.gameObject : h.gameObject;
-            ApplyHit(go, s, power, o);
+            if (IsSelf(go)) continue;
+            if (seen.Add(go)) ApplyHit(go, s, power, o);
         }
-        var hits3D = Physics.OverlapSphere(o, s.meleeRange, enemyMask);
-        foreach (var c in hits3D) ApplyHit(c.gameObject, s, power, o);
+
+        var hits3D = Physics.OverlapSphere(o, s.meleeRange, enemyMask, QueryTriggerInteraction.Ignore);
+        foreach (var c in hits3D)
+            if (!IsSelf(c.gameObject) && seen.Add(c.gameObject))
+                ApplyHit(c.gameObject, s, power, o);
+    }
+
+    void ExecuteAOE(Skill s, float power)
+    {
+        Vector3 o = attackOrigin.position;
+        var seen = new System.Collections.Generic.HashSet<GameObject>();
+
+        var hits2D = Physics2D.OverlapCircleAll(o, s.aoeRadius, enemyMask);
+        foreach (var h in hits2D)
+        {
+            var go = h.attachedRigidbody ? h.attachedRigidbody.gameObject : h.gameObject;
+            if (IsSelf(go)) continue;
+            if (seen.Add(go)) ApplyHit(go, s, power, o);
+        }
+
+        var hits3D = Physics.OverlapSphere(o, s.aoeRadius, enemyMask, QueryTriggerInteraction.Ignore);
+        foreach (var c in hits3D)
+            if (!IsSelf(c.gameObject) && seen.Add(c.gameObject))
+                ApplyHit(c.gameObject, s, power, o);
     }
 
     void ExecuteRanged(Skill s, float power)
     {
         Vector3 o = attackOrigin.position;
         Vector3 dir = attackOrigin.right;
-        var hit2D = Physics2D.Raycast(o, dir, s.rangedDistance, enemyMask);
-        if (hit2D.collider)
+        float skin = 0.1f;                      
+        Vector3 start = o + dir * skin;
+
+        var hits2D = Physics2D.RaycastAll(start, dir, s.rangedDistance - skin, enemyMask);
+        foreach (var h in hits2D)
         {
-            var go = hit2D.rigidbody ? hit2D.rigidbody.gameObject : hit2D.collider.gameObject;
+            var go = h.rigidbody ? h.rigidbody.gameObject : (h.collider ? h.collider.gameObject : null);
+            if (!go || IsSelf(go)) continue;
             ApplyHit(go, s, power, o);
             return;
         }
-        if (Physics.Raycast(o, dir, out RaycastHit hit3D, s.rangedDistance, enemyMask))
-            ApplyHit(hit3D.collider.gameObject, s, power, o);
+
+        var hits3D = Physics.RaycastAll(start, dir, s.rangedDistance - skin, enemyMask, QueryTriggerInteraction.Ignore);
+        System.Array.Sort(hits3D, (a, b) => a.distance.CompareTo(b.distance));
+        foreach (var h in hits3D)
+        {
+            var go = h.collider ? h.collider.gameObject : null;
+            if (!go || IsSelf(go)) continue;
+            ApplyHit(go, s, power, o);
+            return;
+        }
     }
 
-    void ExecuteAOE(Skill s, float power)
-    {
-        Vector3 o = attackOrigin.position;
-        var hits2D = Physics2D.OverlapCircleAll(o, s.aoeRadius, enemyMask);
-        foreach (var h in hits2D)
-        {
-            var go = h.attachedRigidbody ? h.attachedRigidbody.gameObject : h.gameObject;
-            ApplyHit(go, s, power, o);
-        }
-        var hits3D = Physics.OverlapSphere(o, s.aoeRadius, enemyMask);
-        foreach (var c in hits3D) ApplyHit(c.gameObject, s, power, o);
-    }
 
     void SpawnEffectAt(Vector3 pos, GameObject prefab)
     {
         if (!prefab) return;
         var go = Instantiate(prefab, pos, Quaternion.identity);
 
-        // 파티클이면 재생 길이에 맞춰 제거, 아니면 0.5초 후 제거
+
         var ps = go.GetComponent<ParticleSystem>();
         if (ps)
         {
@@ -236,6 +291,15 @@ public class SkillandSynergy : MonoBehaviour
         {
             Destroy(go, 0.5f);
         }
+
+    }
+
+ 
+    bool IsSelf(GameObject go)
+    {
+        if (!go) return false;
+        return go == gameObject || go.transform.root == transform.root;
+
     }
 
     void OnDrawGizmosSelected()

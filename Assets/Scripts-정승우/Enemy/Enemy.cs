@@ -1,14 +1,27 @@
 using UnityEngine;
+using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
-    public float MaxHealth;
-    public float health;
-    public float speed;
-    public float attack;
-    public float attackDelay;   // °ø°Ý °£°Ý
-    private float nextAtk;      // ´ÙÀ½ °ø°Ý Å¸ÀÌ¹Ö
+    public float MaxHealth = 50f;
+    public float health = 50f;
+    public float speed = 2f;
+    public float attack = 5f;
+    public float attackDelay = 1f;
+
+    private float nextAtk;
     public PlayerStat player;
+
+    Rigidbody2D rb2d;
+    bool knockbackLock;              // ï¿½Ë¹ï¿½ ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    float knockbackStopTime = 0.15f; // ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+
+    void Awake()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+        if (health <= 0f && MaxHealth > 0f) health = MaxHealth;
+        if (rb2d) { rb2d.gravityScale = 0f; rb2d.interpolation = RigidbodyInterpolation2D.Interpolate; }
+    }
 
     void Start()
     {
@@ -22,31 +35,65 @@ public class Enemy : MonoBehaviour
 
     void Chase()
     {
-        // ÇÃ·¹ÀÌ¾î ¹æÇâÀ¸·Î ÀÌµ¿
-        Vector2 dir = (player.transform.position - transform.position).normalized;
-        transform.Translate(dir * speed * Time.fixedDeltaTime);
+        if (player == null || knockbackLock) return;
+
+        Vector2 pos = rb2d ? rb2d.position : (Vector2)transform.position;
+        Vector2 target = player.transform.position;
+        Vector2 dir = (target - pos).normalized;
+
+        if (rb2d)
+            rb2d.MovePosition(pos + dir * speed * Time.fixedDeltaTime); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½(ï¿½ï¿½ï¿½ï¿½)
+        else
+            transform.Translate((Vector3)(dir * speed * Time.fixedDeltaTime), Space.World);
     }
 
     void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
-        {
-            Attack();
-        }
+        if (collision.CompareTag("Player")) Attack();
     }
         
     void Attack()
     {
-        if (nextAtk <= Time.time)
+        if (nextAtk > Time.time) return;
+        if (player != null)
         {
-            // °ø°ÝÀÌ °¡´ÉÇÑ Å¸ÀÌ¹ÖÀÏ °æ¿ì ½ÇÇà
+
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (player != null)
             {
-                Debug.Log("°ø°Ý ½ÇÇàµÊ");
-                player.health -= attack;                 // ÇÃ·¹ÀÌ¾î¿¡°Ô µ¥¹ÌÁö
-                if (player.health < 0f) player.health = 0f; // (°£´Ü Å¬·¥ÇÁ)
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½");
+                player.health -= attack;                 // ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                if (player.health < 0f) player.health = 0f; // (ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½)
             }
             nextAtk = Time.time + attackDelay;
+
         }
+
+    }
+
+    // SkillandSynergyï¿½ï¿½ OnHit(payload)ï¿½ï¿½ ï¿½Þ¾Æ¼ï¿½ Ã³ï¿½ï¿½
+    public void OnHit(SkillandSynergy.HitPayload p)
+    {
+        health -= p.damage;
+        if (health <= 0f) { Destroy(gameObject); return; }
+
+        // ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (rb2d)
+        {
+            rb2d.linearVelocity = Vector2.zero; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            rb2d.AddForce(p.hitDirection * p.knockback, ForceMode2D.Impulse);
+        }
+
+        StopAllCoroutines();
+        StartCoroutine(CoKnockbackLock());
+
+        // (ï¿½ï¿½ï¿½Î¿ï¿½/ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ ï¿½ß°ï¿½)
+    }
+
+    IEnumerator CoKnockbackLock()
+    {
+        knockbackLock = true;
+        yield return new WaitForSeconds(knockbackStopTime);
+        knockbackLock = false;
     }
 }
