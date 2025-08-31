@@ -6,8 +6,8 @@ public class Enemy : MonoBehaviour
     public float health;
     public float speed;
     public float attack;
-    public float attackDelay;   // °ø°Ý °£°Ý
-    private float nextAtk;      // ´ÙÀ½ °ø°Ý Å¸ÀÌ¹Ö
+    public float attackDelay;   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    private float nextAtk;      // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ì¹ï¿½
     public PlayerStat player;
 
     void Start()
@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
 
     void Chase()
     {
-        // ÇÃ·¹ÀÌ¾î ¹æÇâÀ¸·Î ÀÌµ¿
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         Vector2 dir = (player.transform.position - transform.position).normalized;
         transform.Translate(dir * speed * Time.fixedDeltaTime);
     }
@@ -34,18 +34,48 @@ public class Enemy : MonoBehaviour
             Attack();
         }
     }
-
+        
     void Attack()
     {
         if (nextAtk <= Time.time)
         {
-            // °ø°ÝÀÌ °¡´ÉÇÑ Å¸ÀÌ¹ÖÀÏ °æ¿ì ½ÇÇà
+
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (player != null)
             {
-                player.health -= attack;                 // ÇÃ·¹ÀÌ¾î¿¡°Ô µ¥¹ÌÁö
-                if (player.health < 0f) player.health = 0f; // (°£´Ü Å¬·¥ÇÁ)
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½");
+                player.health -= attack;                 // ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                if (player.health < 0f) player.health = 0f; // (ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½)
             }
             nextAtk = Time.time + attackDelay;
+
         }
+
+    }
+
+    // SkillandSynergyï¿½ï¿½ OnHit(payload)ï¿½ï¿½ ï¿½Þ¾Æ¼ï¿½ Ã³ï¿½ï¿½
+    public void OnHit(SkillandSynergy.HitPayload p)
+    {
+        health -= p.damage;
+        if (health <= 0f) { Destroy(gameObject); return; }
+
+        // ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (rb2d)
+        {
+            rb2d.linearVelocity = Vector2.zero; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            rb2d.AddForce(p.hitDirection * p.knockback, ForceMode2D.Impulse);
+        }
+
+        StopAllCoroutines();
+        StartCoroutine(CoKnockbackLock());
+
+        // (ï¿½ï¿½ï¿½Î¿ï¿½/ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ ï¿½ß°ï¿½)
+    }
+
+    IEnumerator CoKnockbackLock()
+    {
+        knockbackLock = true;
+        yield return new WaitForSeconds(knockbackStopTime);
+        knockbackLock = false;
     }
 }

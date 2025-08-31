@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using Game.Data;    // SeedDef
 using Game.Core;    // Inventory
 using Game.Systems; // FarmingSystem
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
@@ -41,7 +42,7 @@ public class Player : MonoBehaviour
 
     int currentPlot = -1;
 
-    // [ADD] 수확 중복 방지 락 (한 프레임/짧은 시간에 여러 콜라이더 겹칠 때 대비)
+    // [ADD] 수확 중복 방지 락
     bool harvestLock = false;
 
     // ===================== [UNITY LIFECYCLE] =====================
@@ -124,11 +125,11 @@ public class Player : MonoBehaviour
     // ===================== [TRIGGER] =====================
     void OnTriggerEnter2D(Collider2D other)
     {
-        // [ADD] 1) 작물(날씨 타일)에 닿으면 → 전체 수확 & 코인 지급
+        // 1) 작물(날씨 타일)에 닿으면 → 전체 수확 & 코인 지급
         if (IsCropHit(other))
         {
             TryHarvestAllMature();
-            return; // 다른 트리거 처리 불필요
+            return;
         }
 
         // 2) 포탈
@@ -136,12 +137,23 @@ public class Player : MonoBehaviour
         {
             if (battleCount < maxBattles)
             {
-                battleCount++;
+                battleCount++; // 하루 전투 횟수 증가
+
                 switch (other.name)
                 {
                     case "Portal_East":
                         Game.Core.SceneBridge.GoToUpgrade("dungeon_rain"); // ← 업그레이드 씬으로 먼저
 
+                        break;
+
+                    case "Portal_West":
+                        SceneManager.LoadScene("dungeon_snow");
+                        break;
+                    case "Portal_South":
+                        SceneManager.LoadScene("dungeon_heat");
+                        break;
+                    case "Portal_North":
+                        SceneManager.LoadScene("dungeon_cloud");
                         break;
                 }
             }
@@ -201,10 +213,11 @@ public class Player : MonoBehaviour
 
     // ===================== [HARVEST TOUCH LOGIC] =====================
 
-    // [ADD] other가 '작물(날씨 타일)'인지 판단 (씨앗/plotWorst 제외)
+    // other가 '작물(날씨 타일)'인지 판단
     bool IsCropHit(Collider2D other)
     {
         if (farming == null) return false;
+
         // 충돌체가 자식일 수도 있으니 부모까지 타고 올라가며 체크
         Transform t = other.transform;
         for (int hop = 0; hop < 4 && t != null; hop++, t = t.parent)
@@ -213,10 +226,11 @@ public class Player : MonoBehaviour
         }
         // 태그로도 허용하고 싶으면 아래 주석 해제 (Crop 태그를 작물 오브젝트에 부여)
         if (other.CompareTag("Crop")) return true;
+
         return false;
     }
 
-    // [ADD] 전체 수확 시도 (락으로 다중 트리거 방지)
+    // 전체 수확 시도 (락으로 다중 트리거 방지)
     void TryHarvestAllMature()
     {
         if (harvestLock) return;
@@ -238,7 +252,7 @@ public class Player : MonoBehaviour
         StartCoroutine(ReleaseHarvestLockNextFrame());
     }
 
-    System.Collections.IEnumerator ReleaseHarvestLockNextFrame()
+    IEnumerator ReleaseHarvestLockNextFrame()
     {
         yield return null; // 한 프레임 후 해제
         harvestLock = false;

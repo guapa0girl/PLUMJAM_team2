@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
     void FixedUpdate()
     {
         // 물리 연산과 싱크를 맞추기 위해 FixedUpdate 사용
