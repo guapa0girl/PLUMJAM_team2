@@ -14,14 +14,11 @@ public class SkillandSynergy : MonoBehaviour
         [HideInInspector] public float currentCooldown;
         public bool isOnCooldown => currentCooldown > 0f;
 
-<<<<<<< HEAD
-=======
         [Header("Level (0=Off, 1~5)")]
         [Range(0, 5)] public int level = 1;                 // 0=ºñÈ°¼º, 1~5 »ç¿ë
         [Tooltip("·¹º§´ç ¹èÀ² °¡»ê(¿¹: 0.15 = +15%/·¹º§)")]
         public float perLevelBonus = 0.15f;                 // (1 + perLevelBonus*(level-1))
 
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
         [Header("Type")]
         public SkillType skillType;            // BasicAttack, Fire, Water, Ice, Wind
         public AttackMode attackMode;          // Melee, Ranged, AreaOfEffect
@@ -31,36 +28,27 @@ public class SkillandSynergy : MonoBehaviour
         public bool spawnOnCast = false;       // ½ÃÀüÀÚ À§Ä¡ ÀÌÆåÆ®
         public bool spawnOnHit = true;         // ÇÇ°İ ÁöÁ¡ ÀÌÆåÆ®
 
-<<<<<<< HEAD
-=======
+
         [HideInInspector] public int lastCastFrame = -1;    // ÇÑ ÇÁ·¹ÀÓ Áßº¹ Ä³½ºÆ® ¹æÁö
 
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
+
         [Header("Ranges")]
         public float meleeRange = 1.6f;
         public float aoeRadius = 2.8f;
         public float rangedDistance = 10f;
 
         [Header("Auto Cast")]
-<<<<<<< HEAD
-        public bool autoCast = true;           // ì¿¨íƒ€ì„ ëë‚˜ë©´ ìë™ ë°œë™
 
-        // ì‹œë„ˆì§€ ì ìš©(ë§¤ì¹­ ë‚ ì”¨ì—ì„œ x1.2)
-        public float GetAttackPower(WeatherType today)
-        {
-            float attackPower = baseAttackPower;
-            const float synergyMultiplier = 1.2f;
-=======
-        public bool autoCast = true;           // ÄğÅ¸ÀÓ ³¡³ª¸é ÀÚµ¿ ¹ßµ¿
+        public bool autoCast = true;
 
-        // ½Ã³ÊÁö+·¹º§ ¹èÀ² Àû¿ë
+
         public float GetAttackPower(WeatherType today)
         {
             float levelMul = (level <= 0) ? 0f : 1f + perLevelBonus * (level - 1);
             float attackPower = baseAttackPower * levelMul;
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
-
             const float synergyMultiplier = 1.2f;
+            // ½Ã³ÊÁö+·¹º§ ¹èÀ² Àû¿ë
+
             if (today == WeatherType.Heat && skillType == SkillType.Fire) attackPower *= synergyMultiplier;
             else if (today == WeatherType.Rain && skillType == SkillType.Water) attackPower *= synergyMultiplier;
             else if (today == WeatherType.Snow && skillType == SkillType.Ice) attackPower *= synergyMultiplier;
@@ -93,15 +81,9 @@ public class SkillandSynergy : MonoBehaviour
 
     void Start()
     {
-<<<<<<< HEAD
-        weatherSystem = FindObjectOfType<WeatherSystem>(); // ì—†ì–´ë„ null-safe ì²˜ë¦¬ë¨
-        // ì›í•˜ë©´ ì‹œì‘ ì‹œ ë°”ë¡œ ë°œë™í•˜ë ¤ë©´ ì•„ë˜ ì£¼ì„ í•´ì œ
-        // foreach (var s in skills) s.currentCooldown = 0f;
-        // ë™ì‹œ ë°œë™ì„ í”¼í•˜ê³  ì‹¶ìœ¼ë©´ ì´ˆê¸° ìœ„ìƒ ëœë¤í™”ë„ ê°€ëŠ¥:
-=======
+
         weatherSystem = FindObjectOfType<WeatherSystem>(); // ¾ø¾îµµ null-safe Ã³¸®µÊ
-        // ½ÃÀÛ À§»ó ·£´ıÈ­ ¿¹½Ã:
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
+
         // foreach (var s in skills) s.currentCooldown = Random.Range(0f, s.cooldownTime);
     }
 
@@ -112,14 +94,8 @@ public class SkillandSynergy : MonoBehaviour
             var s = skills[i];
             s.UpdateCooldown();
 
-<<<<<<< HEAD
-            // ì¿¨íƒ€ì„ì´ ëë‚¬ê³  ìë™ì‹œì „ì´ë©´ ì¦‰ì‹œ ë°œë™
-=======
-            // 0·¹º§Àº ºñÈ°¼º
-            if (s.level <= 0) continue;
 
-            // ÄğÅ¸ÀÓÀÌ ³¡³µ°í ÀÚµ¿½ÃÀüÀÌ¸é Áï½Ã ¹ßµ¿
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
+            if (s.level <= 0) continue;
             if (s.autoCast && !s.isOnCooldown)
                 UseSkill(i);
         }
@@ -134,16 +110,13 @@ public class SkillandSynergy : MonoBehaviour
 
     public void UseSkill(int skillIndex)
     {
-<<<<<<< HEAD
-        if (skills == null || skillIndex < 0 || skillIndex >= skills.Length) { Debug.LogWarning("ì˜ëª»ëœ ìŠ¤í‚¬ ì¸ë±ìŠ¤"); return; }
+
+        if (skills == null || skillIndex < 0 || skillIndex >= skills.Length) { return; }
         var s = skills[skillIndex];
         if (s.isOnCooldown) return;
 
         var today = weatherSystem ? weatherSystem.Today : default;
         float attackPower = s.GetAttackPower(today);
-=======
-        if (skills == null || skillIndex < 0 || skillIndex >= skills.Length) { Debug.LogWarning("Àß¸øµÈ ½ºÅ³ ÀÎµ¦½º"); return; }
-        var s = skills[skillIndex];
 
         // 0·¹º§ ¶Ç´Â ÄğÅ¸ÀÓ ÁßÀÌ¸é ½ºÅµ
         if (s.level <= 0 || s.isOnCooldown) return;
@@ -151,13 +124,11 @@ public class SkillandSynergy : MonoBehaviour
         // °°Àº ÇÁ·¹ÀÓ Áßº¹ È£Ãâ ¹æÁö
         if (s.lastCastFrame == Time.frameCount) return;
 
-        var today = weatherSystem ? weatherSystem.Today : default;
-        float attackPower = s.GetAttackPower(today);
         if (attackPower <= 0f) return; // ·¹º§ 0 µî
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
+
 
         ExecuteSkill(s, attackPower);
-        s.ResetCooldown(); // ë‹¤ì‹œ ì¿¨íƒ€ì„ ì‹œì‘
+        s.ResetCooldown(); // ?¤ì‹œ ì¿¨í????œì‘
     }
 
     void ExecuteSkill(Skill s, float power)
@@ -172,11 +143,7 @@ public class SkillandSynergy : MonoBehaviour
         Debug.Log($"Auto-cast {s.skillName} ({s.skillType}/{s.attackMode}) power={power}");
     }
 
-<<<<<<< HEAD
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ íƒ€ê²© í˜ì´ë¡œë“œ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-=======
-    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ Å¸°İ ÆäÀÌ·Îµå ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
+
     [System.Serializable]
     public class HitPayload
     {
@@ -204,10 +171,7 @@ public class SkillandSynergy : MonoBehaviour
             knockback = (s.skillType == SkillType.Wind) ? knockbackForce * 1.5f : knockbackForce
         };
 
-<<<<<<< HEAD
-=======
-        // ¿ø¼Ò º¸Á¤(µ¥¹ÌÁö´Â ÀÌ¹Ì ·¹º§ ¹İ¿µµÊ)
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
+
         switch (s.skillType)
         {
             case SkillType.Fire:
@@ -235,12 +199,6 @@ public class SkillandSynergy : MonoBehaviour
         enemy.SendMessage("OnHit", payload, SendMessageOptions.DontRequireReceiver);
         SpawnEffectAt(enemy.transform.position, s.effectPrefab);
     }
-
-<<<<<<< HEAD
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ê³µê²© êµ¬í˜„ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-=======
-    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ °ø°İ ±¸Çö ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
     void ExecuteMelee(Skill s, float power)
     {
         Vector3 o = attackOrigin.position;
@@ -258,18 +216,13 @@ public class SkillandSynergy : MonoBehaviour
     {
         Vector3 o = attackOrigin.position;
         Vector3 dir = attackOrigin.right;
-<<<<<<< HEAD
-        var hit2D = Physics2D.Raycast(o, dir, s.rangedDistance, enemyMask);
-        if (hit2D.collider)
-=======
         float skin = 0.1f;                         // ÀÚ±â Äİ¶óÀÌ´õ »ìÂ¦ ¾Õ¿¡¼­ ¹ß»ç
         Vector3 start = o + dir * skin;
 
         var hits2D = Physics2D.RaycastAll(start, dir, s.rangedDistance - skin, enemyMask);
         foreach (var h in hits2D)
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
         {
-            var go = hit2D.rigidbody ? hit2D.rigidbody.gameObject : hit2D.collider.gameObject;
+            var go = h.rigidbody ? h.rigidbody.gameObject : h.collider.gameObject;
             ApplyHit(go, s, power, o);
             return;
         }
@@ -277,7 +230,7 @@ public class SkillandSynergy : MonoBehaviour
             ApplyHit(hit3D.collider.gameObject, s, power, o);
     }
 
-<<<<<<< HEAD
+
     void ExecuteAOE(Skill s, float power)
     {
         Vector3 o = attackOrigin.position;
@@ -291,17 +244,14 @@ public class SkillandSynergy : MonoBehaviour
         foreach (var c in hits3D) ApplyHit(c.gameObject, s, power, o);
     }
 
-=======
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
+
     void SpawnEffectAt(Vector3 pos, GameObject prefab)
     {
         if (!prefab) return;
         var go = Instantiate(prefab, pos, Quaternion.identity);
 
-<<<<<<< HEAD
-        // íŒŒí‹°í´ì´ë©´ ì¬ìƒ ê¸¸ì´ì— ë§ì¶° ì œê±°, ì•„ë‹ˆë©´ 0.5ì´ˆ í›„ ì œê±°
-=======
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
+
+
         var ps = go.GetComponent<ParticleSystem>();
         if (ps)
         {
@@ -312,23 +262,20 @@ public class SkillandSynergy : MonoBehaviour
         {
             Destroy(go, 0.5f);
         }
-<<<<<<< HEAD
-=======
-    }
 
-    // ÀÚ±â ÀÚ½Å È÷Æ® ¹æÁö
-    bool IsSelf(GameObject go)
-    {
-        if (!go) return false;
-        return go == gameObject || go.transform.root == transform.root;
->>>>>>> parent of 6c4798a (Merge branch 'main' into SkillAttack)
-    }
+        bool IsSelf(GameObject go)
+        {
+            if (!go) return false;
+            return go == gameObject || go.transform.root == transform.root;
 
-    void OnDrawGizmosSelected()
-    {
-        if (!attackOrigin) return;
-        Gizmos.color = Color.red; Gizmos.DrawWireSphere(attackOrigin.position, 1.6f);
-        Gizmos.color = Color.cyan; Gizmos.DrawWireSphere(attackOrigin.position, 2.8f);
-        Gizmos.color = Color.white; Gizmos.DrawLine(attackOrigin.position, attackOrigin.position + attackOrigin.right * 10f);
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            if (!attackOrigin) return;
+            Gizmos.color = Color.red; Gizmos.DrawWireSphere(attackOrigin.position, 1.6f);
+            Gizmos.color = Color.cyan; Gizmos.DrawWireSphere(attackOrigin.position, 2.8f);
+            Gizmos.color = Color.white; Gizmos.DrawLine(attackOrigin.position, attackOrigin.position + attackOrigin.right * 10f);
+        }
     }
 }

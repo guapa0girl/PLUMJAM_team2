@@ -4,7 +4,121 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bae22fe-2da3-40b9-ae8f-e9a4bddbee20" name="Changes" comment="" />
+    <list default="true" id="7bae22fe-2da3-40b9-ae8f-e9a4bddbee20" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Data/Dungeon.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Data/Dungeon/New Room Theme Def.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Data/Dungeon/New Room Theme Def.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/AngryPig/IdleAnimation.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/AngryPig/IdleAnimation.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/AngryPig/RunAnimation.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/AngryPig/RunAnimation.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/AngryPig/walk.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/AngryPig/walk.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bat/Idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bat/Idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bat/Run.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bat/Run.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bee/Idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bee/Idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bee/Run.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bee/Run.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bunny/Idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bunny/Idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bunny/Rabbit.controller" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bunny/Rabbit.controller.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bunny/Run.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bunny/Run.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/Duck.controller" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/Duck.controller.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/Idle (36x36)_0.controller" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/Idle (36x36)_0.controller.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/IdleAm.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/IdleAm.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/Materials/Fall (36x36).mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/Materials/Fall (36x36).mat.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/New Animation.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/New Animation.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/RunAm.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Duck/RunAm.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Plant/Idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Plant/Idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Plant/Run.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Plant/Run.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/Canvas.controller" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/Canvas.controller.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/IdleAnimation.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/IdleAnimation.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/New Animation 1.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/RunAnimation.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rocks/Idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rocks/Idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rocks/Rock.controller" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rocks/Rock.controller.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rocks/Run.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rocks/Run.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Bat.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Bat.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Bee.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Bee.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Bird.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Bird.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Chicken.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Chicken.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Devil.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Devil.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Duck.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Duck.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Ghost.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Ghost.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Plant.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Plant.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Rabbit.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Rabbit.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Rhino.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Rhino.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Rock.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Rock.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Slime.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Slime.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/anime.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/anime.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UpgradeLog2.htm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/AngryPig/Run (36x30)_0.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/AngryPig/Run (36x30)_0.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bat/Flying (46x30)_0 (1).controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bat/Flying (46x30)_0 (1).controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bee/Idle (36x34)_0.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Bee/Idle (36x34)_0.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/BlueBird/Flying (32x32)_0.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/BlueBird/Flying (32x32)_0.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Plant/Idle (44x42)_0.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Plant/Idle (44x42)_0.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/New Animation.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/New Animation 1.anim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/New Animation.anim.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/RunAnimation.anim.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/Run (52x34).png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/Run (52x34).png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/Run (52x34)_0.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Rino/Run (52x34)_0.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Slime/Idle-Run (44x30)_0.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Pixel Adventure 2/Assets/Enemies/Slime/Idle-Run (44x30)_0.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Aura.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Enemy.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Ice.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Water.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Weapon 0.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Wind.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Farm.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Farm.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/dungeon_cloud.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/dungeon_cloud.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/dungeon_heat.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/dungeon_heat.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/dungeon_rain.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/dungeon_rain.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/dungeon_snow.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/dungeon_snow.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Enemy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/Enemy/Enemy.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts-정승우/PlayerMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts-정승우/PlayerMovement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Farm/CoinCountUI.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Farm/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Farm/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Systems/SkillandSynergy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Systems/SkillandSynergy.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Examples &amp; Extras/Resources/Fonts &amp; Materials/Oswald Bold SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Examples &amp; Extras/Resources/Fonts &amp; Materials/Oswald Bold SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Examples &amp; Extras/Resources/Fonts &amp; Materials/Roboto-Bold SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Examples &amp; Extras/Resources/Fonts &amp; Materials/Roboto-Bold SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,14 +135,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "cidr.known.project.marker": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
